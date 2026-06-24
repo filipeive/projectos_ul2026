@@ -394,6 +394,20 @@
                             <p class="text-slate-400">Editor leve recomendado. Instale as extensões PHP Intelephense e Blade Highlighter.</p>
                         </div>
                     </div>
+
+                    <!-- Nota de Criatividade & Protótipos -->
+                    <div class="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start gap-3 mt-5">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse"></i>
+                        <div>
+                            <h4 class="text-xs font-bold text-amber-400 uppercase font-mono tracking-wider">Criatividade & Flexibilidade nos Projetos</h4>
+                            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                                <strong>Liberdade Tecnológica:</strong> As tecnologias listadas em cada projeto são sugestões de orientação. Os grupos podem ser criativos e utilizar outras ferramentas ou linguagens de programação.
+                            </p>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                <strong>Uso de Protótipos:</strong> Caso não haja tempo hábil para codificação total, os estudantes podem apresentar protótipos de alta fidelidade desenhados em ferramentas como Figma, Canva, Penpot ou plataformas low-code/no-code para o <strong>Dia da Informática</strong>. O desenvolvimento será guiado e apoiado de perto pelo docente responsável.
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 
                 <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2 mb-4">
@@ -816,8 +830,8 @@
                     <div>
                         <!-- Tech Tags -->
                         <div class="flex flex-wrap gap-1.5 mb-4">
-                            ${project.tecnologias.slice(0, 3).map(tech => `
-                                <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-[10px] text-slate-300 font-mono">${tech}</span>
+                            ${project.tecnologias.split(' + ').slice(0, 3).map(tech => `
+                                <span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-[10px] text-slate-300 font-mono">${tech.trim()}</span>
                             `).join('')}
                         </div>
                         
@@ -890,7 +904,7 @@
                     p.name.toLowerCase().includes(query) ||
                     p.subtitle.toLowerCase().includes(query) ||
                     p.problema.toLowerCase().includes(query) ||
-                    p.tecnologias.some(t => t.toLowerCase().includes(query))
+                    p.tecnologias.toLowerCase().includes(query)
                 );
             }
 
@@ -908,7 +922,7 @@
             // Filter by Tech
             const tech = techSelect.value;
             if (tech !== "Todos") {
-                filtered = filtered.filter(p => p.tecnologias.some(t => t.includes(tech)));
+                filtered = filtered.filter(p => p.tecnologias.includes(tech));
             }
 
             currentProjects = filtered;
@@ -971,12 +985,12 @@
 
             document.getElementById('modal-val-problema').innerText = project.problema;
             document.getElementById('modal-val-publico').innerText = project.publico_alvo;
-            document.getElementById('modal-val-impacto').innerText = project.impacto_social;
-            document.getElementById('modal-val-tecnologias').innerText = project.tecnologias.join(', ');
-            document.getElementById('modal-val-startup').innerText = project.potencial_startup;
-            document.getElementById('modal-val-parcerias').innerText = project.parcerias_sugeridas;
-            document.getElementById('modal-val-funcionalidades').innerText = project.funcionalidades_principais;
-            document.getElementById('modal-val-melhorias').innerText = project.melhorias_futuras;
+            document.getElementById('modal-val-impacto').innerText = project.impacto;
+            document.getElementById('modal-val-tecnologias').innerText = project.tecnologias;
+            document.getElementById('modal-val-startup').innerText = project.potencial_startup || project.startup;
+            document.getElementById('modal-val-parcerias').innerText = project.parcerias_sugeridas || project.parcerias;
+            document.getElementById('modal-val-funcionalidades').innerText = project.funcionalidades_principais || project.funcionalidades;
+            document.getElementById('modal-val-melhorias').innerText = project.melhorias_futuras || project.melhorias;
             
             // Set Dicas de Estudo
             document.getElementById('modal-val-dicas').innerText = project.dicas_estudo || "Comece por modelar a base de dados. Crie telas simples com HTML/CSS.";

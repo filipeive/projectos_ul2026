@@ -1048,5 +1048,47 @@
             "Qual a precisão e viabilidade de usar reconhecimento facial local para controlo de presenças no contexto universitário?"
         ],
         "dicas_estudo": "Não tente programar modelos de IA do zero. Use APIs prontas de processamento de imagem/texto (como Hugging Face, OpenAI ou Google Cloud) via servidor Python (Flask) ou use bibliotecas locais de Python (Tesseract para OCR, OpenCV para vídeo)."
+    },
+    {
+        "number": 51,
+        "name": "OrientaVocacional",
+        "subtitle": "Plataforma de orientação vocacional para estudantes do ensino secundário",
+        "sector": "Educação",
+        "problema": "Falta de orientação vocacional para alunos finalistas prestes a escolher cursos universitários",
+        "publico_alvo": "Estudantes da 12ª classe, escolas secundárias",
+        "impacto": "Escolha mais consciente e redução da taxa de desistência nos primeiros anos da universidade",
+        "tecnologias": "PHP Puro / Laravel + MySQL",
+        "dificuldade": "Médio",
+        "startup": "Alto",
+        "parcerias": "Escolas Secundárias de Quelimane, Universidade Licungo",
+        "funcionalidades": "Questionário vocacional inteligente, base de dados de cursos, análise de aptidões, módulo de mentoria",
+        "melhorias_futuras": "Integração de testes psicológicos padronizados e chat em tempo real com psicólogos locais",
+        "perguntas_pesquisa": [
+            "Como a falta de orientação vocacional no ensino secundário em Quelimane impacta a taxa de retenção dos estudantes no ensino superior?",
+            "De que forma um algoritmo simples de recomendação pode alinhar as competências declaradas dos alunos aos requisitos dos cursos universitários?",
+            "Quais são as principais barreiras informacionais que impedem alunos finalistas de escolas públicas de conhecerem as ofertas de bolsas e cursos?"
+        ],
+        "dicas_estudo": "Comece por criar o questionário no frontend com perguntas de escolha múltipla. Cada resposta pode atribuir pontos a uma área específica (Ciências, Letras, Tecnologias). No backend, some os pontos para gerar o perfil recomendado do curso."
+    },
+    {
+        "number": 52,
+        "name": "Cores & Perfis",
+        "subtitle": "Jogo de autodescoberta e avaliação de personalidade através das 4 cores",
+        "sector": "Inclusão Social",
+        "problema": "Falta de ferramentas dinâmicas e lúdicas para autoconhecimento e formação de equipas académicas",
+        "publico_alvo": "Estudantes universitários, equipas de trabalho, público em geral",
+        "impacto": "Melhoria do autoconhecimento e facilitação na criação de grupos de projeto equilibrados",
+        "tecnologias": "HTML5 + CSS + JavaScript + PHP / Laravel",
+        "dificuldade": "Fácil",
+        "startup": "Médio",
+        "parcerias": "FCT UniLicungo, gabinetes de apoio psicopedagógico",
+        "funcionalidades": "Teste interactivo de escolha múltipla, mapeamento visual do perfil (Verde, Azul, Amarelo, Vermelho), relatório final de personalidade, partilha de resultados",
+        "melhorias_futuras": "Algoritmo para recomendação de formação de equipas multidisciplinares compatíveis",
+        "perguntas_pesquisa": [
+            "De que forma a gamificação de testes psicológicos (como o modelo de 4 cores) influencia o engajamento e a honestidade nas respostas dos estudantes?",
+            "Qual o impacto de equipas académicas formadas de forma equilibrada por diferentes perfis de personalidade no sucesso dos projetos práticos?",
+            "Como visualizar graficamente a distribuição de perfis de personalidade em grandes grupos usando ferramentas web abertas?"
+        ],
+        "dicas_estudo": "Desenhe uma interface interactiva muito visual no frontend. Crie uma série de perguntas situacionais onde cada opção de resposta pontua para uma das cores (Verde: Estabilidade, Azul: Analítico, Amarelo: Influente, Vermelho: Executor). Guarde as pontuações no banco de dados e exiba um gráfico circular simples com as percentagens de cada cor."
     }
 ]

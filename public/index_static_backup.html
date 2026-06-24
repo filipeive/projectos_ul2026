@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniLicungo TechHub | Portal de Projetos Tecnológicos</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#070a13',
+                            900: '#0b0f19',
+                            800: '#121929',
+                            750: '#182238',
+                            700: '#1e293b',
+                            600: '#334155',
+                            500: '#64748b'
+                        },
+                        indigo: {
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative antialiased selection:bg-indigo-500 selection:text-white pb-12">
+    
+    <!-- Background glowing ambient blobs -->
+    <div class="glow-blob-1"></div>
+    <div class="glow-blob-2"></div>
+    <div class="glow-blob-3"></div>
+
+    <!-- HEADER / HERO -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-4 pt-12 pb-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-900 pb-8">
+            <div>
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                    Universidade Licungo · Curso de Informática
+                </div>
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
+                    UniLicungo <span class="text-gradient-primary">TechHub</span>
+                </h1>
+                <p class="text-lg text-slate-400 max-w-2xl font-light">
+                    Portal de orientação, catalogação e inscrição de projetos tecnológicos para estudantes de 1.º ano. Inovação prática focada em Quelimane e Zambézia.
+                </p>
+            </div>
+            
+            <!-- Quick info stats banner -->
+            <div class="glass-panel p-5 rounded-2xl flex items-center gap-4 max-w-md border border-slate-800">
+                <div class="w-12 h-12 rounded-xl bg-gradient-indigo-pink flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="award" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-white">Eventos Académicos 2026</h4>
+                    <p class="text-xs text-indigo-400 font-medium mt-0.5">15 Ago: Dia da Informática</p>
+                    <p class="text-xs text-pink-400 font-medium">Setembro: Jornadas Científicas</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Tab bar -->
+        <nav class="flex border-b border-slate-800/80 mt-6 relative z-20">
+            <button class="nav-tab-btn px-6 py-3 border-b-2 border-indigo-500 text-indigo-400 font-medium text-sm transition-all focus:outline-none" data-tab="catalogo">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="grid" class="w-4 h-4"></i> Catálogo de Ideias (50)
+                </span>
+            </button>
+            <button class="nav-tab-btn px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="mobilizacao">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Plano de Ação & Mentoria
+                </span>
+            </button>
+            <button class="nav-tab-btn px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="boilerplates">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="code-2" class="w-4 h-4"></i> Kit do Estudante (Starter)
+                </span>
+            </button>
+            <button class="nav-tab-btn px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="estudante">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> Inscrição / Ficha
+                </span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 py-6 flex-grow">
+        
+        <!-- 1. SECTION: CATALOG -->
+        <section id="section-catalogo" class="content-section">
+            
+            <!-- Global Stats Banner -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Total Ideias</span>
+                    <span id="stat-total-projects" class="text-3xl font-extrabold text-white mt-1">0</span>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Sectores</span>
+                    <span id="stat-sectors" class="text-3xl font-extrabold text-indigo-400 mt-1">0</span>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-emerald-500/50">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Nível Fácil</span>
+                    <span id="stat-facil" class="text-3xl font-extrabold text-emerald-400 mt-1">0</span>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-amber-500/50">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Nível Médio</span>
+                    <span id="stat-medio" class="text-3xl font-extrabold text-amber-400 mt-1">0</span>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-rose-500/50">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Nível Avançado</span>
+                    <span id="stat-avancado" class="text-3xl font-extrabold text-rose-400 mt-1">0</span>
+                </div>
+            </div>
+
+            <!-- Filters Area -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 mb-8 flex flex-col gap-6">
+                <!-- Row 1: Search & Dropdowns -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Search input -->
+                    <div class="relative md:col-span-2">
+                        <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-3.5 text-slate-500"></i>
+                        <input type="text" id="search-input" placeholder="Pesquisar por projeto, palavra-chave, tecnologia..." 
+                            class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm placeholder:text-slate-500 transition-all text-slate-200">
+                    </div>
+                    
+                    <!-- Difficulty select -->
+                    <div>
+                        <select id="filter-difficulty" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                            <option value="Todos">Dificuldade (Todas)</option>
+                            <option value="Fácil">Fácil</option>
+                            <option value="Médio">Médio</option>
+                            <option value="Avançado">Avançado</option>
+                        </select>
+                    </div>
+
+                    <!-- Tech select -->
+                    <div>
+                        <select id="filter-tech" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                            <option value="Todos">Tecnologia (Todas)</option>
+                            <option value="Laravel">Laravel</option>
+                            <option value="PHP">PHP (Puro)</option>
+                            <option value="Flutter">Flutter (Mobile)</option>
+                            <option value="React">React</option>
+                            <option value="Python">Python</option>
+                            <option value="Inteligência Artificial">Inteligência Artificial (IA)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 2: Sector Buttons and Reset -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-4 border-t border-slate-800/60">
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono mr-2">Sectores:</span>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all tab-active" data-sector="Todos">Todos</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Saúde">Saúde</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Educação">Educação</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Agricultura e Ambiente">Agricultura</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Empreendedorismo e PMEs">PMEs / Negócios</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Inclusão Social">Inclusão</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Governação">Governação</button>
+                        <button class="sector-filter-btn px-3.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Inteligência Artificial">I.A.</button>
+                    </div>
+                    
+                    <button id="reset-filters-btn" class="flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors uppercase tracking-wider font-mono self-end lg:self-auto">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Limpar Filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden py-16 text-center glass-panel rounded-2xl border border-slate-800">
+                <i data-lucide="alert-circle" class="w-12 h-12 mx-auto text-slate-500 mb-4"></i>
+                <h3 class="text-lg font-bold text-white mb-1">Nenhum projeto encontrado</h3>
+                <p class="text-sm text-slate-400 max-w-md mx-auto">Tente ajustar seus termos de pesquisa ou redefinir os filtros selecionados.</p>
+            </div>
+
+            <!-- Grid of Cards -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically loaded -->
+            </div>
+            
+        </section>
+
+        <!-- 2. SECTION: ROADMAP & STRATEGY -->
+        <section id="section-mobilizacao" class="content-section hidden">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Timeline Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-6 h-6 text-indigo-400"></i> Cronograma de Ação (Junho - Setembro)
+                    </h2>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-6">
+                        <!-- Timeline Item 1 -->
+                        <div class="timeline-item relative pl-8 pb-4">
+                            <div class="absolute left-0 top-1 w-5 h-5 rounded-full bg-indigo-500 border-4 border-slate-950 z-10 flex items-center justify-center"></div>
+                            <div>
+                                <span class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider">Junho (Semanas 1-2)</span>
+                                <h3 class="text-md font-bold text-slate-100 mt-0.5">Sensibilização & Ideação</h3>
+                                <p class="text-sm text-slate-400 mt-1 leading-relaxed">
+                                    Abertura do portal. Lançamento do workshop "Da Ideia ao Sistema". Organização dos estudantes do 1.º ano em grupos de 3 a 4 integrantes e escolha de um mentor finalista.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline Item 2 -->
+                        <div class="timeline-item relative pl-8 pb-4">
+                            <div class="absolute left-0 top-1 w-5 h-5 rounded-full bg-indigo-500 border-4 border-slate-950 z-10 flex items-center justify-center"></div>
+                            <div>
+                                <span class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider">Junho - Julho (Semanas 3-6)</span>
+                                <h3 class="text-md font-bold text-slate-100 mt-0.5">Investigação e Requisitos</h3>
+                                <p class="text-sm text-slate-400 mt-1 leading-relaxed">
+                                    Os grupos visitam hospitais, clínicas, escolas, agricultores ou pequenas empresas locais para entender o problema real. Elaboração do modelo relacional de dados e wireframes da tela.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="timeline-item relative pl-8 pb-4">
+                            <div class="absolute left-0 top-1 w-5 h-5 rounded-full bg-indigo-500 border-4 border-slate-950 z-10 flex items-center justify-center"></div>
+                            <div>
+                                <span class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider">Julho - Agosto (Semanas 7-10)</span>
+                                <h3 class="text-md font-bold text-slate-100 mt-0.5">Desenvolvimento Ágil do MVP</h3>
+                                <p class="text-sm text-slate-400 mt-1 leading-relaxed">
+                                    Escrever as rotas, modelos e controladores básicos. Criação do formulário CRUD principal da aplicação. Teste de inserção e relatórios locais em PHP/Laravel/Flutter.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="timeline-item relative pl-8 pb-4">
+                            <div class="absolute left-0 top-1 w-5 h-5 rounded-full bg-pink-500 border-4 border-slate-950 z-10 flex items-center justify-center"></div>
+                            <div>
+                                <span class="text-xs font-bold text-pink-400 uppercase font-mono tracking-wider">15 de Agosto (Dia D)</span>
+                                <h3 class="text-md font-bold text-pink-300 mt-0.5">Apresentação: Dia da Informática</h3>
+                                <p class="text-sm text-slate-300 mt-1 leading-relaxed font-medium">
+                                    Exposição pública dos protótipos em stands na universidade. Teste prático do MVP por parte dos professores e outros estudantes.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 5 -->
+                        <div class="timeline-item relative pl-8">
+                            <div class="absolute left-0 top-1 w-5 h-5 rounded-full bg-emerald-500 border-4 border-slate-950 z-10 flex items-center justify-center"></div>
+                            <div>
+                                <span class="text-xs font-bold text-emerald-400 uppercase font-mono tracking-wider">Agosto - Setembro (Semanas 11-14)</span>
+                                <h3 class="text-md font-bold text-slate-100 mt-0.5">Refinamento e Artigo Académico</h3>
+                                <p class="text-sm text-slate-400 mt-1 leading-relaxed">
+                                    Incorporar feedbacks recebidos no Dia da Informática. Adicionar alertas reais via SMS ou painéis estatísticos. Escrita de um artigo científico/relatório técnico para as Jornadas Científicas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mentorship and Criteria Column -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                        <i data-lucide="users" class="w-6 h-6 text-indigo-400"></i> Mentoria em Cascata
+                    </h2>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4">
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Para garantir que estudantes do 1.º ano consigam desenvolver sistemas reais sem frustração, adoptamos a estrutura de apoio em pirâmide:
+                        </p>
+                        
+                        <!-- Hierarchy Visual -->
+                        <div class="space-y-3 pt-2">
+                            <div class="p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-center">
+                                <span class="text-xs font-bold uppercase font-mono text-indigo-300">Orientador Científico</span>
+                                <h4 class="text-sm font-bold text-white mt-0.5">Filipe (Docente-Orientador)</h4>
+                            </div>
+                            <div class="flex justify-center"><i data-lucide="chevron-down" class="w-4 h-4 text-slate-600"></i></div>
+                            <div class="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-center">
+                                <span class="text-xs font-bold uppercase font-mono text-purple-300">Mentores por Área</span>
+                                <h4 class="text-sm font-bold text-white mt-0.5">Estudantes Finalistas (3.º/4.º Ano)</h4>
+                            </div>
+                            <div class="flex justify-center"><i data-lucide="chevron-down" class="w-4 h-4 text-slate-600"></i></div>
+                            <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center">
+                                <span class="text-xs font-bold uppercase font-mono text-emerald-300">Desenvolvedores</span>
+                                <h4 class="text-sm font-bold text-white mt-0.5">Estudantes do 1.º Ano (Caloiros)</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2 pt-4">
+                        <i data-lucide="check-square" class="w-6 h-6 text-indigo-400"></i> Critérios de Avaliação
+                    </h2>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4">
+                        <div class="border-b border-slate-800 pb-2">
+                            <h4 class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider">Dia da Informática (15 Ago)</h4>
+                            <ul class="text-xs text-slate-300 mt-2 space-y-1">
+                                <li>· Relevância do Problema Local (25%)</li>
+                                <li>· Funcionalidade básica do MVP (25%)</li>
+                                <li>· Qualidade visual e UX (20%)</li>
+                                <li>· Apresentação Oral no stand (15%)</li>
+                                <li>· Criatividade/Inovação (15%)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-pink-400 uppercase font-mono tracking-wider">Jornadas Científicas (Setembro)</h4>
+                            <ul class="text-xs text-slate-300 mt-2 space-y-1">
+                                <li>· Definição e fundamentação científica (20%)</li>
+                                <li>· Metodologia de desenvolvimento (20%)</li>
+                                <li>· Resultados obtidos e testes práticos (25%)</li>
+                                <li>· Integração de extras (SMS/Charts/Offline) (15%)</li>
+                                <li>· Escrita do Artigo Académico (20%)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- 3. SECTION: BOILERPLATES / STARTER KIT -->
+        <section id="section-boilerplates" class="content-section hidden">
+            
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 mb-6">
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2 mb-2">
+                        <i data-lucide="info" class="w-6 h-6 text-indigo-400"></i> Guias de Configuração de Ambiente
+                    </h2>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        Estudante do primeiro ano, antes de começar a programar o seu sistema, prepare a sua máquina local com as seguintes ferramentas standard de mercado:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-300">
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-indigo-400 mb-1">1. Servidor Local e Banco</h4>
+                            <p class="text-slate-400">Instale o <span class="text-white">XAMPP</span> (contém MySQL, PHP e Apache) para hospedar a sua base de dados localmente.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-indigo-400 mb-1">2. Gestor de Pacotes PHP</h4>
+                            <p class="text-slate-400">Instale o <span class="text-white">Composer</span> no seu computador. Ele é obrigatório para instalar e correr o Laravel.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-indigo-400 mb-1">3. Editor de Código</h4>
+                            <p class="text-slate-400">Instale o <span class="text-white">VS Code</span>. Adicione extensões para PHP, Blade, Python e Flutter para ajudar na sintaxe.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2 mb-4">
+                    <i data-lucide="code-2" class="w-6 h-6 text-indigo-400"></i> Boilerplates Práticos para Iniciar
+                </h2>
+                
+                <div id="boilerplates-container" class="space-y-6">
+                    <!-- Dynamically populated from JS -->
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- 4. SECTION: APPLICATION GENERATOR -->
+        <section id="section-estudante" class="content-section hidden">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Form Column -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                        <i data-lucide="edit" class="w-6 h-6 text-indigo-400"></i> Formulário de Candidatura de Grupo
+                    </h2>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4">
+                        <!-- Project Select -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
+                            <select id="app-project-select" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                <!-- Pre-populated dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Tech Select -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-tech-select">2. Tecnologia Principal Escolhida</label>
+                            <select id="app-tech-select" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                <option value="Laravel + MySQL (Web App)">Laravel + MySQL (Web App)</option>
+                                <option value="PHP Puro + MySQL (Web App)">PHP Puro + MySQL (Web App)</option>
+                                <option value="Flutter + SQLite / Laravel API (Mobile)">Flutter + SQLite / Laravel API (Mobile)</option>
+                                <option value="React + Node.js (Web SPA)">React + Node.js (Web SPA)</option>
+                                <option value="Python + Flask API + SQLite">Python + Flask API + SQLite</option>
+                            </select>
+                        </div>
+
+                        <!-- Mentor Suggested -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-mentor">3. Mentor Sugerido (Finalista)</label>
+                            <input type="text" id="app-mentor" placeholder="Nome do estudante do 3.º ou 4.º ano (opcional)" 
+                                class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
+                        </div>
+
+                        <!-- Members of the group -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes 1.º Ano)</label>
+                            
+                            <div class="grid grid-cols-3 gap-2 mb-2">
+                                <input type="text" id="member1-name" placeholder="Nome do Estudante 1 (Líder)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" id="member1-code" placeholder="N.º Estudante" class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-2 mb-2">
+                                <input type="text" id="member2-name" placeholder="Nome do Estudante 2" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" id="member2-code" placeholder="N.º Estudante" class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 mb-2">
+                                <input type="text" id="member3-name" placeholder="Nome do Estudante 3 (Opcional)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" id="member3-code" placeholder="N.º Estudante" class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <input type="text" id="member4-name" placeholder="Nome do Estudante 4 (Opcional)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" id="member4-code" placeholder="N.º Estudante" class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            </div>
+                        </div>
+
+                        <!-- Motivation and context -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-rationale">5. Porquê este Projeto? (Contextualizado para Quelimane)</label>
+                            <textarea id="app-rationale" rows="4" placeholder="Explique brevemente por que o seu grupo escolheu este projeto e qual o impacto real esperado para a comunidade local." 
+                                class="w-full px-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200 resize-none"></textarea>
+                        </div>
+                        
+                        <!-- Submit Action -->
+                        <button onclick="generateProjectProposal()" class="w-full py-3 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+                            <i data-lucide="check" class="w-4 h-4"></i> Gerar Ficha de Candidatura
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Column -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                        <i data-lucide="eye" class="w-6 h-6 text-indigo-400"></i> Ficha de Candidatura Gerada
+                    </h2>
+                    
+                    <!-- Output area -->
+                    <div id="generated-output-container" class="hidden glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4 h-[calc(100%-3rem)] flex flex-col justify-between">
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-bold text-emerald-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Ficha Pronta
+                                </span>
+                                <button id="copy-proposal-btn" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded text-slate-300 transition-colors flex items-center">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar Texto Ficha
+                                </button>
+                            </div>
+                            
+                            <textarea id="generated-proposal-text" readonly 
+                                class="w-full h-[400px] p-4 bg-slate-950 border border-slate-900 rounded-xl text-xs font-mono text-slate-300 focus:outline-none resize-none leading-relaxed"></textarea>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-indigo-500/5 border border-indigo-500/20 rounded-xl flex items-start gap-3">
+                            <i data-lucide="help-circle" class="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0"></i>
+                            <p class="text-xs text-slate-400 leading-normal">
+                                Copie o texto gerado acima e entregue ao docente <span class="text-white">Filipe</span> por email ou submeta no canal de comunicação oficial do curso para validar a sua candidatura de grupo!
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Initial Placeholder State -->
+                    <div id="proposal-placeholder" class="py-24 text-center glass-panel rounded-2xl border border-slate-800 flex flex-col items-center justify-center h-[calc(100%-3rem)]">
+                        <i data-lucide="file-text" class="w-12 h-12 text-slate-600 mb-4"></i>
+                        <h3 class="text-sm font-bold text-slate-400">Nenhuma ficha gerada ainda</h3>
+                        <p class="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">Preencha as informações do grupo à esquerda e clique em "Gerar Ficha de Candidatura" para obter o documento final formatado.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+        
+    </main>
+
+    <!-- PROJECT DETAIL DIALOG (MODAL) -->
+    <div id="project-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-5xl rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-zoom-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/60 flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <span id="modal-project-number" class="text-sm font-bold font-mono text-indigo-400">#00</span>
+                    <h2 id="modal-project-name" class="text-xl font-bold text-white font-display">Nome do Projeto</h2>
+                    <span id="modal-project-difficulty" class="px-2.5 py-0.5 rounded-full text-xs font-semibold">Dificuldade</span>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+                <!-- Subtitle / Meta information -->
+                <div>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Subtítulo / Conceito</span>
+                    <h4 id="modal-project-subtitle" class="text-md font-bold text-indigo-300 mt-0.5">Subtítulo</h4>
+                </div>
+                
+                <!-- Main details grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1: Core Details -->
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Problema Relacionado</span>
+                            <p id="modal-val-problema" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+                        
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Público-Alvo Directo</span>
+                            <p id="modal-val-publico" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Impacto Social Esperado</span>
+                            <p id="modal-val-impacto" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2: Tech and Execution -->
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Tecnologias Recomendadas</span>
+                            <p id="modal-val-tecnologias" class="text-sm text-indigo-300 mt-1.5 font-semibold">...</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Viabilidade Comercial / Startup</span>
+                            <p id="modal-val-startup" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Parcerias e Integração Institucional</span>
+                            <p id="modal-val-parcerias" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features & Expansion -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Funcionalidades Principais</span>
+                        <p id="modal-val-funcionalidades" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                    </div>
+                    <div class="p-4 bg-slate-900/50 rounded-2xl border border-slate-900">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Possibilidades de Melhorias Futuras</span>
+                        <p id="modal-val-melhorias" class="text-sm text-slate-300 mt-1.5 leading-relaxed">...</p>
+                    </div>
+                </div>
+
+                <!-- Database Design Block (VERY HELPFUL FOR STUDENTS) -->
+                <div class="p-6 bg-slate-950 rounded-2xl border border-slate-900 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="database" class="w-5 h-5 text-indigo-400"></i>
+                            <span class="text-xs font-bold text-white uppercase font-mono tracking-wider">Modelagem de Dados Sugerida (Relacional)</span>
+                        </div>
+                        <button id="copy-sql-btn" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded text-slate-300 transition-colors flex items-center">
+                            <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar Código SQL
+                        </button>
+                    </div>
+                    <pre class="text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-[250px]"><code id="modal-val-db-schema">...</code></pre>
+                </div>
+
+                <!-- MVP Roadmap Breakdown -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Step 1 MVP -->
+                    <div class="p-5 bg-indigo-500/5 border border-indigo-500/20 rounded-2xl space-y-2">
+                        <span class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Entregável Dia da Informática (15 Ago)
+                        </span>
+                        <div id="modal-val-mvp-step1" class="text-xs text-slate-300 space-y-1.5">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <!-- Step 2 Extension -->
+                    <div class="p-5 bg-pink-500/5 border border-pink-500/20 rounded-2xl space-y-2">
+                        <span class="text-xs font-bold text-pink-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="trending-up" class="w-4 h-4"></i> Extensão Científica Jornadas (Setembro)
+                        </span>
+                        <div id="modal-val-mvp-step2" class="text-xs text-slate-300 space-y-1.5">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
+                <span class="text-xs text-slate-500">Sector: <span id="modal-project-sector" class="text-slate-300">Saúde</span></span>
+                <div class="flex items-center gap-3">
+                    <button onclick="closeModal()" class="px-4 py-2 border border-slate-700 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
+                        Fechar
+                    </button>
+                    <button id="modal-apply-btn" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-4 h-4"></i> Inscrever Grupo neste Projeto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="projects.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

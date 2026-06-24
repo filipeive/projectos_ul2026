@@ -87,7 +87,7 @@
         <nav class="flex border-b border-slate-800/80 mt-6 relative z-20 overflow-x-auto">
             <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-sky-500 text-sky-400 font-medium text-sm transition-all focus:outline-none" data-tab="catalogo">
                 <span class="flex items-center gap-2">
-                    <i data-lucide="grid" class="w-4 h-4"></i> Catálogo de Ideias (50)
+                    <i data-lucide="grid" class="w-4 h-4"></i> Catálogo de Ideias ({{ count($projects) }})
                 </span>
             </button>
             <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="mobilizacao">
@@ -202,14 +202,30 @@
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-3 border-t border-slate-800/60">
                     <div class="flex flex-wrap gap-2 items-center">
                         <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono mr-2">Sectores:</span>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all tab-active" data-sector="Todos">Todos</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Saúde">Saúde</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Educação">Educação</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Agricultura e Ambiente">Agricultura</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Empreendedorismo e PMEs">PMEs / Negócios</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Inclusão Social">Inclusão</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Governação">Governação</button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all" data-sector="Inteligência Artificial">I.A.</button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all tab-active flex items-center gap-1.5" data-sector="Todos">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> Todos
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Saúde">
+                            <i data-lucide="heart-pulse" class="w-3.5 h-3.5"></i> Saúde
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Educação">
+                            <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Educação
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Agricultura e Ambiente">
+                            <i data-lucide="sprout" class="w-3.5 h-3.5"></i> Agricultura
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Empreendedorismo e PMEs">
+                            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> PMEs / Negócios
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inclusão Social">
+                            <i data-lucide="accessibility" class="w-3.5 h-3.5"></i> Inclusão
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Governação">
+                            <i data-lucide="landmark" class="w-3.5 h-3.5"></i> Governação
+                        </button>
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inteligência Artificial">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> I.A.
+                        </button>
                     </div>
                     
                     <button id="reset-filters-btn" class="flex items-center gap-1.5 text-xs font-semibold text-sky-400 hover:text-sky-300 transition-colors uppercase tracking-wider font-mono self-end lg:self-auto">
@@ -815,7 +831,7 @@
                         <div class="flex items-center justify-between mb-3">
                             <span class="text-xs font-mono text-slate-500 font-bold">#${String(project.number).padStart(2, '0')}</span>
                             <div class="w-9 h-9 rounded-lg flex items-center justify-center ${sectorTagClass} bg-opacity-20 border border-opacity-30">
-                                <i data-lucide="${sectorIcon}" class="w-4.5 h-4.5"></i>
+                                <i data-lucide="${sectorIcon}" class="w-5 h-5"></i>
                             </div>
                         </div>
                         
@@ -1114,7 +1130,7 @@
             schema += `    email VARCHAR(100) UNIQUE NOT NULL,\n`;
             schema += `    senha VARCHAR(255) NOT NULL,\n`;
             schema += `    perfil ENUM('Estudante', 'Docente', 'Administrador') DEFAULT 'Estudante',\n`;
-            schema += `    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n`);
+            schema += `    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n`;
             schema += `);\n\n`;
 
             if (sector === 'Saúde') {

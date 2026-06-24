@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniLicungo TechHub | Catálogo de Projetos de Informática</title>
+    <meta name="description" content="Portal académico de projectos de informática da Universidade Licungo, Quelimane. Catálogo de 52+ ideias de sistemas para estudantes do 1.º ano com guias de pesquisa científica.">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>

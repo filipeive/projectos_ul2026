@@ -249,8 +249,10 @@
         // Change Application Status via AJAX
         function setStatus(id, newStatus) {
             const csrfToken = "{{ csrf_token() }}";
+            let url = "{{ route('admin.update-status', ['candidatura' => ':id']) }}";
+            url = url.replace(':id', id);
             
-            fetch(`/admin/candidaturas/${id}/status`, {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

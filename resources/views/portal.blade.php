@@ -543,8 +543,16 @@
 
     <!-- FOOTER -->
     <footer class="relative z-10 w-full max-w-7xl mx-auto px-4 mt-12 border-t border-slate-900 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-        <div>
-            © {{ date('Y') }} Curso de Informática - Universidade Licungo (Faculdade de Ciências e Tecnologia).
+        <div class="flex flex-col gap-1">
+            <div>
+                © {{ date('Y') }} Curso de Informática - Universidade Licungo (Faculdade de Ciências e Tecnologia).
+            </div>
+            <div class="flex items-center gap-1 text-slate-600">
+                <span>Desenvolvido por</span>
+                <a href="http://146.235.224.99/" target="_blank" class="inline-flex items-center gap-0.5 text-slate-400 hover:text-sky-400 transition-colors font-medium">
+                    Filipe Domingos dos Santos
+                </a>
+            </div>
         </div>
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.login') }}" class="hover:text-sky-400 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">

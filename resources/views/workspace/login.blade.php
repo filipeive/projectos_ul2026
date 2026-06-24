@@ -30,16 +30,24 @@
             <div class="w-16 h-16 mx-auto bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
                 <i data-lucide="lock" class="w-8 h-8 text-sky-400"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white font-display">Acesso Restrito</h1>
-            <p class="text-xs text-slate-400 mt-2">Área de mentoria do projeto <br><span class="text-sky-400 font-semibold">{{ $candidatura->project_name }}</span></p>
+            <h1 class="text-2xl font-bold text-white font-display">Acesso ao Workspace</h1>
+            <p class="text-xs text-slate-400 mt-2">Área restrita de mentoria e acompanhamento de projetos</p>
         </div>
 
 
 
         <form action="{{ route('workspace.login.submit') }}" method="POST" class="space-y-4">
             @csrf
-            <input type="hidden" name="candidatura_id" value="{{ $candidatura->id }}">
             
+            <div>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email do Grupo</label>
+                <div class="relative">
+                    <input type="email" name="contact_email" placeholder="estudante@unilicungo.ac.mz" required
+                        class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl text-white transition-colors pl-10">
+                    <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                </div>
+            </div>
+
             <div>
                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Senha do Grupo</label>
                 <div class="relative">
@@ -55,9 +63,8 @@
         </form>
 
         <div class="mt-6 flex flex-col gap-3 text-center">
-            <a href="{{ route('workspace.recover-pin', $candidatura->id) }}" class="text-xs text-slate-500 hover:text-amber-400 transition-colors flex items-center justify-center gap-1 font-mono">
-                <i data-lucide="help-circle" class="w-3 h-3"></i> Esqueci-me da Senha
-            </a>
+            <!-- Cannot recover pin if they don't know the URL since recover requires the ID, but wait, the portal doesn't show it. Let's hide recover or keep it generic later. For now hide it. -->
+            
             
             <a href="{{ route('admin.login') }}" class="text-xs text-slate-500 hover:text-sky-400 transition-colors flex items-center justify-center gap-1 font-mono border-t border-slate-800 pt-3">
                 <i data-lucide="shield" class="w-3 h-3"></i> Acesso para Docentes

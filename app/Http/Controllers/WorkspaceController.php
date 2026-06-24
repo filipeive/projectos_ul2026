@@ -6,28 +6,25 @@ use Illuminate\Http\Request;
 
 class WorkspaceController extends Controller
 {
-    public function loginForm(Request $request)
+    public function loginForm()
     {
-        $projectNumber = $request->query('project_number');
-        $candidatura = \App\Models\Candidatura::where('project_number', $projectNumber)
-            ->where('status', 'Aprovado')
-            ->first();
-
-        if (!$candidatura) {
-            return redirect()->route('portal.index')->with('error', 'Projeto não encontrado ou ainda não aprovado.');
-        }
-
-        return view('workspace.login', compact('candidatura'));
+        return view('workspace.login');
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'candidatura_id' => 'required|exists:candidaturas,id',
+            'contact_email' => 'required|email',
             'group_password' => 'required',
         ]);
 
-        $candidatura = \App\Models\Candidatura::findOrFail($request->candidatura_id);
+        $candidatura = \App\Models\Candidatura::where('contact_email', $request->contact_email)
+            ->where('status', 'Aprovado')
+            ->first();
+
+        if (!$candidatura) {
+             return back()->with('error', 'Nenhum projeto aprovado com este email.');
+        }
 
         if (\Hash::check($request->group_password, $candidatura->group_password)) {
             session(['workspace_logged_in_' . $candidatura->id => true]);

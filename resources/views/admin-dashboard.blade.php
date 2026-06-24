@@ -492,6 +492,7 @@
                         
                         <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center">
                             <a href="/candidatura/${c.id}/pdf" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i> Baixar Comprovativo</a>
+                            ${c.status === 'Aprovado' ? `<a href="/workspace/${c.id}" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"><i data-lucide="monitor" class="w-4 h-4"></i> Abrir Workspace do Projeto</a>` : ''}
                         </div>
                     </div>
                 `,

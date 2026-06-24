@@ -95,7 +95,7 @@ class WorkspaceController extends Controller
         }
 
         $messages = $candidatura->workspaceMessages()->orderBy('created_at', 'asc')->get();
-        $isViewer = $isAdmin && auth()->user()->id !== $candidatura->docente_id;
+        $isViewer = $isAdmin && !$isStudent && auth()->user()->id !== $candidatura->docente_id;
 
         return view('workspace.index', compact('candidatura', 'messages', 'isStudent', 'isAdmin', 'isViewer'));
     }

@@ -61,10 +61,10 @@
     </header>
 
     <!-- MAIN -->
-    <main class="relative z-10 flex-grow w-full max-w-7xl mx-auto p-4 md:p-6 flex flex-col md:flex-row gap-6 h-[calc(100vh-80px)] overflow-y-auto md:overflow-hidden">
+    <main class="relative z-10 flex-grow w-full mx-auto px-2 md:px-6 py-4 flex flex-col md:flex-row gap-6 h-[calc(100vh-80px)] overflow-y-auto md:overflow-hidden">
         
-        <!-- SIDEBAR LEFT: Info & Timeline (30%) -->
-        <aside class="w-full md:w-[30%] flex flex-col gap-6 flex-shrink-0">
+        <!-- SIDEBAR LEFT: Info & Timeline (25%) -->
+        <aside class="w-full md:w-[25%] lg:w-[20%] flex flex-col gap-6 flex-shrink-0">
             <!-- Details -->
             <div class="glass-panel rounded-2xl border border-slate-800/80 p-5 flex-shrink-0">
                 <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
@@ -146,8 +146,8 @@
             </div>
         </aside>
 
-        <!-- CENTER: CHAT & KANBAN AREA (45%) -->
-        <section class="w-full md:w-[45%] glass-panel rounded-2xl border border-slate-800/80 flex flex-col overflow-hidden relative">
+        <!-- CENTER: CHAT & KANBAN AREA (55%) -->
+        <section class="w-full md:w-[50%] lg:w-[60%] glass-panel rounded-2xl border border-slate-800/80 flex flex-col overflow-hidden relative shadow-2xl">
             
             <!-- TABS HEADER -->
             <div class="flex border-b border-slate-800 bg-slate-900/50">
@@ -300,7 +300,7 @@
         </section>
 
         <!-- SIDEBAR RIGHT: Files (25%) -->
-        <aside class="w-full md:w-[25%] glass-panel rounded-2xl border border-slate-800/80 p-5 flex flex-col hidden md:flex">
+        <aside class="w-full md:w-[25%] lg:w-[20%] glass-panel rounded-2xl border border-slate-800/80 p-5 flex flex-col hidden md:flex">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
                 <i data-lucide="folder" class="w-4 h-4 text-sky-400"></i> Ficheiros e Recursos
             </h3>

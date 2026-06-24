@@ -16,8 +16,10 @@ class Candidatura extends Model
         'project_name',
         'technology',
         'mentor',
+        'docente_id',
         'member1_name',
         'member1_code',
+        'contact_email',
         'member2_name',
         'member2_code',
         'member3_name',
@@ -26,5 +28,26 @@ class Candidatura extends Model
         'member4_code',
         'rationale',
         'status',
+        'group_password',
     ];
+
+    public function workspaceMessages()
+    {
+        return $this->hasMany(WorkspaceMessage::class);
+    }
+
+    public function progressos()
+    {
+        return $this->hasMany(CandidaturaProgresso::class);
+    }
+
+    public function ficheiros()
+    {
+        return $this->hasMany(CandidaturaFicheiro::class);
+    }
+
+    public function docente()
+    {
+        return $this->belongsTo(User::class, 'docente_id');
+    }
 }

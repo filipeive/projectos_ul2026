@@ -48,8 +48,28 @@
     <div class="glow-blob-gold"></div>
     <div class="glow-blob-center"></div>
 
+    <!-- Top utility bar -->
+    <div class="bg-slate-900 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center text-xs font-mono">
+            <span class="text-slate-500 hidden md:block">Faculdade de Ciências e Tecnologias</span>
+            <div class="flex gap-4 items-center">
+                <a href="#section-form" class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors" onclick="document.querySelector('.nav-tab-btn[data-tab=\'estudante\']').click(); return false;">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Cadastrar Projeto
+                </a>
+                <span class="text-slate-800">|</span>
+                <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="users" class="w-3.5 h-3.5"></i> Login Estudante
+                </a>
+                <span class="text-slate-800">|</span>
+                <a href="{{ route('admin.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Login Docente
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- HEADER / HERO -->
-    <header class="relative z-10 w-full max-w-7xl mx-auto px-4 pt-8 pb-4">
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-4 pt-6 pb-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-900 pb-6">
             <div class="flex items-center gap-4">
                 <!-- University Logo -->
@@ -665,6 +685,10 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
                             
+                            <div class="mb-3">
+                                <input type="email" name="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (Importante para recuperar PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                            </div>
+
                             <div class="grid grid-cols-3 gap-2 mb-2">
                                 <input type="text" name="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                                 <input type="text" name="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
@@ -706,29 +730,32 @@
                         <i data-lucide="file-text" class="w-6 h-6 text-sky-400"></i> Ficha de Proposta Gerada
                     </h2>
                     
-                    @if(session('proposal'))
+                    @if(session('candidatura_id'))
                         <!-- Output area -->
-                        <div id="generated-output-container" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4 h-[calc(100%-3rem)] flex flex-col justify-between">
-                            <div class="flex-grow">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="text-xs font-bold text-emerald-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Candidatura Registada
-                                    </span>
-                                    <button id="copy-proposal-btn" class="px-3 py-1 bg-slate-850 hover:bg-slate-750 text-xs font-semibold rounded text-slate-300 transition-colors flex items-center">
-                                        <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar Ficha (Markdown)
-                                    </button>
-                                </div>
-                                
-                                <textarea id="generated-proposal-text" readonly 
-                                    class="w-full h-[400px] p-4 bg-slate-950 border border-slate-900 rounded-xl text-xs font-mono text-slate-300 focus:outline-none resize-none leading-relaxed">{{ session('proposal') }}</textarea>
-                            </div>
+                        <div id="generated-output-container" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4 h-[calc(100%-3rem)] flex flex-col items-center justify-center text-center">
                             
-                            <div class="mt-4 p-3 bg-sky-500/5 border border-sky-500/20 rounded-xl flex items-start gap-3">
-                                <i data-lucide="help-circle" class="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0"></i>
-                                <p class="text-[11px] text-slate-400 leading-normal">
-                                    Copie o texto gerado acima e entregue ao docente <span class="text-white">Filipe</span> por email ou submeta no canal oficial para que a sua escolha seja oficialmente validada.
-                                </p>
+                            <div class="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-2 shadow-lg shadow-emerald-500/20">
+                                <i data-lucide="check" class="w-8 h-8 text-emerald-400"></i>
                             </div>
+
+                            <h3 class="text-xl font-bold text-white font-display">Registo Concluído!</h3>
+                            <p class="text-sm text-slate-300 max-w-sm">
+                                O vosso grupo foi registado com sucesso no projecto <strong class="text-sky-400">{{ session('project_name') }}</strong>.
+                            </p>
+                            
+                            <div class="w-full bg-slate-900/50 p-4 border border-slate-800 rounded-xl my-4">
+                                <p class="text-xs text-slate-400 mb-1">A vossa Senha de Acesso ao Workspace é:</p>
+                                <p class="text-2xl font-mono font-bold text-amber-500 tracking-widest">{{ session('generated_pin') }}</p>
+                                <p class="text-[10px] text-rose-400 mt-2">Atenção: Por questões de segurança, esta senha não voltará a ser mostrada. Guarde-a!</p>
+                            </div>
+
+                            <a href="{{ route('candidatura.pdf', session('candidatura_id')) }}" target="_blank" class="w-full py-3 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20">
+                                <i data-lucide="download-cloud" class="w-5 h-5"></i> Baixar Comprovativo PDF
+                            </a>
+                            
+                            <p class="text-[10px] text-slate-500 mt-2">
+                                O ficheiro PDF contém as credenciais e orientações. Entregue ao docente Filipe para homologação.
+                            </p>
                         </div>
                     @else
                         <!-- Initial Placeholder State -->
@@ -983,6 +1010,9 @@
                     <button id="modal-apply-btn" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5">
                         <i data-lucide="file-text" class="w-4 h-4"></i> Escolher este Projeto
                     </button>
+                    <a id="modal-workspace-btn" href="#" class="hidden px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
+                        <i data-lucide="users" class="w-4 h-4"></i> Aceder ao Workspace
+                    </a>
                 </div>
             </div>
         </div>
@@ -1033,17 +1063,28 @@
         const difficultySelect = document.getElementById('filter-difficulty');
         const techSelect = document.getElementById('filter-tech');
 
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 6;
+
         // Render projects list
         function renderProjects() {
-            projectsGrid.innerHTML = '';
+            // Only clear grid if we're on page 1
+            if (currentPage === 1) {
+                projectsGrid.innerHTML = '';
+            }
             
             if (currentProjects.length === 0) {
                 emptyState.classList.remove('hidden');
+                document.getElementById('load-more-btn-container')?.remove();
                 return;
             }
             emptyState.classList.add('hidden');
 
-            currentProjects.forEach(project => {
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const projectsToShow = currentProjects.slice(startIndex, endIndex);
+
+            projectsToShow.forEach(project => {
                 const card = document.createElement('div');
                 card.className = 'glass-card p-5 rounded-2xl border border-slate-900/60 flex flex-col justify-between cursor-pointer animate-fade-in relative overflow-hidden';
                 
@@ -1099,13 +1140,33 @@
                     </div>
                 `;
                 
-                // Add click listener
-                if (!isReserved) {
-                    card.addEventListener('click', () => openModal(project));
-                }
+                // Add click listener (all cards clickable now, even reserved)
+                card.addEventListener('click', () => openModal(project));
                 
                 projectsGrid.appendChild(card);
             });
+
+            // Handle Load More Button
+            let loadMoreContainer = document.getElementById('load-more-btn-container');
+            if (endIndex < currentProjects.length) {
+                if (!loadMoreContainer) {
+                    loadMoreContainer = document.createElement('div');
+                    loadMoreContainer.id = 'load-more-btn-container';
+                    loadMoreContainer.className = 'w-full flex justify-center mt-8 col-span-full';
+                    
+                    const loadMoreBtn = document.createElement('button');
+                    loadMoreBtn.className = 'px-6 py-2.5 bg-slate-900 border border-slate-800 hover:border-sky-500 rounded-xl text-sky-400 font-bold transition-all text-sm flex items-center gap-2';
+                    loadMoreBtn.innerHTML = '<i data-lucide="plus-circle" class="w-4 h-4"></i> Ver Mais Projetos';
+                    loadMoreBtn.onclick = () => {
+                        currentPage++;
+                        renderProjects();
+                    };
+                    loadMoreContainer.appendChild(loadMoreBtn);
+                    projectsGrid.parentNode.insertBefore(loadMoreContainer, projectsGrid.nextSibling);
+                }
+            } else if (loadMoreContainer) {
+                loadMoreContainer.remove();
+            }
 
             // Re-render Lucide icons inside cards
             lucide.createIcons();
@@ -1175,6 +1236,7 @@
 
         // Filter projects
         function applyFilters() {
+            currentPage = 1;
             let filtered = [...projectsData];
 
             // Filter by search text
@@ -1337,12 +1399,24 @@
             mvp1Container.innerHTML = mvpDetails.mvp.map(item => `<div>• ${item}</div>`).join('');
             mvp2Container.innerHTML = mvpDetails.extension.map(item => `<div>• ${item}</div>`).join('');
 
-            // Apply button in modal
+            // Apply button and Workspace button logic
             const applyBtn = document.getElementById('modal-apply-btn');
-            applyBtn.onclick = () => {
-                closeModal();
-                selectProjectForRegistration(project.number);
-            };
+            const workspaceBtn = document.getElementById('modal-workspace-btn');
+            
+            const isReserved = approvedProjects.includes(project.number);
+            
+            if (isReserved) {
+                applyBtn.classList.add('hidden');
+                workspaceBtn.classList.remove('hidden');
+                workspaceBtn.href = `/workspace/login?project_number=${project.number}`;
+            } else {
+                applyBtn.classList.remove('hidden');
+                workspaceBtn.classList.add('hidden');
+                applyBtn.onclick = () => {
+                    closeModal();
+                    selectProjectForRegistration(project.number);
+                };
+            }
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -1626,11 +1700,14 @@
             applyFilters();
             updateProjectFields();
             
-            // If redirected from form success, switch to registration tab immediately
-            @if(session('proposal'))
+            // Check if there is a newly generated proposal/PDF to show
+            @if(session('candidatura_id'))
+                // Switch to form tab automatically so the user can see the output
                 const formTabBtn = document.querySelector('.nav-tab-btn[data-tab="estudante"]');
                 if (formTabBtn) formTabBtn.click();
             @endif
+
+
         });
     </script>
     <!-- FLOATING WHATSAPP BUTTON -->

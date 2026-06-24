@@ -550,11 +550,14 @@
             <div class="flex items-center gap-1 text-slate-600">
                 <span>Desenvolvido por</span>
                 <a href="http://146.235.224.99/" target="_blank" class="inline-flex items-center gap-0.5 text-slate-400 hover:text-sky-400 transition-colors font-medium">
-                    Filipe Domingos dos Santos
+                    Dr.Filipe Domingos dos Santos
                 </a>
             </div>
         </div>
         <div class="flex items-center gap-4">
+            <a href="https://wa.me/258862134230" target="_blank" class="hover:text-emerald-400 text-slate-500 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i> WhatsApp
+            </a>
             <a href="{{ route('admin.login') }}" class="hover:text-sky-400 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
                 <i data-lucide="lock" class="w-3.5 h-3.5"></i> Acesso Docente
             </a>
@@ -1268,5 +1271,13 @@
             @endif
         });
     </script>
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/258862134230" target="_blank" class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:shadow-emerald-500/20 group" title="Dúvidas no WhatsApp">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+        <span class="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:ml-2 text-xs font-semibold whitespace-nowrap transition-all duration-500 ease-in-out font-mono">
+            Dúvidas? Enviar WhatsApp
+        </span>
+    </a>
+
 </body>
 </html>

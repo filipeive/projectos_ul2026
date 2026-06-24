@@ -215,10 +215,16 @@
 
     <!-- FOOTER -->
     <footer class="relative z-10 w-full max-w-7xl mx-auto px-4 mt-8 border-t border-slate-900 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-        <div class="flex items-center gap-1 text-slate-600">
-            <span>Desenvolvido por</span>
-            <a href="http://146.235.224.99/" target="_blank" class="inline-flex items-center gap-0.5 text-slate-400 hover:text-sky-400 transition-colors font-medium">
-                Filipe Domingos dos Santos
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 text-slate-600">
+                <span>Desenvolvido por</span>
+                <a href="http://146.235.224.99/" target="_blank" class="inline-flex items-center gap-0.5 text-slate-400 hover:text-sky-400 transition-colors font-medium">
+                    Filipe Domingos dos Santos
+                </a>
+            </div>
+            <span class="text-slate-800">|</span>
+            <a href="https://wa.me/258862134230" target="_blank" class="hover:text-emerald-400 text-slate-500 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i> WhatsApp
             </a>
         </div>
         <div>

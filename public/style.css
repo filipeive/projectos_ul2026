@@ -181,3 +181,60 @@ h1, h2, h3, h4, h5, .font-display {
 .timeline-item:last-child::after {
     display: none;
 }
+
+/* Print styles to print only the active modal content */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #project-modal, #project-modal * {
+        visibility: visible;
+    }
+    #project-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: none !important;
+        overflow: visible !important;
+        z-index: 99999;
+    }
+    #project-modal .glass-panel {
+        background: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        color: #000000 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    /* Hide close button, print button, tab selectors, and footer action buttons */
+    #project-modal button,
+    #project-modal [onclick^="closeModal"],
+    #project-modal [onclick^="switchModalTab"],
+    #project-modal #modal-apply-btn {
+        display: none !important;
+    }
+    /* Make sure all hidden elements stay hidden */
+    .hidden {
+        display: none !important;
+    }
+    /* High contrast text formatting for printing */
+    h2, h3, h4, p, span, li, code, pre {
+        color: #000000 !important;
+        text-shadow: none !important;
+    }
+    pre {
+        border: 1px solid #ccc !important;
+        background: #f9f9f9 !important;
+        white-space: pre-wrap !important;
+    }
+}
+
+/* High Impact card special effects */
+.glass-card-high-impact:hover {
+    border-color: rgba(var(--color-ul-gold-rgb), 0.5) !important;
+    box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px 1.5px rgba(var(--color-ul-gold-rgb), 0.2) !important;
+}

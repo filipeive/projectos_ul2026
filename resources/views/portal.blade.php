@@ -100,6 +100,11 @@
                     <i data-lucide="code-2" class="w-4 h-4"></i> Kit do Estudante (Starter)
                 </span>
             </button>
+            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="guia">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i> Guia do Investigador
+                </span>
+            </button>
             <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="estudante">
                 <span class="flex items-center gap-2">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Inscrição de Grupo
@@ -143,23 +148,23 @@
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
                 <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Total Ideias</span>
-                    <span id="stat-total-projects" class="text-2xl font-extrabold text-white mt-1">0</span>
+                    <span id="stat-total-projects" class="text-2xl font-extrabold text-white mt-1">{{ $stats['total'] ?? 0 }}</span>
                 </div>
                 <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Sectores</span>
-                    <span id="stat-sectors" class="text-2xl font-extrabold text-sky-400 mt-1">0</span>
+                    <span id="stat-sectors" class="text-2xl font-extrabold text-sky-400 mt-1">{{ $stats['sectores'] ?? 0 }}</span>
                 </div>
                 <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-emerald-500/50">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Nível Fácil</span>
-                    <span id="stat-facil" class="text-2xl font-extrabold text-emerald-400 mt-1">0</span>
+                    <span id="stat-facil" class="text-2xl font-extrabold text-emerald-400 mt-1">{{ $stats['facil'] ?? 0 }}</span>
                 </div>
                 <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-amber-500/50">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Nível Médio</span>
-                    <span id="stat-medio" class="text-2xl font-extrabold text-amber-500 mt-1">0</span>
+                    <span id="stat-medio" class="text-2xl font-extrabold text-amber-500 mt-1">{{ $stats['medio'] ?? 0 }}</span>
                 </div>
                 <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex flex-col border-l-2 border-l-rose-500/50">
                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Nível Avançado</span>
-                    <span id="stat-avancado" class="text-2xl font-extrabold text-rose-400 mt-1">0</span>
+                    <span id="stat-avancado" class="text-2xl font-extrabold text-rose-400 mt-1">{{ $stats['avancado'] ?? 0 }}</span>
                 </div>
             </div>
 
@@ -437,6 +442,174 @@
             
         </section>
 
+        <!-- NEW SECTION: GUIA DO INVESTIGADOR -->
+        <section id="section-guia" class="content-section hidden">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Header Card -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 mb-6 flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/25 flex items-center justify-center text-sky-400 shadow-xl flex-shrink-0">
+                        <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white font-display">Guia do Investigador Científico</h2>
+                        <p class="text-sm text-slate-400 leading-relaxed mt-1">
+                            Bem-vindo ao teu portal de apoio académico. Este guia prático foi desenhado especialmente para orientar os estudantes do 1.º ano de Engenharia Informática na redação do seu primeiro artigo científico para as <strong>Jornadas Científicas da UniLicungo 2026</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordions Container -->
+                <div class="space-y-4">
+                    <!-- ACCORDION 1: APA 7 RULES -->
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden transition-all duration-300">
+                        <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-slate-900/30 transition-colors" onclick="toggleAccordion('acc-apa')">
+                            <span class="flex items-center gap-3 font-bold text-white text-md font-display">
+                                <span class="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center text-xs font-mono">3a</span>
+                                Citação e Referenciação Científica (Regras APA 7.ª Edição)
+                            </span>
+                            <i id="icon-acc-apa" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc-apa" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-900/10">
+                            <div class="px-6 pb-6 pt-2 space-y-4 border-t border-slate-900/60 text-xs text-slate-300 leading-relaxed">
+                                <p>
+                                    A norma <strong>APA 7.ª Edição</strong> (American Psychological Association) é o padrão internacionalmente aceite para trabalhos académicos na nossa faculdade. Ela dita como deves referenciar as tuas leituras no corpo do texto e na lista final.
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                    <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                        <h4 class="font-bold text-sky-400 mb-2 flex items-center gap-1.5">
+                                            <i data-lucide="quote" class="w-3.5 h-3.5"></i> Citação no Corpo do Texto
+                                        </h4>
+                                        <ul class="space-y-2 list-disc pl-4 text-slate-400">
+                                            <li><strong>Citação Direta Curta:</strong> "A transição digital requer infraestrutura resiliente" (Cossa & Mandlate, 2021, p. 16).</li>
+                                            <li><strong>Citação Indireta (Paráfrase):</strong> Segundo Langa e Nhantumbo (2020), as limitações de internet em Quelimane podem ser contornadas com o paradigma offline-first.</li>
+                                            <li><strong>Três ou mais autores:</strong> Menciona apenas o primeiro seguido de "et al." (ex: Sambo et al., 2022).</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                        <h4 class="font-bold text-sky-400 mb-2 flex items-center gap-1.5">
+                                            <i data-lucide="list" class="w-3.5 h-3.5"></i> Exemplos de Referências Bibliográficas
+                                        </h4>
+                                        <ul class="space-y-2.5 text-slate-400">
+                                            <li>
+                                                <strong class="text-slate-300 block text-[10px] uppercase font-mono tracking-wider">Livro Impresso:</strong>
+                                                Rogers, E. M. (2018). <em>Diffusion of innovations</em> (5.ª ed.). Free Press.
+                                            </li>
+                                            <li>
+                                                <strong class="text-slate-300 block text-[10px] uppercase font-mono tracking-wider">Artigo de Jornal Científico:</strong>
+                                                Cossa, H., & Mandlate, F. (2021). Digital health interventions in Mozambique. <em>African Journal of Health Informatics</em>, 5(2), 14–23.
+                                            </li>
+                                            <li>
+                                                <strong class="text-slate-300 block text-[10px] uppercase font-mono tracking-wider">Relatório de Organizações (Web):</strong>
+                                                UNICEF. (2022). <em>The state of the world's children in Mozambique</em>. UNICEF Mozambique. https://www.unicef.org/mozambique/relatorios
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCORDION 2: IMRaD STRUCTURE -->
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden transition-all duration-300">
+                        <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-slate-900/30 transition-colors" onclick="toggleAccordion('acc-imrad')">
+                            <span class="flex items-center gap-3 font-bold text-white text-md font-display">
+                                <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono">3b</span>
+                                Estrutura do Artigo Científico (O Modelo IMRaD)
+                            </span>
+                            <i id="icon-acc-imrad" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc-imrad" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-900/10">
+                            <div class="px-6 pb-6 pt-2 space-y-4 border-t border-slate-900/60 text-xs text-slate-300 leading-relaxed">
+                                <p>
+                                    O acrónimo <strong>IMRaD</strong> representa a espinha dorsal de um artigo de investigação empírica nas ciências tecnológicas. Ele divide o documento em quatro partes cruciais que respondem a quatro perguntas lógicas:
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-2">
+                                    <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex flex-col justify-between">
+                                        <div>
+                                            <span class="text-emerald-400 font-bold text-sm block font-mono">I - Introdução</span>
+                                            <span class="text-[10px] text-slate-500 block uppercase font-mono mt-0.5">O que estudou e porquê?</span>
+                                            <p class="text-slate-400 mt-2">Apresenta o problema prático, a sua contextualização em Quelimane, a justificação, a revisão da literatura básica e o objetivo do protótipo desenvolvido.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex flex-col justify-between">
+                                        <div>
+                                            <span class="text-emerald-400 font-bold text-sm block font-mono">M - Metodologia</span>
+                                            <span class="text-[10px] text-slate-500 block uppercase font-mono mt-0.5">Como foi estudado?</span>
+                                            <p class="text-slate-400 mt-2">Descreve de forma reprodutível a stack tecnológica (Laravel, Flutter, SQLite), o desenho da base de dados, a modelagem UML e os testes de usabilidade piloto aplicados.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex flex-col justify-between">
+                                        <div>
+                                            <span class="text-emerald-400 font-bold text-sm block font-mono">R - Resultados</span>
+                                            <span class="text-[10px] text-slate-500 block uppercase font-mono mt-0.5">O que descobriu/criou?</span>
+                                            <p class="text-slate-400 mt-2">Apresenta os ecrãs do protótipo, a estrutura de tabelas em SQL implementada, as respostas e tempos de execução medidos nos testes com utilizadores.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex flex-col justify-between">
+                                        <div>
+                                            <span class="text-emerald-400 font-bold text-sm block font-mono">D - Discussão & Conclusão</span>
+                                            <span class="text-[10px] text-slate-500 block uppercase font-mono mt-0.5">O que significa isso tudo?</span>
+                                            <p class="text-slate-400 mt-2">Interpreta os resultados perante a literatura. Conclui apontando as limitações físicas e propondo as melhorias e extensões futuras para o projeto.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCORDION 3: ETHICAL GUIDELINES -->
+                    <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden transition-all duration-300">
+                        <button class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-slate-900/30 transition-colors" onclick="toggleAccordion('acc-ethics')">
+                            <span class="flex items-center gap-3 font-bold text-white text-md font-display">
+                                <span class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center text-xs font-mono">3c</span>
+                                Ética e Integridade na Pesquisa Científica
+                            </span>
+                            <i id="icon-acc-ethics" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc-ethics" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-slate-900/10">
+                            <div class="px-6 pb-6 pt-2 space-y-4 border-t border-slate-900/60 text-xs text-slate-300 leading-relaxed">
+                                <p>
+                                    Toda a produção académica na <strong>Universidade Licungo</strong> baseia-se nos princípios da honestidade intelectual, integridade e respeito mútuo. Ao recolheres dados ou testares sistemas de saúde ou educação locais, observa o seguinte:
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                    <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                        <h4 class="font-bold text-amber-500 mb-1.5 flex items-center gap-1.5">
+                                            <i data-lucide="user-x" class="w-4 h-4"></i> Combate ao Plágio
+                                        </h4>
+                                        <p class="text-slate-400 leading-relaxed">
+                                            A apropriação indevida de ideias, textos ou códigos sem citar a devida fonte é considerada infração grave. Todas as ideias de terceiros devem ser rigorosamente identificadas e referenciadas.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                        <h4 class="font-bold text-amber-500 mb-1.5 flex items-center gap-1.5">
+                                            <i data-lucide="shield-check" class="w-4 h-4"></i> Consentimento Informado
+                                        </h4>
+                                        <p class="text-slate-400 leading-relaxed">
+                                            Se realizares inquéritos ou recolheres feedback de utilizadores em Quelimane, deves explicar claramente o objectivo académico do estudo e pedir a sua autorização verbal ou escrita antes do teste.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                        <h4 class="font-bold text-amber-500 mb-1.5 flex items-center gap-1.5">
+                                            <i data-lucide="lock" class="w-4 h-4"></i> Tratamento de Dados Sensíveis
+                                        </h4>
+                                        <p class="text-slate-400 leading-relaxed">
+                                            Para projetos nas áreas de saúde e segurança (ex: MaterniCare, VacinaMoz), nunca registes dados de pacientes reais no teu protótipo sem autorização expressa do MISAU ou do hospital parceiro.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 4. SECTION: APPLICATION GENERATOR -->
         <section id="section-estudante" class="content-section hidden">
             
@@ -604,88 +777,91 @@
                     <h2 id="modal-project-name" class="text-lg font-bold text-white font-display">Nome do Projeto</h2>
                     <span id="modal-project-difficulty" class="px-2.5 py-0.5 rounded-full text-xs font-semibold">Dificuldade</span>
                 </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center">
-                    <i data-lucide="x" class="w-4 h-4"></i>
+                <div class="flex items-center gap-2">
+                    <button onclick="printProject()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg text-slate-300 transition-colors flex items-center gap-1.5 focus:outline-none">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir Ficha
+                    </button>
+                    <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center focus:outline-none">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Tabs Selection -->
+            <div class="px-6 py-2 border-b border-slate-800/80 bg-slate-900/30 flex gap-4 flex-shrink-0">
+                <button id="modal-tab-details" class="px-4 py-2 border-b-2 border-sky-500 text-sky-400 text-xs font-bold transition-all focus:outline-none flex items-center gap-1.5" onclick="switchModalTab('details')">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Ficha Técnica
+                </button>
+                <button id="modal-tab-article" class="px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-xs font-bold transition-all focus:outline-none flex items-center gap-1.5" onclick="switchModalTab('article')">
+                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Para o teu Artigo (Jornadas)
                 </button>
             </div>
             
             <!-- Modal Body (Scrollable) -->
-            <div class="p-6 overflow-y-auto space-y-6 flex-grow">
-                <!-- Subtitle / Concept -->
-                <div class="border-b border-slate-900 pb-3">
-                    <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Subtítulo / Conceito</span>
-                    <h4 id="modal-project-subtitle" class="text-md font-bold text-sky-400 mt-0.5">Subtítulo</h4>
-                </div>
-                
-                <!-- Main details grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Column 1: Core Details -->
-                    <div class="space-y-4">
-                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Problema Relacionado</span>
-                            <p id="modal-val-problema" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
-                        </div>
-                        
-                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Público-Alvo Directo</span>
-                            <p id="modal-val-publico" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
-                        </div>
-
-                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Impacto Social Esperado</span>
-                            <p id="modal-val-impacto" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
-                        </div>
+            <div class="p-6 overflow-y-auto flex-grow">
+                <!-- Details tab content container -->
+                <div id="modal-content-details" class="space-y-6">
+                    <!-- Subtitle / Concept -->
+                    <div class="border-b border-slate-900 pb-3">
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Subtítulo / Conceito</span>
+                        <h4 id="modal-project-subtitle" class="text-md font-bold text-sky-400 mt-0.5">Subtítulo</h4>
                     </div>
                     
-                    <!-- Column 2: Tech and Execution -->
-                    <div class="space-y-4">
-                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Tecnologias Recomendadas</span>
-                            <p id="modal-val-tecnologias" class="text-xs text-sky-400 mt-1.5 font-bold">...</p>
+                    <!-- Main details grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Column 1: Core Details -->
+                        <div class="space-y-4">
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Problema Relacionado</span>
+                                <p id="modal-val-problema" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            </div>
+                            
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Público-Alvo Directo</span>
+                                <p id="modal-val-publico" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            </div>
+
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Impacto Social Esperado</span>
+                                <p id="modal-val-impacto" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            </div>
                         </div>
+                        
+                        <!-- Column 2: Tech and Execution -->
+                        <div class="space-y-4">
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Tecnologias Recomendadas</span>
+                                <p id="modal-val-tecnologias" class="text-xs text-sky-400 mt-1.5 font-bold">...</p>
+                            </div>
 
-                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Viabilidade Comercial / Startup</span>
-                            <p id="modal-val-startup" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Viabilidade Comercial / Startup</span>
+                                <p id="modal-val-startup" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            </div>
+
+                            <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                                <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Parcerias e Integração Institucional</span>
+                                <p id="modal-val-parcerias" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            </div>
                         </div>
+                    </div>
 
+                    <!-- Features & Future Scope -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Parcerias e Integração Institucional</span>
-                            <p id="modal-val-parcerias" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Funcionalidades Principais</span>
+                            <p id="modal-val-funcionalidades" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
+                        </div>
+                        <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
+                            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Melhorias Futuras Sugeridas</span>
+                            <p id="modal-val-melhorias" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Features & Future Scope -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Funcionalidades Principais</span>
-                        <p id="modal-val-funcionalidades" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
-                    </div>
-                    <div class="p-4 bg-slate-900/40 rounded-xl border border-slate-900/60">
-                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Melhorias Futuras Sugeridas</span>
-                        <p id="modal-val-melhorias" class="text-xs text-slate-300 mt-1.5 leading-relaxed">...</p>
-                    </div>
-                </div>
-
-                <!-- INVESTIGATION GUIDE & STUDY TIPS (NEW!) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-900 pt-6">
-                    <!-- Research questions -->
-                    <div class="p-5 bg-sky-500/5 border border-sky-500/20 rounded-xl space-y-3">
-                        <span class="text-xs font-bold text-sky-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="search" class="w-4 h-4"></i> Investigação Científica (Temas para Pesquisa)
-                        </span>
-                        <p class="text-[11px] text-slate-400 leading-normal">
-                            Para fundamentar o seu artigo para as <strong>Jornadas Científicas</strong>, pesquise e responda às seguintes questões:
-                        </p>
-                        <ul id="modal-val-pesquisa" class="text-xs text-slate-300 space-y-2 list-disc pl-4 leading-normal">
-                            <!-- Populated dynamically -->
-                        </ul>
-                    </div>
                     <!-- Study Guide / Dev tips -->
-                    <div class="p-5 bg-amber-500/5 border border-amber-500/20 rounded-xl space-y-3">
+                    <div class="p-5 bg-amber-500/5 border border-amber-500/20 rounded-2xl space-y-3">
                         <span class="text-xs font-bold text-amber-500 uppercase font-mono tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="help-circle" class="w-4 h-4"></i> Dicas de Estudo e Programação (1.º Ano)
+                            <i data-lucide="help-circle" class="w-4.5 h-4.5"></i> Dicas de Estudo e Programação (1.º Ano)
                         </span>
                         <p class="text-[11px] text-slate-400 leading-normal">
                             Como o seu grupo de caloiros deve iniciar o desenvolvimento deste sistema de forma incremental:
@@ -694,40 +870,101 @@
                             ...
                         </p>
                     </div>
-                </div>
 
-                <!-- Database Design Block (SQL Generator) -->
-                <div class="p-5 bg-slate-950 rounded-2xl border border-slate-900 space-y-3">
-                    <div class="flex items-center justify-between border-b border-slate-900 pb-2">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="database" class="w-4 h-4 text-sky-400"></i>
-                            <span class="text-xs font-bold text-white uppercase font-mono tracking-wider">Modelagem de Dados (SQL Relacional)</span>
+                    <!-- Database Design Block (SQL Generator) -->
+                    <div class="p-5 bg-slate-950 rounded-2xl border border-slate-900 space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="database" class="w-4 h-4 text-sky-400"></i>
+                                <span class="text-xs font-bold text-white uppercase font-mono tracking-wider">Modelagem de Dados (SQL Relacional)</span>
+                            </div>
+                            <button id="copy-sql-btn" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded text-slate-300 transition-colors flex items-center focus:outline-none">
+                                <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar SQL
+                            </button>
                         </div>
-                        <button id="copy-sql-btn" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded text-slate-300 transition-colors flex items-center">
-                            <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar SQL
-                        </button>
+                        <pre class="text-xs font-mono text-slate-400 overflow-x-auto leading-relaxed max-h-[200px]"><code id="modal-val-db-schema">...</code></pre>
                     </div>
-                    <pre class="text-xs font-mono text-slate-400 overflow-x-auto leading-relaxed max-h-[200px]"><code id="modal-val-db-schema">...</code></pre>
+
+                    <!-- MVP Roadmap Breakdown -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Step 1 MVP -->
+                        <div class="p-4 bg-sky-500/5 border border-sky-500/20 rounded-xl space-y-2">
+                            <span class="text-xs font-bold text-sky-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i> Entregável Dia da Informática (15 Ago)
+                            </span>
+                            <div id="modal-val-mvp-step1" class="text-xs text-slate-300 space-y-1.5 leading-relaxed font-light">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                        <!-- Step 2 Extension -->
+                        <div class="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl space-y-2">
+                            <span class="text-xs font-bold text-amber-500 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i> Extensão Jornadas Científicas (Setembro)
+                            </span>
+                            <div id="modal-val-mvp-step2" class="text-xs text-slate-300 space-y-1.5 leading-relaxed font-light">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- MVP Roadmap Breakdown -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Step 1 MVP -->
-                    <div class="p-4 bg-sky-500/5 border border-sky-500/20 rounded-xl space-y-2">
+                <!-- Article tab content container -->
+                <div id="modal-content-article" class="hidden space-y-6">
+                    <!-- 2a. Perguntas de Investigação Científica -->
+                    <div class="p-5 bg-sky-500/5 border border-sky-500/20 rounded-2xl space-y-3">
                         <span class="text-xs font-bold text-sky-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i> Entregável Dia da Informática (15 Ago)
+                            <i data-lucide="search" class="w-4.5 h-4.5"></i> 2a. Perguntas de Investigação Científica
                         </span>
-                        <div id="modal-val-mvp-step1" class="text-xs text-slate-300 space-y-1.5 leading-relaxed font-light">
+                        <p class="text-[11px] text-slate-400 leading-normal">
+                            Para fundamentar o seu artigo para as <strong>Jornadas Científicas</strong>, pesquise e procure responder a estas questões focadas no contexto local (Quelimane/Zambézia):
+                        </p>
+                        <ul id="modal-val-perguntas-cientificas" class="text-xs text-slate-300 space-y-2.5 list-disc pl-5 leading-relaxed">
                             <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+
+                    <!-- 2b. Referências Bibliográficas Sugeridas (APA 7) -->
+                    <div class="p-5 bg-indigo-500/5 border border-indigo-500/20 rounded-2xl space-y-3">
+                        <span class="text-xs font-bold text-indigo-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="book-open" class="w-4.5 h-4.5"></i> 2b. Referências Bibliográficas Sugeridas (APA 7)
+                        </span>
+                        <p class="text-[11px] text-slate-400 leading-normal">
+                            Use estas referências académicas para fundamentar a sua Revisão de Literatura (inclui pelo menos uma fonte moçambicana ou africana):
+                        </p>
+                        <div id="modal-val-referencias" class="space-y-3">
+                            <!-- Populated dynamically with list of references and copy buttons -->
                         </div>
                     </div>
-                    <!-- Step 2 Extension -->
-                    <div class="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl space-y-2">
-                        <span class="text-xs font-bold text-amber-500 uppercase font-mono tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i> Extensão Jornadas Científicas (Setembro)
+
+                    <!-- 2c. Template IMRaD Personalizado -->
+                    <div class="p-5 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl space-y-3">
+                        <span class="text-xs font-bold text-emerald-400 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="layout" class="w-4.5 h-4.5"></i> 2c. Estrutura de Artigo Sugerida (Template IMRaD)
                         </span>
-                        <div id="modal-val-mvp-step2" class="text-xs text-slate-300 space-y-1.5 leading-relaxed font-light">
-                            <!-- Populated dynamically -->
+                        <p class="text-[11px] text-slate-400 leading-normal">
+                            Diretrizes específicas do que escrever em cada secção principal do seu artigo científico:
+                        </p>
+                        
+                        <div class="space-y-3.5 mt-2">
+                            <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Introdução (O quê e Porquê?)</span>
+                                <p id="modal-val-imrad-intro" class="text-xs text-slate-300 mt-1 leading-relaxed font-light">...</p>
+                            </div>
+                            
+                            <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Metodologia (Como?)</span>
+                                <p id="modal-val-imrad-metodo" class="text-xs text-slate-300 mt-1 leading-relaxed font-light">...</p>
+                            </div>
+                            
+                            <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Resultados (O que foi descoberto/desenvolvido?)</span>
+                                <p id="modal-val-imrad-resultado" class="text-xs text-slate-300 mt-1 leading-relaxed font-light">...</p>
+                            </div>
+                            
+                            <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Conclusão (O que significa?)</span>
+                                <p id="modal-val-imrad-conclusao" class="text-xs text-slate-300 mt-1 leading-relaxed font-light">...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -909,6 +1146,30 @@
             }
         }
 
+        // Toggle Accordion Panels
+        function toggleAccordion(id) {
+            const content = document.getElementById(`content-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            // Check if it's currently open
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // First close all other accordions for a accordion-group behavior
+                document.querySelectorAll('[id^="content-acc-"]').forEach(c => {
+                    c.style.maxHeight = '0px';
+                });
+                document.querySelectorAll('[id^="icon-acc-"]').forEach(i => {
+                    i.style.transform = 'rotate(0deg)';
+                });
+
+                // Open this one
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
         // Filter projects
         function applyFilters() {
             let filtered = [...projectsData];
@@ -990,6 +1251,9 @@
         // Open details modal
         const modal = document.getElementById('project-modal');
         function openModal(project) {
+            // Reset to details tab first
+            switchModalTab('details');
+
             document.getElementById('modal-project-number').innerText = `#${String(project.number).padStart(2, '0')}`;
             document.getElementById('modal-project-name').innerText = project.name;
             document.getElementById('modal-project-subtitle').innerText = project.subtitle;
@@ -1011,18 +1275,52 @@
             // Set Dicas de Estudo
             document.getElementById('modal-val-dicas').innerText = project.dicas_estudo || "Comece por modelar a base de dados. Crie telas simples com HTML/CSS.";
             
-            // Set Research Questions
-            const researchList = document.getElementById('modal-val-pesquisa');
-            researchList.innerHTML = '';
-            if (project.perguntas_pesquisa && project.perguntas_pesquisa.length > 0) {
-                project.perguntas_pesquisa.forEach(q => {
-                    const li = document.createElement('li');
-                    li.innerText = q;
-                    researchList.appendChild(li);
-                });
-            } else {
-                researchList.innerHTML = '<li>Pesquise a relevância do problema para a província da Zambézia.</li>';
-            }
+            // Populate Scientific Research Questions (Tab 2)
+            const pcList = document.getElementById('modal-val-perguntas-cientificas');
+            pcList.innerHTML = '';
+            (project.perguntas_artigo || []).forEach(q => {
+                const li = document.createElement('li');
+                li.innerText = q;
+                pcList.appendChild(li);
+            });
+
+            // Populate References (Tab 2)
+            const refContainer = document.getElementById('modal-val-referencias');
+            refContainer.innerHTML = '';
+            (project.referencias_artigo || []).forEach((ref) => {
+                const div = document.createElement('div');
+                div.className = "flex items-start justify-between gap-3 p-2 bg-slate-900/60 rounded-lg border border-slate-800/60 hover:border-slate-700/80 transition-colors";
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = "text-xs text-slate-300 leading-normal pr-2";
+                textSpan.innerHTML = ref.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = "px-2 py-1 bg-slate-800 hover:bg-slate-750 text-[10px] font-semibold rounded text-slate-400 hover:text-white transition-colors flex-shrink-0 flex items-center gap-1 focus:outline-none";
+                copyBtn.innerHTML = `<i data-lucide="copy" class="w-3 h-3"></i> Copiar`;
+                copyBtn.onclick = () => {
+                    const cleanRef = ref.replace(/\*/g, '');
+                    navigator.clipboard.writeText(cleanRef).then(() => {
+                        copyBtn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-emerald-400"></i> Copiado!`;
+                        lucide.createIcons();
+                        setTimeout(() => {
+                            copyBtn.innerHTML = `<i data-lucide="copy" class="w-3 h-3"></i> Copiar`;
+                            lucide.createIcons();
+                        }, 2000);
+                    });
+                };
+                
+                div.appendChild(textSpan);
+                div.appendChild(copyBtn);
+                refContainer.appendChild(div);
+            });
+
+            // Populate IMRaD Guide (Tab 2)
+            const imrad = project.imrad_artigo || {};
+            document.getElementById('modal-val-imrad-intro').innerText = imrad.introducao || '';
+            document.getElementById('modal-val-imrad-metodo').innerText = imrad.metodologia || '';
+            document.getElementById('modal-val-imrad-resultado').innerText = imrad.resultados || '';
+            document.getElementById('modal-val-imrad-conclusao').innerText = imrad.conclusao || '';
 
             // Database Design (SQL)
             const sqlBlock = document.getElementById('modal-val-db-schema');
@@ -1048,6 +1346,37 @@
             document.body.style.overflow = 'hidden';
             
             lucide.createIcons();
+        }
+
+        // Tab switcher inside modal
+        function switchModalTab(tabId) {
+            const detailsTabBtn = document.getElementById('modal-tab-details');
+            const articleTabBtn = document.getElementById('modal-tab-article');
+            const detailsContent = document.getElementById('modal-content-details');
+            const articleContent = document.getElementById('modal-content-article');
+
+            if (tabId === 'details') {
+                detailsTabBtn.classList.add('border-sky-500', 'text-sky-400');
+                detailsTabBtn.classList.remove('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                articleTabBtn.classList.add('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                articleTabBtn.classList.remove('border-sky-500', 'text-sky-400');
+
+                detailsContent.classList.remove('hidden');
+                articleContent.classList.add('hidden');
+            } else {
+                articleTabBtn.classList.add('border-sky-500', 'text-sky-400');
+                articleTabBtn.classList.remove('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                detailsTabBtn.classList.add('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                detailsTabBtn.classList.remove('border-sky-500', 'text-sky-400');
+
+                articleContent.classList.remove('hidden');
+                detailsContent.classList.add('hidden');
+            }
+        }
+
+        // Print active project technical details
+        function printProject() {
+            window.print();
         }
 
         // Close details modal

@@ -48,11 +48,15 @@ class AfricaTalkingService
         // Clean phone number: remove spaces
         $to = trim(str_replace(' ', '', $to));
         
-        // If it starts with 8, assume Mozambique and prefix 258
+        // If it starts with 8, assume Mozambique and prefix +258
         if (preg_match('/^(82|83|84|85|86|87)\d{7,8}$/', $to)) {
-            $to = '258' . $to;
-        } elseif (str_starts_with($to, '+')) {
-            $to = ltrim($to, '+');
+            $to = '+258' . $to;
+        } elseif (str_starts_with($to, '258') && strlen($to) === 12) {
+            $to = '+' . $to;
+        }
+
+        if (!str_starts_with($to, '+')) {
+            $to = '+' . $to;
         }
 
         $url = 'https://api.d7networks.com/messages/v1/send';
@@ -62,16 +66,15 @@ class AfricaTalkingService
                 [
                     'channel' => 'sms',
                     'recipients' => [
-                        [
-                            'recipient' => $to
-                        ]
+                        $to
                     ],
-                    'content' => [
-                        'text' => $message
-                    ],
+                    'content' => $message,
                     'msg_type' => 'text',
-                    'originator' => $originator
+                    'data_coding' => 'text'
                 ]
+            ],
+            'message_globals' => [
+                'originator' => $originator
             ]
         ];
 

@@ -174,7 +174,7 @@
                             <p class="text-xs text-slate-500 mt-1 max-w-xs">As submissões dos estudantes aparecerão nesta tabela.</p>
                         </div>
                     @else
-                        <div class="overflow-x-auto">
+                        <div class="hidden md:block overflow-x-auto">
                             <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
                                 <thead>
                                     <tr class="bg-slate-950/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
@@ -281,6 +281,95 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Grid de Candidaturas para Mobile -->
+                        <div class="grid grid-cols-1 gap-4 md:hidden p-4">
+                            @foreach($candidaturas as $c)
+                                <div class="glass-panel p-4 rounded-xl border border-slate-800/80 space-y-3 bg-slate-900/40">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div>
+                                            <div class="font-bold text-white text-sm">#{{ sprintf("%02d", $c->project_number) }} - {{ $c->project_name }}</div>
+                                            <div class="text-[11px] text-sky-400 font-mono mt-1 flex items-center gap-1.5">
+                                                <i data-lucide="code" class="w-3 h-3"></i> {{ $c->technology }}
+                                            </div>
+                                        </div>
+                                        <span id="badge-status-mobile-{{ $c->id }}" class="px-2.5 py-0.5 rounded-full font-bold text-[9px] uppercase tracking-wider shadow-sm flex-shrink-0
+                                            @if($c->status === 'Pendente') bg-amber-500/10 border border-amber-500/20 text-amber-500
+                                            @elseif($c->status === 'Aprovado') bg-emerald-500/10 border border-emerald-500/20 text-emerald-400
+                                            @else bg-rose-500/10 border border-rose-500/20 text-rose-400
+                                            @endif">
+                                            {{ $c->status }}
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="flex flex-col gap-2 pt-2.5 border-t border-slate-800/60 text-xs">
+                                        <div class="flex justify-between items-center gap-2">
+                                            <span class="text-slate-400">Mentor:</span>
+                                            @if($user->role === 'admin')
+                                                <select onchange="setDocente({{ $c->id }}, this.value)" class="text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-2 py-1 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full max-w-[150px] shadow-sm transition-all">
+                                                    <option value="">Sem mentor</option>
+                                                    @foreach($docentes as $d)
+                                                        <option value="{{ $d->id }}" {{ $c->docente_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <span class="text-slate-300 font-medium">{{ $c->docente ? $c->docente->name : 'Nenhum' }}</span>
+                                            @endif
+                                        </div>
+                                        
+                                        @php
+                                            $faseActual = 'Nenhuma';
+                                            if ($c->status === 'Aprovado') {
+                                                $faseActual = 'Sensibilização';
+                                                $estados = $c->progressos->keyBy('fase');
+                                                $fasesOrdem = ['artigo' => 'Artigo', 'exposicao' => 'Exposição', 'mvp' => 'MVP', 'campo' => 'Campo', 'sensibilizacao' => 'Sensib.'];
+                                                foreach($fasesOrdem as $key => $label) {
+                                                    if(isset($estados[$key]) && $estados[$key]->estado !== 'pendente') {
+                                                        $statusAbrev = $estados[$key]->estado == 'concluida' ? '✓' : '...';
+                                                        $faseActual = $label . ' (' . $statusAbrev . ')';
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-slate-400">Fase Atual:</span>
+                                            <span class="px-2 py-0.5 bg-slate-950 border border-slate-800 rounded text-[10px] text-slate-300 font-medium">
+                                                {{ $faseActual }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-end gap-2 pt-2.5 border-t border-slate-800/60">
+                                        <!-- Ver Detalhes -->
+                                        <button onclick='viewDetails(@json($c))' class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 transition-colors shadow-sm" title="Ver Detalhes">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </button>
+
+                                        <!-- Editar Dados -->
+                                        @if($user->role === 'admin')
+                                        <button onclick='editCandidatura(@json($c))' class="p-2 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 rounded-lg text-sky-400 transition-colors shadow-sm" title="Editar Email e Dados">
+                                            <i data-lucide="edit-2" class="w-4 h-4"></i>
+                                        </button>
+                                        @endif
+                                        
+                                        <!-- Workspace -->
+                                        @if($c->status === 'Aprovado')
+                                        <a href="{{ route('workspace.index', $c->id) }}" class="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 rounded-lg text-emerald-400 transition-colors shadow-sm" title="Entrar no Workspace">
+                                            <i data-lucide="monitor" class="w-4 h-4"></i>
+                                        </a>
+                                        @endif
+
+                                        <!-- Quick Approve -->
+                                        @if($user->role === 'admin' && $c->status === 'Pendente')
+                                        <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500 border border-emerald-400 rounded-lg text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20" title="Aprovar Agora">
+                                            <i data-lucide="check" class="w-4 h-4"></i>
+                                        </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             </div>
@@ -326,47 +415,80 @@
                     <div class="px-6 py-5 border-b border-slate-800/60">
                         <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="users" class="w-5 h-5 text-sky-500"></i> Equipa e Docentes</h3>
                     </div>
-                    <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
-                        <thead>
-                            <tr class="bg-slate-950/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
-                                <th class="px-6 py-4">Membro</th>
-                                <th class="px-6 py-4">Contacto</th>
-                                <th class="px-6 py-4">Nível de Acesso</th>
-                                <th class="px-6 py-4 text-right">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800/50">
-                            @foreach(\App\Models\User::all() as $u)
-                                <tr class="hover:bg-slate-800/30 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs border border-slate-700">
-                                                {{ substr($u->name, 0, 1) }}
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-950/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                                    <th class="px-6 py-4">Membro</th>
+                                    <th class="px-6 py-4">Contacto</th>
+                                    <th class="px-6 py-4">Nível de Acesso</th>
+                                    <th class="px-6 py-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50">
+                                @foreach(\App\Models\User::all() as $u)
+                                    <tr class="hover:bg-slate-800/30 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs border border-slate-700">
+                                                    {{ substr($u->name, 0, 1) }}
+                                                </div>
+                                                <span class="font-bold text-white">{{ $u->name }}</span>
                                             </div>
-                                            <span class="font-bold text-white">{{ $u->name }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-slate-400">{{ $u->email }}</td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-950 border border-slate-800 text-sky-400">
+                                        </td>
+                                        <td class="px-6 py-4 text-slate-400">{{ $u->email }}</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-950 border border-slate-800 text-sky-400">
+                                                {{ str_replace('_', ' ', $u->role) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            @if($u->id !== $user->id)
+                                            <form action="{{ route('admin.users.delete', $u->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Eliminar o utilizador {{ $u->name }}?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="p-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white rounded-lg transition-colors shadow-sm" title="Eliminar Acesso">
+                                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Grid de Utilizadores para Mobile -->
+                    <div class="grid grid-cols-1 gap-4 md:hidden p-4">
+                        @foreach(\App\Models\User::all() as $u)
+                            <div class="glass-panel p-4 rounded-xl border border-slate-800/80 flex items-center justify-between bg-slate-900/40">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs border border-slate-700">
+                                        {{ substr($u->name, 0, 1) }}
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-white text-xs block">{{ $u->name }}</span>
+                                        <span class="text-[10px] text-slate-400 block">{{ $u->email }}</span>
+                                        <span class="inline-block mt-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-slate-950 border border-slate-800 text-sky-400">
                                             {{ str_replace('_', ' ', $u->role) }}
                                         </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        @if($u->id !== $user->id)
-                                        <form action="{{ route('admin.users.delete', $u->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Eliminar o utilizador {{ $u->name }}?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="p-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white rounded-lg transition-colors shadow-sm" title="Eliminar Acesso">
-                                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                                <div>
+                                    @if($u->id !== $user->id)
+                                    <form action="{{ route('admin.users.delete', $u->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Eliminar o utilizador {{ $u->name }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white rounded-lg transition-colors shadow-sm" title="Eliminar Acesso">
+                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
             @endif
@@ -475,6 +597,12 @@
             document.getElementById(`tab-${tabId}`).classList.replace('hidden', 'block');
             btn.classList.remove('text-slate-400', 'border-transparent');
             btn.classList.add('bg-sky-500/10', 'text-sky-400', 'border-sky-500/20');
+
+            // Close mobile menu if open
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 768 && sidebar && !sidebar.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
         }
 
         // View Full Details Modal

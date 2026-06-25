@@ -706,24 +706,24 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
-                                <input type="text" name="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                <input type="text" name="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                                <input type="text" name="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                             </div>
                             
-                            <div class="grid grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
-                                <input type="text" name="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                <input type="text" name="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                                <input type="text" name="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                             </div>
 
-                            <div class="grid grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                <input type="text" name="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                <input type="text" name="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" name="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
                             </div>
 
-                            <div class="grid grid-cols-3 gap-2">
-                                <input type="text" name="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                <input type="text" name="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <input type="text" name="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                <input type="text" name="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
                             </div>
                         </div>
 

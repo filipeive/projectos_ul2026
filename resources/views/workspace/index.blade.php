@@ -586,11 +586,11 @@
                 </div>
 
                 <!-- Kanban Board (Scrollable Container) -->
-                <div class="flex-grow p-4 overflow-x-auto overflow-y-hidden flex gap-4 kanban-container scrollbar-thin">
+                <div class="flex-grow p-4 overflow-y-auto md:overflow-y-hidden overflow-x-hidden md:overflow-x-auto flex flex-col md:flex-row gap-4 kanban-container scrollbar-thin">
 
                     <!-- Coluna: A Fazer -->
                     <div
-                        class="w-64 flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -600,13 +600,13 @@
                                 class="text-[10px] font-mono text-slate-500 bg-slate-800/60 px-1.5 py-0.5 rounded">0</span>
                         </div>
                         <div class="flex-grow p-2 overflow-y-auto space-y-2 kanban-column scrollbar-thin"
-                            data-status="todo" id="col-todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                             data-status="todo" id="col-todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         </div>
                     </div>
 
                     <!-- Coluna: Em Progresso -->
                     <div
-                        class="w-64 flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -616,14 +616,14 @@
                                 class="text-[10px] font-mono text-slate-500 bg-slate-800/60 px-1.5 py-0.5 rounded">0</span>
                         </div>
                         <div class="flex-grow p-2 overflow-y-auto space-y-2 kanban-column scrollbar-thin"
-                            data-status="in_progress" id="col-in_progress" ondrop="drop(event)"
-                            ondragover="allowDrop(event)">
+                             data-status="in_progress" id="col-in_progress" ondrop="drop(event)"
+                             ondragover="allowDrop(event)">
                         </div>
                     </div>
 
                     <!-- Coluna: Em Revisão -->
                     <div
-                        class="w-64 flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-bronze-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -633,13 +633,13 @@
                                 class="text-[10px] font-mono text-slate-500 bg-slate-800/60 px-1.5 py-0.5 rounded">0</span>
                         </div>
                         <div class="flex-grow p-2 overflow-y-auto space-y-2 kanban-column scrollbar-thin"
-                            data-status="review" id="col-review" ondrop="drop(event)" ondragover="allowDrop(event)">
+                             data-status="review" id="col-review" ondrop="drop(event)" ondragover="allowDrop(event)">
                         </div>
                     </div>
 
                     <!-- Coluna: Concluído -->
                     <div
-                        class="w-64 flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -649,7 +649,7 @@
                                 class="text-[10px] font-mono text-slate-500 bg-slate-800/60 px-1.5 py-0.5 rounded">0</span>
                         </div>
                         <div class="flex-grow p-2 overflow-y-auto space-y-2 kanban-column scrollbar-thin"
-                            data-status="done" id="col-done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                             data-status="done" id="col-done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         </div>
                     </div>
 
@@ -758,7 +758,7 @@
     <!-- KANBAN MOVE MODAL (MOBILE) -->
     <div id="kanban-move-modal"
         class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300 shadow-2xl"
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 max-h-[85vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300 shadow-2xl"
             id="kanban-move-content">
             <div class="flex justify-between items-center mb-5 border-b border-slate-800 pb-3">
                 <h2 class="text-sm font-bold text-white flex items-center gap-2">
@@ -795,7 +795,7 @@
     <!-- KANBAN MODAL -->
     <div id="kanban-modal"
         class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300 shadow-2xl"
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 shadow-2xl"
             id="kanban-modal-content">
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">

@@ -25,7 +25,7 @@
     <div class="glow-blob-blue"></div>
     <div class="glow-blob-gold"></div>
 
-    <div class="glass-panel max-w-md w-full p-8 rounded-2xl border border-slate-800/80 relative z-10 shadow-2xl">
+    <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-2xl border border-slate-800/80 relative z-10 shadow-2xl">
         <div class="text-center mb-8">
             <div class="w-16 h-16 mx-auto bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
                 <i data-lucide="key-round" class="w-8 h-8 text-amber-400"></i>

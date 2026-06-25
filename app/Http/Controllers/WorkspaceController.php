@@ -161,6 +161,64 @@ class WorkspaceController extends Controller
         return redirect()->back();
     }
 
+    public function updateMessage(Request $request, $id, $messageId)
+    {
+        $isStudent = session('workspace_logged_in_' . $id);
+        $isAdmin = auth()->check();
+
+        if (!$isStudent && !$isAdmin) {
+            return response()->json(['error' => 'Não autorizado'], 401);
+        }
+
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $message = \App\Models\WorkspaceMessage::where('candidatura_id', $id)->findOrFail($messageId);
+
+        // Security check: only the sender can edit their own message, or admin can edit anything?
+        // Let's assume sender can edit.
+        $expectedSenderType = $isAdmin ? 'mentor' : 'student';
+        if ($message->sender_type !== $expectedSenderType && !$isAdmin) {
+             return response()->json(['error' => 'Não autorizado para editar esta mensagem.'], 403);
+        }
+
+        $message->update(['message' => $request->message]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteMessage(Request $request, $id, $messageId)
+    {
+        $isStudent = session('workspace_logged_in_' . $id);
+        $isAdmin = auth()->check();
+
+        if (!$isStudent && !$isAdmin) {
+            return response()->json(['error' => 'Não autorizado'], 401);
+        }
+
+        $message = \App\Models\WorkspaceMessage::where('candidatura_id', $id)->findOrFail($messageId);
+
+        $expectedSenderType = $isAdmin ? 'mentor' : 'student';
+        if ($message->sender_type !== $expectedSenderType && !$isAdmin) {
+             return response()->json(['error' => 'Não autorizado para apagar esta mensagem.'], 403);
+        }
+
+        // Se a mensagem for sobre um ficheiro partilhado, eliminar também o ficheiro
+        if (preg_match('/workspace\/ficheiro\/(\d+)\/download/', $message->message, $matches)) {
+            $ficheiroId = $matches[1];
+            $ficheiro = \App\Models\CandidaturaFicheiro::where('candidatura_id', $id)->find($ficheiroId);
+            if ($ficheiro) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($ficheiro->caminho);
+                $ficheiro->delete();
+            }
+        }
+        
+        $message->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     public function poll(Request $request, $id)
     {
         $isStudent = session('workspace_logged_in_' . $id);
@@ -264,13 +322,22 @@ class WorkspaceController extends Controller
 
         $request->validate(['ficheiro' => 'required|file|max:10240']); // max 10MB
         $path = $request->file('ficheiro')->store("grupos/{$id}", 'public');
-        \App\Models\CandidaturaFicheiro::create([
+        $ficheiro = \App\Models\CandidaturaFicheiro::create([
             'candidatura_id' => $id,
             'nome_ficheiro' => $request->file('ficheiro')->getClientOriginalName(),
             'caminho' => $path,
             'tamanho_bytes' => $request->file('ficheiro')->getSize(),
             'uploaded_by' => $isAdmin ? 'Docente Mentor' : 'Grupo Estudante'
         ]);
+        
+        $downloadUrl = route('workspace.ficheiro.download', $ficheiro->id);
+        
+        \App\Models\WorkspaceMessage::create([
+            'candidatura_id' => $id,
+            'sender_type' => $isAdmin ? 'mentor' : 'student',
+            'message' => "📎 **Ficheiro partilhado:**\n[{$ficheiro->nome_ficheiro}]({$downloadUrl})",
+        ]);
+        
         return back()->with('success', 'Ficheiro partilhado com sucesso.');
     }
 
@@ -278,6 +345,54 @@ class WorkspaceController extends Controller
     {
         $ficheiro = \App\Models\CandidaturaFicheiro::findOrFail($id);
         return response()->download(storage_path('app/public/' . $ficheiro->caminho), $ficheiro->nome_ficheiro);
+    }
+
+    public function previewFicheiro($id)
+    {
+        $ficheiro = \App\Models\CandidaturaFicheiro::findOrFail($id);
+        $path = storage_path('app/public/' . $ficheiro->caminho);
+        if (!file_exists($path)) {
+            abort(404);
+        }
+        $mime = mime_content_type($path);
+        // Serve as inline instead of attachment
+        return response()->file($path, [
+            'Content-Type' => $mime,
+            'Content-Disposition' => 'inline; filename="' . $ficheiro->nome_ficheiro . '"'
+        ]);
+    }
+
+    public function deleteFicheiro(Request $request, $id, $ficheiroId)
+    {
+        $isStudent = session('workspace_logged_in_' . $id);
+        $isAdmin = auth()->check();
+
+        if (!$isStudent && !$isAdmin) {
+            return back()->with('error', 'Não autorizado.');
+        }
+
+        $ficheiro = \App\Models\CandidaturaFicheiro::where('candidatura_id', $id)->findOrFail($ficheiroId);
+        
+        // Security check
+        $expectedSenderType = $isAdmin ? 'Docente Mentor' : 'Grupo Estudante';
+        if ($ficheiro->uploaded_by !== $expectedSenderType && !$isAdmin) {
+             return back()->with('error', 'Não autorizado para apagar este ficheiro.');
+        }
+
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($ficheiro->caminho);
+        $ficheiro->delete();
+
+        // Eliminar a mensagem no chat associada a este ficheiro (se existir)
+        $downloadUrl = route('workspace.ficheiro.download', $ficheiroId);
+        $message = \App\Models\WorkspaceMessage::where('candidatura_id', $id)
+            ->where('message', 'LIKE', '%' . $downloadUrl . '%')
+            ->first();
+            
+        if ($message) {
+            $message->delete();
+        }
+
+        return back()->with('success', 'Ficheiro eliminado com sucesso.');
     }
 
     // --- KANBAN METHODS ---

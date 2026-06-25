@@ -18,7 +18,7 @@ class AiController extends Controller
      */
     private const COOLDOWN_SECONDS = 20;
 
-    private function getAiResponse(string $prompt): array
+    public function getAiResponse(string $prompt): array
     {
         // Usar a chave fornecida para o OpenRouter
         $openRouterKey = env('OPENROUTER_API_KEY');
@@ -59,10 +59,26 @@ class AiController extends Controller
                 'status' => $response->status(),
                 'body' => $response->body(),
             ]);
-            return [false, 'Não foi possível contactar o assistente de IA neste momento. Tente novamente mais tarde.'];
+            
+            $msg = strtolower($response->body());
+            if (str_contains($msg, '402') || str_contains($msg, '404')) {
+                return [false, 'O modelo openai/gpt-4o requer créditos no OpenRouter ou não está disponível gratuitamente (Erro ' . $response->status() . '). Por favor, adicione saldo na sua conta OpenRouter ou mude para um modelo :free no AiController.'];
+            } elseif (str_contains($msg, '429') || str_contains($msg, '503')) {
+                return [false, 'Os servidores de Inteligência Artificial estão sobrecarregados (Erro 429). Tente novamente mais tarde.'];
+            }
+
+            return [false, 'Ocorreu um erro ao contactar o assistente de IA. (HTTP ' . $response->status() . ')'];
         } catch (\Exception $e) {
-            Log::error('AiController: exceção ao contactar OpenRouter', ['message' => $e->getMessage()]);
-            return [false, 'Ocorreu um erro inesperado ao contactar a IA.'];
+            $msg = $e->getMessage();
+            Log::error('AiController: exceção ao contactar OpenRouter', ['message' => $msg]);
+            
+            if (str_contains($msg, '402')) {
+                return [false, 'O modelo openai/gpt-4o requer créditos no OpenRouter (Erro 402 Payment Required). Por favor, use um modelo :free ou adicione saldo.'];
+            } elseif (str_contains($msg, '429') || str_contains($msg, '503')) {
+                return [false, 'Os servidores de Inteligência Artificial estão sobrecarregados (Erro 429). Tente novamente mais tarde.'];
+            }
+            
+            return [false, 'Ocorreu um erro inesperado ao contactar a IA: ' . $msg];
         }
     }
 
@@ -279,8 +295,10 @@ class AiController extends Controller
 
     public function askAssistant(Request $request, $id)
     {
+        if (!$this->authorizeCandidatura($request, (int) $id)) {
+            return response()->json(['success' => false, 'error' => 'Não autorizado.'], 403);
+        }
         $candidatura = Candidatura::findOrFail($id);
-        $this->authorizeAccess($candidatura);
 
         $request->validate([
             'message' => 'required|string|max:1000'
@@ -288,41 +306,83 @@ class AiController extends Controller
 
         $userMessage = $request->input('message');
 
-        // Determinar o sender (student ou mentor) baseando na sessão
-        $senderType = session()->has('admin_logged_in') ? 'mentor' : 'student';
-        $senderId = session('candidatura_id') ?? auth()->id() ?? 0;
+        // Determinar o sender (student ou mentor) corretamente
+        $isAdmin = auth()->check();
+        $senderType = $isAdmin ? 'mentor' : 'student';
+        $senderId = $isAdmin ? auth()->id() : (session('candidatura_id') ?? 0);
 
-        // Salvar a mensagem original enviada
-        $candidatura->messages()->create([
-            'sender_type' => $senderType,
-            'sender_id' => $senderId,
-            'message' => $userMessage
-        ]);
+        // A MENSAGEM ORIGINAL NÃO É GUARDADA NA BASE DE DADOS AQUI!
+        // O utilizador pediu expressamente que o "prompt" do docente não caísse no chat público.
+        // Assim, apenas a RESPOSTA da IA será publicada no chat se houver sucesso.
 
-        $prompt = "Atua como um Assistente Académico Universitário e Orientador Virtual.
-O estudante/grupo do projeto '{$candidatura->project_name}' (Tecnologia: {$candidatura->technology}) fez uma pergunta direta a ti no chat:
+        // Buscar contexto das últimas 5 mensagens
+        $recentMessages = \App\Models\WorkspaceMessage::where('candidatura_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get()
+            ->reverse();
 
+        $contextoChat = "";
+        foreach ($recentMessages as $msg) {
+            $sender = $msg->sender_type === 'ai' ? 'IA' : ($msg->sender_type === 'mentor' ? 'Docente' : 'Estudantes');
+            $contextoChat .= "[{$sender}]: {$msg->message}\n";
+        }
+
+        // Adaptar o prompt dependendo de quem clicou no botão da IA
+        if ($isAdmin) {
+            $prompt = "Atua como um Assistente de Orientação Académica.
+O Mentor/Docente do projeto '{$candidatura->project_name}' (Tecnologia: {$candidatura->technology}) fez-te um pedido/pergunta no chat de orientação.
+
+--- Histórico Recente do Chat ---
+{$contextoChat}
+--- Fim do Histórico ---
+
+A Pergunta/Pedido Atual do Docente é:
 \"{$userMessage}\"
 
-Responde de forma útil, encorajadora, académica e focada no contexto do projeto deles. Sugere boas práticas, refere conceitos académicos relevantes, e se aplicável, sugere consultar documentação oficial ou artigos científicos. Mantém a resposta concisa (máx 2-3 parágrafos). Não uses formatação markdown complexa, apenas texto normal. Lembra-te que estás a responder numa janela de chat em tempo real.";
+Fornece uma resposta profissional, técnica e focada no apoio ao docente na avaliação ou orientação metodológica deste projeto, levando em conta o histórico do chat. Mantém a resposta concisa (máx 2-3 parágrafos) e sem formatação markdown complexa.";
+        } else {
+            $prompt = "Atua como um Assistente Académico Universitário e Orientador Virtual.
+O estudante/grupo do projeto '{$candidatura->project_name}' (Tecnologia: {$candidatura->technology}) fez uma pergunta direta a ti no chat para obter ajuda.
+
+--- Histórico Recente do Chat ---
+{$contextoChat}
+--- Fim do Histórico ---
+
+A Pergunta Atual dos Estudantes é:
+\"{$userMessage}\"
+
+Responde de forma útil, encorajadora, académica e focada no contexto do projeto deles e do histórico do chat. Sugere boas práticas, refere conceitos relevantes. Mantém a resposta concisa (máx 2-3 parágrafos). Não uses formatação markdown complexa, apenas texto normal.";
+        }
 
         [$ok, $aiResponse] = $this->getAiResponse($prompt);
 
         if ($ok) {
-            $candidatura->messages()->create([
-                'sender_type' => 'ai',
-                'sender_id' => 0,
-                'message' => trim($aiResponse)
-            ]);
-            return response()->json(['success' => true]);
+            if ($isAdmin) {
+                // Se for o Docente, NÃO guardamos no chat. Retornamos como sugestão para ele editar.
+                return response()->json([
+                    'success' => true, 
+                    'suggestion' => trim($aiResponse)
+                ]);
+            } else {
+                // Se for o Aluno, a IA responde diretamente no chat.
+                $candidatura->workspaceMessages()->create([
+                    'sender_type' => 'ai',
+                    'sender_id' => 0,
+                    'message' => trim($aiResponse)
+                ]);
+                return response()->json(['success' => true]);
+            }
         }
 
         return response()->json(['success' => false, 'error' => $aiResponse]);
     }
     public function toggleAutoReply(Request $request, $id)
     {
+        if (!$this->authorizeCandidatura($request, (int) $id)) {
+            return response()->json(['success' => false, 'error' => 'Não autorizado.'], 403);
+        }
         $candidatura = Candidatura::findOrFail($id);
-        $this->authorizeAccess($candidatura);
 
         if (!session()->has('admin_logged_in')) {
             abort(403);

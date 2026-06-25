@@ -416,6 +416,17 @@
                         </div>
                     @endif
 
+                    @php
+                    if (!function_exists('renderChatMessage')) {
+                        function renderChatMessage($text) {
+                            $text = e($text);
+                            $text = preg_replace('/(\*\*|__)(.*?)\1/', '<strong>$2</strong>', $text);
+                            $text = preg_replace('/\[(.*?)\]\((.*?)\)/', '<a href="$2" target="_blank" class="text-sky-300 underline hover:text-sky-100">$1</a>', $text);
+                            return nl2br($text);
+                        }
+                    }
+                    @endphp
+
                     <!-- Messages Container -->
                     <div id="messages-container" class="space-y-4">
                         @foreach($messages as $msg)
@@ -433,8 +444,15 @@
                                                 class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
                                         <div
-                                            class="p-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
-                                            {!! preg_replace('/(\*\*|__)(.*?)\1/', '<strong>$2</strong>', nl2br(e($msg->message))) !!}</div>
+                                            class="group relative p-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                            {!! renderChatMessage($msg->message) !!}
+                                            @if($isAdmin)
+                                                <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             @elseif($msg->sender_type === 'mentor')
@@ -451,8 +469,15 @@
                                                 class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
                                         <div
-                                            class="p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
-                                            {{ $msg->message }}</div>
+                                            class="group relative p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                            {!! renderChatMessage($msg->message) !!}
+                                            @if($isAdmin)
+                                                <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             @else
@@ -466,8 +491,15 @@
                                                 {{ $candidatura->project_name }}</span>
                                         </div>
                                         <div
-                                            class="p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">
-                                            {{ $msg->message }}</div>
+                                            class="group relative p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">
+                                            {!! renderChatMessage($msg->message) !!}
+                                            @if(!$isAdmin)
+                                                <div class="absolute -left-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-200 hover:text-white bg-slate-800 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-200 hover:text-red-400 bg-slate-800 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                     <div
                                         class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
@@ -499,11 +531,15 @@
                         <form id="chat-form" action="{{ route('workspace.message', $candidatura->id) }}" method="POST"
                             class="flex gap-2 items-end">
                             @csrf
-                            <textarea name="message" id="message-input" rows="1" placeholder="Escreva uma mensagem..."
-                                required
-                                class="w-full bg-slate-950 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl px-4 py-3 text-sm text-slate-200 resize-none transition-colors overflow-hidden"
-                                oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
-
+                            <div class="relative w-full flex items-center bg-slate-950 border border-slate-800 focus-within:border-sky-500 rounded-xl transition-colors">
+                                <label for="chat-ficheiro-upload" class="cursor-pointer px-3 text-slate-400 hover:text-sky-400 transition-colors" title="Anexar ficheiro">
+                                    <i data-lucide="paperclip" class="w-5 h-5"></i>
+                                </label>
+                                <textarea name="message" id="message-input" rows="1" placeholder="Escreva uma mensagem..."
+                                    required
+                                    class="w-full bg-transparent border-none focus:outline-none focus:ring-0 py-3 pr-4 text-sm text-slate-200 resize-none overflow-hidden"
+                                    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                            </div>
                             <button type="button" onclick="aiAskAssistant()"
                                 title="Pedir orientação académica à IA (sobre a mensagem escrita)"
                                 class="w-12 h-12 bg-indigo-900/40 hover:bg-indigo-800/60 border border-indigo-800/50 text-indigo-400 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
@@ -514,6 +550,11 @@
                                 class="w-12 h-12 bg-sky-600 hover:bg-sky-500 text-white rounded-xl flex items-center justify-center flex-shrink-0 transition-colors shadow-lg shadow-sky-500/20">
                                 <i data-lucide="send" class="w-5 h-5 ml-1"></i>
                             </button>
+                        </form>
+                        
+                        <form id="hidden-file-upload-form" action="{{ route('workspace.ficheiro', $candidatura->id) }}" method="POST" enctype="multipart/form-data" class="hidden">
+                            @csrf
+                            <input type="file" name="ficheiro" id="chat-ficheiro-upload" onchange="document.getElementById('hidden-file-upload-form').submit()">
                         </form>
                     </div>
                 @else
@@ -656,11 +697,27 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="{{ route('workspace.ficheiro.download', $f->id) }}"
-                            class="p-1.5 bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white rounded-lg transition-colors flex-shrink-0 shadow-sm"
-                            title="Descarregar Ficheiro">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                        </a>
+                        <div class="flex gap-1">
+                            <button onclick="previewFile('{{ route('workspace.ficheiro.preview', $f->id) }}', '{{ $f->nome_ficheiro }}', '{{ $ext }}')"
+                                class="p-1.5 bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white rounded-lg transition-colors flex-shrink-0 shadow-sm"
+                                title="Visualizar Ficheiro">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <a href="{{ route('workspace.ficheiro.download', $f->id) }}"
+                                class="p-1.5 bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white rounded-lg transition-colors flex-shrink-0 shadow-sm"
+                                title="Descarregar Ficheiro">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            </a>
+                            @if(!$isViewer && (($isAdmin && $f->uploaded_by === 'Docente Mentor') || (!$isAdmin && $f->uploaded_by === 'Grupo Estudante')))
+                                <form action="{{ route('workspace.ficheiro.delete', ['id' => $candidatura->id, 'ficheiroId' => $f->id]) }}" method="POST" onsubmit="return confirm('Tem a certeza que deseja eliminar este ficheiro? O link no chat também deixará de funcionar.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-1.5 bg-slate-800 hover:bg-red-600 text-slate-400 hover:text-white rounded-lg transition-colors flex-shrink-0 shadow-sm" title="Eliminar Ficheiro">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 @empty
                     <div class="text-center py-8">
@@ -836,7 +893,10 @@
         const candidaturaId = {{ $candidatura->id }};
         const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
 
+        let isFetchingMessages = false;
         function fetchMessages() {
+            if (isFetchingMessages) return;
+            isFetchingMessages = true;
             fetch(`/api/workspace/${candidaturaId}/mensagens?last_id=${lastId}`)
                 .then(res => res.json())
                 .then(data => {
@@ -858,8 +918,37 @@
                             const date = new Date(msg.created_at);
                             const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
 
+                            let textRendered = msg.message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                            textRendered = textRendered.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+                            textRendered = textRendered.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-sky-300 underline hover:text-sky-100">$1</a>');
+                            
+                            // Prevent JS error if replacing quotes inside edit button
+                            const safeRawText = msg.message.replace(/'/g, "\\'");
+
                             let html = '';
-                            if (msg.sender_type === 'mentor') {
+                            if (msg.sender_type === 'ai') {
+                                html = `
+                                <div class="flex items-start gap-3 w-4/5 animate-fade-in">
+                                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
+                                        <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-baseline gap-2 mb-1">
+                                            <span class="text-xs font-bold text-indigo-400">Assistente IA (Académico)</span>
+                                            <span class="text-[10px] text-slate-500">${timeStr}</span>
+                                        </div>
+                                        <div class="group relative p-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                            ${textRendered}
+                                            ${isAdmin ? `
+                                            <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                <button onclick="deleteMessage(${msg.id})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                            </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>`;
+                            } else if (msg.sender_type === 'mentor') {
                                 html = `
                                 <div class="flex items-start gap-3 w-4/5 animate-fade-in">
                                     <div class="w-8 h-8 rounded-full bg-bronze-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-bronze-500/20">
@@ -870,7 +959,15 @@
                                             <span class="text-xs font-bold text-bronze-400">Docente Mentor</span>
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
                                         </div>
-                                        <div class="p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">${msg.message}</div>
+                                        <div class="group relative p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                            ${textRendered}
+                                            ${isAdmin ? `
+                                            <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                <button onclick="deleteMessage(${msg.id})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                            </div>
+                                            ` : ''}
+                                        </div>
                                     </div>
                                 </div>`;
                             } else {
@@ -881,7 +978,15 @@
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
                                             <span class="text-xs font-bold text-sky-400">Grupo: {{ addslashes($candidatura->project_name) }}</span>
                                         </div>
-                                        <div class="p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">${msg.message}</div>
+                                        <div class="group relative p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">
+                                            ${textRendered}
+                                            ${!isAdmin ? `
+                                            <div class="absolute -left-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-200 hover:text-white bg-slate-800 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                                                <button onclick="deleteMessage(${msg.id})" class="text-slate-200 hover:text-red-400 bg-slate-800 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                            </div>
+                                            ` : ''}
+                                        </div>
                                     </div>
                                     <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
                                         <i data-lucide="users" class="w-4 h-4 text-sky-400"></i>
@@ -899,6 +1004,9 @@
                         lucide.createIcons();
                         chatBox.scrollTop = chatBox.scrollHeight;
                     }
+                })
+                .finally(() => {
+                    isFetchingMessages = false;
                 });
         }
 
@@ -1256,7 +1364,8 @@
             // Mostrar "a escrever..."
             const typingIndicator = document.getElementById('typing-indicator');
             typingIndicator.classList.remove('hidden');
-            scrollToBottom();
+            const chatBox = document.getElementById('messages-container');
+            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
 
             fetch(`/api/workspace/${candidaturaId}/ai/ask`, {
                 method: 'POST',
@@ -1269,18 +1378,101 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // Recarregar chat para ver as duas mensagens (a do aluno e a da IA)
-                    setTimeout(() => window.location.reload(), 500);
+                    typingIndicator.classList.add('hidden');
+                    
+                    if (data.suggestion) {
+                        // É o Docente! A IA devolveu um rascunho para ser editado.
+                        input.value = data.suggestion;
+                        input.style.height = ''; // Reset para recalcular
+                        input.style.height = input.scrollHeight + 'px'; // Ajusta altura ao conteúdo
+                        input.focus(); // Coloca o cursor para o docente editar
+                    } else {
+                        // É o Aluno! A IA publicou diretamente no chat.
+                        fetchMessages(); // Buscar a resposta da IA e atualizar o chat sem reload
+                    }
                 } else {
                     typingIndicator.classList.add('hidden');
+                    input.value = message; // Devolver a mensagem à caixa de input para tentar novamente
                     Swal.fire({ icon: 'error', title: 'Oops...', text: data.error, background: '#0b0f19', color: '#fff' });
                 }
             })
             .catch(() => {
                 typingIndicator.classList.add('hidden');
+                input.value = message; // Devolver a mensagem à caixa de input para tentar novamente
                 Swal.fire({ icon: 'error', title: 'Erro de rede', text: 'Não foi possível contactar a IA.', background: '#0b0f19', color: '#fff' });
             });
         }
+        function deleteMessage(messageId) {
+            Swal.fire({
+                title: 'Eliminar mensagem?',
+                text: "Esta ação não pode ser revertida!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#334155',
+                confirmButtonText: 'Sim, eliminar',
+                cancelButtonText: 'Cancelar',
+                background: '#0b0f19',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/api/workspace/${candidaturaId}/messages/${messageId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.reload(); // Recarregar para mostrar que desapareceu
+                        } else {
+                            Swal.fire({ icon: 'error', title: 'Erro', text: data.error, background: '#0b0f19', color: '#fff' });
+                        }
+                    });
+                }
+            });
+        }
+
+        function editMessage(messageId, currentText) {
+            Swal.fire({
+                title: 'Editar mensagem',
+                input: 'textarea',
+                inputValue: currentText,
+                showCancelButton: true,
+                confirmButtonColor: '#0ea5e9',
+                cancelButtonColor: '#334155',
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+                background: '#0b0f19',
+                color: '#fff',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'A mensagem não pode estar vazia!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/api/workspace/${candidaturaId}/messages/${messageId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: result.value })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.reload();
+                        } else {
+                            Swal.fire({ icon: 'error', title: 'Erro', text: data.error, background: '#0b0f19', color: '#fff' });
+                        }
+                    });
+                }
+            });
+        }
+
         function toggleAiAutoReply(isActive) {
             fetch(`/api/workspace/${candidaturaId}/ai/toggle-auto-reply`, {
                 method: 'POST',
@@ -1302,6 +1494,44 @@
                         title: isActive ? 'Piloto Automático IA ativado' : 'Piloto Automático IA desativado',
                         background: '#0b0f19', color: '#fff'
                     });
+                }
+            });
+        }
+        function previewFile(url, fileName, ext) {
+            let htmlContent = '';
+            
+            if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext.toLowerCase())) {
+                htmlContent = `<div class="flex justify-center bg-slate-900 rounded-lg p-2"><img src="${url}" alt="${fileName}" class="max-w-full max-h-[70vh] rounded shadow-lg object-contain"></div>`;
+            } else if (ext.toLowerCase() === 'pdf') {
+                htmlContent = `<iframe src="${url}" class="w-full h-[70vh] border-0 rounded-lg bg-white"></iframe>`;
+            } else if (['mp4', 'webm', 'ogg'].includes(ext.toLowerCase())) {
+                htmlContent = `<video controls class="w-full max-h-[70vh] rounded-lg bg-black"><source src="${url}" type="video/${ext}">O seu navegador não suporta vídeos.</video>`;
+            } else if (['txt', 'csv', 'json', 'md'].includes(ext.toLowerCase())) {
+                htmlContent = `<iframe src="${url}" class="w-full h-[70vh] border-0 rounded-lg bg-slate-900 text-slate-300"></iframe>`;
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pré-visualização Indisponível',
+                    text: `Não é possível pré-visualizar ficheiros do tipo .${ext} no navegador. Por favor, descarregue o ficheiro para o visualizar.`,
+                    background: '#0b0f19',
+                    color: '#fff',
+                    confirmButtonColor: '#0ea5e9'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: fileName,
+                html: htmlContent,
+                width: '80%',
+                background: '#0b0f19',
+                color: '#fff',
+                showCloseButton: true,
+                showConfirmButton: false,
+                customClass: {
+                    title: 'text-lg font-bold text-sky-400 mb-4',
+                    popup: 'border border-slate-800 rounded-2xl p-4',
+                    closeButton: 'text-slate-400 hover:text-white'
                 }
             });
         }

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafios Tecnológicos - Universidade Licungo 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: #f8fafc !important; }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+            .shadow-lg { box-shadow: none !important; border: 1px solid #e2e8f0; }
+        }
+    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 p-8 min-h-screen">
+    
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden print:shadow-none print:border">
+        <!-- Header -->
+        <div class="bg-indigo-700 text-white p-10 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')]"></div>
+            <div class="relative z-10 flex justify-center mb-4">
+                <i data-lucide="graduation-cap" class="w-16 h-16 text-indigo-200"></i>
+            </div>
+            <h1 class="text-4xl font-bold mb-2 relative z-10">Desafios Tecnológicos 2026</h1>
+            <p class="text-indigo-100 text-lg relative z-10">Ideias de Projetos para o Dia da Informática & Jornadas Científicas</p>
+            <p class="text-indigo-200 mt-4 font-semibold relative z-10">Universidade Licungo — Quelimane, Zambézia</p>
+        </div>
+
+        <!-- Intro -->
+        <div class="p-10 border-b border-slate-100">
+            <h2 class="text-2xl font-semibold text-slate-900 mb-4 flex items-center">
+                <i data-lucide="rocket" class="w-6 h-6 mr-2 text-indigo-600"></i> O Desafio
+            </h2>
+            <p class="text-slate-600 leading-relaxed text-justify mb-4">
+                No âmbito das celebrações do Dia da Informática (15 de Agosto) e das Jornadas Científicas (Setembro),
+                desafiamos todos os estudantes, com especial destaque para os caloiros (1º Ano), a desenvolverem
+                **Provas de Conceito (PoC)** ou protótipos de sistemas focados em resolver problemas reais da nossa
+                comunidade na Província da Zambézia. 
+            </p>
+            <p class="text-slate-600 leading-relaxed text-justify">
+                Não procuramos sistemas 100% finalizados, mas sim **ideias viáveis e inovadoras** que demonstrem
+                como a tecnologia pode ter um impacto social positivo. Abaixo, apresentamos um conjunto de temas e
+                projetos inspiracionais.
+            </p>
+        </div>
+
+        <!-- Projects List -->
+        <div class="p-10 space-y-8 bg-slate-50">
+            
+            <!-- Category 1 -->
+            <div>
+                <h3 class="text-xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-200 inline-block pb-1">Tema 1: Saúde e Inclusão Social</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-rose-100 p-2 rounded-lg text-rose-600 mr-3">
+                                <i data-lucide="baby" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Maternidade Plus</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Perda de dados devido a fichas de papel rasgadas ou esquecidas nos cuidados pré-natais e pediatria.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> Protótipo de um sistema/cartão digital onde a mãe é acompanhada e o hospital visualiza a curva de peso do bebé e alertas de vacinas.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-amber-100 p-2 rounded-lg text-amber-600 mr-3">
+                                <i data-lucide="eye" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Olhos da Cidade</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Falta de mobilidade independente para pessoas com deficiência visual em Quelimane.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> App de IA assistiva (prova de conceito) que utiliza a câmara do telemóvel para detetar e ditar por voz os obstáculos no caminho.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-red-100 p-2 rounded-lg text-red-600 mr-3">
+                                <i data-lucide="droplet" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Sangue Seguro Quelimane</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Dificuldade dos hospitais em encontrar dadores de sangue compatíveis rapidamente em emergências.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> Registo digital de dadores. Quando o Hospital Central precisa de um grupo sanguíneo, o sistema envia SMS/Email aos dadores compatíveis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="page-break pt-4">
+                <h3 class="text-xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-200 inline-block pb-1">Tema 2: Sustentabilidade e Vida na Cidade</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-2 rounded-lg text-blue-600 mr-3">
+                                <i data-lucide="cloud-rain" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Alerta Cheias Zambézia</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Falta de informação em tempo real sobre ruas alagadas ou intransitáveis durante a época das chuvas.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> Mapa comunitário web onde os munícipes reportam zonas inundadas para que outros possam planear rotas seguras.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-teal-100 p-2 rounded-lg text-teal-600 mr-3">
+                                <i data-lucide="car" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">Txopela Partilhado UniLicungo</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Custos altos de transporte individual e problemas de segurança para estudantes do período pós-laboral.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> Uma app interna para que estudantes encontrem colegas na mesma rota e dividam o custo do táxi ou "Txopela".</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:border-indigo-300 transition">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-green-100 p-2 rounded-lg text-green-600 mr-3">
+                                <i data-lucide="leaf" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg">AgroLiga Zambézia</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3"><strong class="text-slate-800">O Problema:</strong> Desperdício de colheitas de pequenos camponeses por falta de canais diretos de venda.</p>
+                        <p class="text-sm text-slate-600"><strong class="text-slate-800">A Solução:</strong> Uma plataforma "B2B" simples conectando pequenos agricultores a restaurantes e mercados de Quelimane, reduzindo intermediários.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-slate-100 p-6 text-center text-sm text-slate-500 border-t border-slate-200">
+            <p class="font-semibold">O Futuro Programa-se Hoje.</p>
+            <p>Seja com HTML, PHP, Laravel ou Inteligência Artificial, o foco é resolver problemas e agregar valor!</p>
+            <div class="mt-4 no-print">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full inline-flex items-center transition">
+                    <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Imprimir / Guardar em PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

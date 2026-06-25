@@ -32,10 +32,14 @@ Route::get('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class
 Route::post('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class, 'recoverPinSubmit'])->name('workspace.recover-pin.submit');
 Route::get('/workspace/{id}', [WorkspaceController::class, 'index'])->name('workspace.index');
 Route::post('/workspace/{id}/message', [WorkspaceController::class, 'storeMessage'])->name('workspace.message');
+Route::put('/api/workspace/{id}/messages/{messageId}', [WorkspaceController::class, 'updateMessage'])->name('workspace.message.update');
+Route::delete('/api/workspace/{id}/messages/{messageId}', [WorkspaceController::class, 'deleteMessage'])->name('workspace.message.delete');
 Route::get('/api/workspace/{id}/mensagens', [WorkspaceController::class, 'poll'])->name('workspace.poll');
 Route::post('/workspace/{id}/fase', [WorkspaceController::class, 'actualizarFase'])->name('workspace.fase');
 Route::post('/workspace/{id}/ficheiro', [WorkspaceController::class, 'uploadFicheiro'])->name('workspace.ficheiro');
+Route::delete('/workspace/{id}/ficheiro/{ficheiroId}', [WorkspaceController::class, 'deleteFicheiro'])->name('workspace.ficheiro.delete');
 Route::get('/workspace/ficheiro/{id}/download', [WorkspaceController::class, 'downloadFicheiro'])->name('workspace.ficheiro.download');
+Route::get('/workspace/ficheiro/{id}/preview', [WorkspaceController::class, 'previewFicheiro'])->name('workspace.ficheiro.preview');
 Route::get('/api/workspace/{id}/kanban', [WorkspaceController::class, 'getKanbanTasks'])->name('workspace.kanban.get');
 Route::post('/api/workspace/{id}/kanban', [WorkspaceController::class, 'storeKanbanTask'])->name('workspace.kanban.store');
 Route::put('/api/workspace/{id}/kanban/{taskId}', [WorkspaceController::class, 'updateKanbanTaskStatus'])->name('workspace.kanban.update');

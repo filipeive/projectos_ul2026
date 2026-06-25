@@ -28,11 +28,14 @@ O **UniLicungo TechHub** nasceu da necessidade de modernizar e centralizar a ges
   2. **Sugestão Automática de Tarefas:** O LLM analisa o "Rationale" e a Tecnologia do projeto, injetando automaticamente tarefas estruturadas na coluna "A Fazer" do Kanban.
   3. **Resumo de Progresso:** Um sistema de relatórios instantâneos focado no mentor para acelerar a correção.
 - **"Modo Piloto Automático IA" (Assistente 24/7):**
-  - Implementação inovadora de um "Assistente Académico Virtual".
-  - O sistema interceta dúvidas enviadas pelos estudantes no Chat quando o Mentor está offline, consultando o contexto do projeto na BD (Tecnologia, Título, Membros) e retornando orientações práticas baseadas em boas práticas da engenharia de software e pesquisa académica.
+  - Implementação inovadora de um "Assistente Académico Virtual" adaptativo, com comportamentos distintos dependendo do utilizador:
+    - **Para Estudantes:** Quando o mentor está ausente, o estudante clica no botão IA ("Varinha Mágica") para enviar uma dúvida. A IA atua como um sistema de SOS, respondendo *diretamente* no chat público, prestando assistência em tempo real.
+    - **Para Mentores/Docentes:** Quando o docente solicita orientação à IA (ex: pedindo sugestões de como avaliar um trabalho), a IA atua como um *Co-piloto Invisível*. A resposta **não** é publicada no chat; em vez disso, cai na caixa de edição de texto do docente como um "rascunho", permitindo revisão e aprovação antes de ser enviada aos alunos.
   - Interface adaptada com ícones premium (e.g. `✨`) e diferenciação clara na UI do Chat (balões de mensagem azuis para estudantes, bronze para docentes e índigo com `sparkles` para a IA).
 
-### Fase 4: Otimização e Prevenção de Erros
+### Fase 4: Otimização, Prevenção de Erros e UX
+- **Refinamento de Dados e Esquemas:** Correção de restrições em nível de Base de Dados (ex: atualização da ENUM `sender_type` para aceitar a IA de forma nativa e sem quebras silenciosas no Laravel `SQLSTATE[01000]`).
+- **Recuperação de Estado de Interface:** Se o contacto à API falhar, o texto não publicado regressa ao *input* do utilizador, evitando perda frustrante de textos longos.
 - **Gestão de Timeout e Robustez de API:** Implementação de limite de tokens (`max_tokens`) na resposta do LLM para otimizar os custos da API e adição de verificações estritas (`$response->successful()`) no `AiController`.
 - **Tratamento UI de Exceções:** Substituição de `alert()` genéricos por modais atraentes e controláveis (SweetAlert2) com injeção de HTML para prevenir quebra do layout com textos de resposta da IA demasiado longos (uso de `max-h-[60vh] overflow-y-auto`).
 

@@ -546,7 +546,7 @@
             Swal.fire({
                 title: 'Editar Definições do Grupo',
                 html: `
-                    <form id="edit-group-form" action="/admin/candidaturas/${c.id}" method="POST" class="text-left space-y-4 mt-2">
+                    <form id="edit-group-form" action="{{ url('/admin/candidaturas') }}/${c.id}" method="POST" class="text-left space-y-4 mt-2">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="PUT">
                         

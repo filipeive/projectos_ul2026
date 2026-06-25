@@ -1466,7 +1466,7 @@
             if (isReserved) {
                 applyBtn.classList.add('hidden');
                 workspaceBtn.classList.remove('hidden');
-                workspaceBtn.href = `/workspace/login?project_number=${project.number}`;
+                workspaceBtn.href = `{{ url('/workspace/login') }}?project_number=${project.number}`;
             } else {
                 applyBtn.classList.remove('hidden');
                 workspaceBtn.classList.add('hidden');

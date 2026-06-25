@@ -891,13 +891,14 @@
         // AJAX Polling
         let lastId = parseInt(chatBox.getAttribute('data-last-id')) || 0;
         const candidaturaId = {{ $candidatura->id }};
+        const API_BASE = "{{ url('/api/workspace') }}/" + candidaturaId;
         const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
 
         let isFetchingMessages = false;
         function fetchMessages() {
             if (isFetchingMessages) return;
             isFetchingMessages = true;
-            fetch(`/api/workspace/${candidaturaId}/mensagens?last_id=${lastId}`)
+            fetch(`${API_BASE}/mensagens?last_id=${lastId}`)
                 .then(res => res.json())
                 .then(data => {
                     const typingIndicator = document.getElementById('typing-indicator');
@@ -1017,7 +1018,7 @@
         document.getElementById('message-input')?.addEventListener('input', function () {
             if (isSendingTyping) return;
             isSendingTyping = true;
-            fetch(`/api/workspace/${candidaturaId}/typing`, {
+            fetch(`${API_BASE}/typing`, {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             });
@@ -1062,7 +1063,7 @@
         }
 
         function loadKanbanTasks() {
-            fetch(`/api/workspace/${candidaturaId}/kanban`)
+            fetch(`${API_BASE}/kanban`)
                 .then(res => res.json())
                 .then(tasks => {
                     document.querySelectorAll('.kanban-column').forEach(col => col.innerHTML = '');
@@ -1145,7 +1146,7 @@
                 // Optimização optimista (muda no DOM imediatamente)
                 targetCol.appendChild(taskEl);
 
-                fetch(`/api/workspace/${candidaturaId}/kanban/${taskId}`, {
+                fetch(`${API_BASE}/kanban/${taskId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1177,7 +1178,7 @@
 
         function moveTaskTo(status) {
             const taskId = document.getElementById('move-task-id').value;
-            fetch(`/api/workspace/${candidaturaId}/kanban/${taskId}`, {
+            fetch(`${API_BASE}/kanban/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1227,7 +1228,7 @@
                 confirmButtonText: 'Sim, Apagar', cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`/api/workspace/${candidaturaId}/kanban/${taskId}`, {
+                    fetch(`${API_BASE}/kanban/${taskId}`, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1256,8 +1257,8 @@
             };
 
             const url = taskId
-                ? `/api/workspace/${candidaturaId}/kanban/${taskId}`
-                : `/api/workspace/${candidaturaId}/kanban`;
+                ? `${API_BASE}/kanban/${taskId}`
+                : `${API_BASE}/kanban`;
             const method = taskId ? 'PUT' : 'POST';
 
             fetch(url, {
@@ -1289,7 +1290,7 @@
 
         function aiSuggestTasks() {
             showAILoading();
-            fetch(`/api/workspace/${candidaturaId}/ai/suggest-tasks`, {
+            fetch(`${API_BASE}/ai/suggest-tasks`, {
                 method: 'POST',
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             })
@@ -1315,7 +1316,7 @@
 
         function aiSummarize() {
             showAILoading();
-            fetch(`/api/workspace/${candidaturaId}/ai/summarize`)
+            fetch(`${API_BASE}/ai/summarize`)
                 .then(res => res.json())
                 .then(data => {
                     Swal.fire({
@@ -1334,7 +1335,7 @@
 
         function aiAnalyzeChat() {
             showAILoading();
-            fetch(`/api/workspace/${candidaturaId}/ai/analyze-chat`)
+            fetch(`${API_BASE}/ai/analyze-chat`)
                 .then(res => res.json())
                 .then(data => {
                     Swal.fire({
@@ -1367,7 +1368,7 @@
             const chatBox = document.getElementById('messages-container');
             if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
 
-            fetch(`/api/workspace/${candidaturaId}/ai/ask`, {
+            fetch(`${API_BASE}/ai/ask`, {
                 method: 'POST',
                 headers: { 
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -1416,7 +1417,7 @@
                 color: '#fff'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`/api/workspace/${candidaturaId}/messages/${messageId}`, {
+                    fetch(`${API_BASE}/messages/${messageId}`, {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1453,7 +1454,7 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`/api/workspace/${candidaturaId}/messages/${messageId}`, {
+                    fetch(`${API_BASE}/messages/${messageId}`, {
                         method: 'PUT',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -1474,7 +1475,7 @@
         }
 
         function toggleAiAutoReply(isActive) {
-            fetch(`/api/workspace/${candidaturaId}/ai/toggle-auto-reply`, {
+            fetch(`${API_BASE}/ai/toggle-auto-reply`, {
                 method: 'POST',
                 headers: { 
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

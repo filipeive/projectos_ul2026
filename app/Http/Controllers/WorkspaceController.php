@@ -8,7 +8,7 @@ class WorkspaceController extends Controller
 {
     public function loginForm()
     {
-        return view('workspace.login');
+        return view('auth.login')->with('tab', 'estudante');
     }
 
     public function login(Request $request)
@@ -20,18 +20,60 @@ class WorkspaceController extends Controller
 
         $candidatura = \App\Models\Candidatura::where('contact_email', $request->contact_email)
             ->where('status', 'Aprovado')
+            ->orderBy('id', 'desc')
             ->first();
 
         if (!$candidatura) {
-             return back()->with('error', 'Nenhum projeto aprovado com este email.');
+             return back()->with('error', 'Nenhum projeto aprovado com este email.')->with('tab', 'estudante');
         }
 
         if (\Hash::check($request->group_password, $candidatura->group_password)) {
+            // Password is correct
             session(['workspace_logged_in_' . $candidatura->id => true]);
             return redirect()->route('workspace.index', $candidatura->id);
         }
 
-        return back()->with('error', 'Senha incorreta. Tente novamente.');
+        return back()->with('error', 'Credenciais incorretas ou projeto não encontrado. Tente novamente.')->with('tab', 'estudante');
+    }
+
+    public function recoverPinFormGeral()
+    {
+        return view('workspace.recover-pin-geral');
+    }
+
+    public function recoverPinSubmitGeral(Request $request)
+    {
+        $request->validate([
+            'contact_email' => 'required|email',
+        ]);
+
+        $candidaturas = \App\Models\Candidatura::where('contact_email', $request->contact_email)->get();
+
+        if ($candidaturas->isEmpty()) {
+            return back()->with('error', 'O email fornecido não foi encontrado no sistema.');
+        }
+
+        // Generate a new PIN
+        $newPin = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        
+        foreach($candidaturas as $candidatura) {
+            $candidatura->update([
+                'group_password' => bcrypt($newPin)
+            ]);
+            
+            // Send Email
+            try {
+                \Illuminate\Support\Facades\Mail::raw("Olá {$candidatura->member1_name},\n\nO novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' é: {$newPin}\n\nPor favor, aceda à plataforma para continuar.\n\nCumprimentos,\nUniLicungo TechHub", function ($message) use ($candidatura) {
+                    $message->to($candidatura->contact_email)
+                            ->subject('Recuperação de PIN - UniLicungo TechHub');
+                });
+            } catch (\Exception $e) {
+                \Log::error("Failed to send recover email: " . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('workspace.login')
+            ->with('success', 'Um novo PIN foi enviado para o seu email de contacto.')->with('tab', 'estudante');
     }
 
     public function recoverPinForm($id)

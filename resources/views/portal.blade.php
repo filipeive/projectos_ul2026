@@ -58,11 +58,7 @@
                 </a>
                 <span class="text-slate-800">|</span>
                 <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
-                    <i data-lucide="users" class="w-3.5 h-3.5"></i> Login Estudante
-                </a>
-                <span class="text-slate-800">|</span>
-                <a href="{{ route('admin.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
-                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Login Docente
+                    <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
                 </a>
             </div>
         </div>
@@ -851,8 +847,8 @@
             <a href="https://wa.me/258862134230" target="_blank" class="hover:text-emerald-400 text-slate-500 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
                 <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i> WhatsApp
             </a>
-            <a href="{{ route('admin.login') }}" class="hover:text-sky-400 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
-                <i data-lucide="lock" class="w-3.5 h-3.5"></i> Acesso Docente
+            <a href="{{ route('workspace.login') }}" class="hover:text-sky-400 transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider font-mono">
+                <i data-lucide="lock" class="w-3.5 h-3.5"></i> Acesso Reservado
             </a>
         </div>
     </footer>

@@ -28,6 +28,8 @@ Route::delete('/admin/users/{user}', [PortalController::class, 'deleteUser'])->n
 use App\Http\Controllers\WorkspaceController;
 Route::get('/workspace/login', [WorkspaceController::class, 'loginForm'])->name('workspace.login');
 Route::post('/workspace/login', [WorkspaceController::class, 'login'])->name('workspace.login.submit');
+Route::get('/workspace/recuperar-pin', [WorkspaceController::class, 'recoverPinFormGeral'])->name('workspace.recover-pin-geral');
+Route::post('/workspace/recuperar-pin', [WorkspaceController::class, 'recoverPinSubmitGeral'])->name('workspace.recover-pin-geral.submit');
 Route::get('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class, 'recoverPinForm'])->name('workspace.recover-pin');
 Route::post('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class, 'recoverPinSubmit'])->name('workspace.recover-pin.submit');
 Route::get('/workspace/{id}', [WorkspaceController::class, 'index'])->name('workspace.index');

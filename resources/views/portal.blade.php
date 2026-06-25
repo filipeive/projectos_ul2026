@@ -792,8 +792,8 @@
     </main>
 
     <!-- AI STARTUP ADVISOR MODAL -->
-    <div id="ai-advisor-modal" class="fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6">
-        <div class="glass-panel w-full max-w-xl max-h-[90vh] rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col relative animate-zoom-in overflow-hidden">
+    <div id="ai-advisor-modal" class="fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-xl rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] relative animate-zoom-in overflow-hidden">
             <!-- Modal Header -->
             <div class="p-4 sm:px-6 sm:py-4 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
                 <div class="flex items-center gap-2 sm:gap-3">
@@ -831,11 +831,11 @@
                         </div>
 
                         <!-- Actions Area -->
-                        <div id="ai-actions-area" class="mt-4 flex items-center gap-3">
-                            <button onclick="copyAiSuggestion(event)" class="flex-1 py-2 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
+                        <div id="ai-actions-area" class="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                            <button onclick="copyAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
                                 <i data-lucide="copy" class="w-3.5 h-3.5 text-sky-400"></i> Copiar Ideia
                             </button>
-                            <button onclick="shareAiSuggestion(event)" class="flex-1 py-2 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
+                            <button onclick="shareAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
                                 <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i> Partilhar
                             </button>
                         </div>

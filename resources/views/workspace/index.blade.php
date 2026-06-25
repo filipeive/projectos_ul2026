@@ -1282,6 +1282,10 @@
                 color: '#fff',
                 showConfirmButton: false,
                 allowOutsideClick: false,
+                width: window.innerWidth < 640 ? '90%' : '500px',
+                customClass: {
+                    popup: 'border border-slate-800 rounded-2xl p-4 sm:p-6 text-center'
+                },
                 didOpen: () => { 
                     lucide.createIcons();
                 }

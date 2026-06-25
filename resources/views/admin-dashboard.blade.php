@@ -40,8 +40,11 @@
 </head>
 <body class="h-screen bg-slate-950 text-slate-100 flex overflow-hidden antialiased">
     
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex-col hidden md:flex z-20 shadow-2xl relative">
+    <aside id="sidebar" class="w-64 bg-slate-900 border-r border-slate-800 flex-col hidden md:flex z-50 shadow-2xl absolute md:relative h-full transition-transform transform -translate-x-full md:translate-x-0">
         <div class="absolute inset-0 bg-gradient-to-b from-sky-500/5 to-transparent pointer-events-none"></div>
         <!-- Brand -->
         <div class="h-16 flex items-center px-6 border-b border-slate-800/80 gap-3 relative">
@@ -93,7 +96,7 @@
         <!-- TOPBAR -->
         <header class="h-16 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 flex justify-between items-center px-4 md:px-8 relative z-20">
             <div class="flex items-center gap-4">
-                <button class="md:hidden text-slate-400 hover:text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-400 hover:text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
                 <h2 class="text-lg font-bold text-white tracking-wide">Dashboard Geral</h2>
             </div>
             <div class="flex items-center gap-4">
@@ -431,6 +434,36 @@
                 customClass: { popup: 'border border-slate-800 rounded-xl shadow-2xl' }
             });
         @endif
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (sidebar.classList.contains('hidden')) {
+                // Open
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('flex');
+                setTimeout(() => {
+                    sidebar.classList.remove('-translate-x-full');
+                }, 10);
+                
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                // Close
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                    sidebar.classList.remove('flex');
+                    overlay.classList.add('hidden');
+                }, 300); // Wait for transition
+            }
+        }
 
         // Tab System
         function switchAdminTab(tabId, btn) {

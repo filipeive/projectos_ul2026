@@ -1,58 +1,31 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# UniLicungo TechHub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O **UniLicungo TechHub** é o ecossistema digital académico da Universidade Licungo projetado para potenciar a colaboração, gestão ágil e mentoria tecnológica dos estudantes e grupos de investigação.
 
-## About Laravel
+## 🚀 Visão Geral
+Construído sobre a arquitetura robusta do **Laravel**, e dotado de uma interface reativa moderna *(Glassmorphism & Bento Grid)* orientada a componentes Tailwind CSS, o TechHub serve como o epicentro digital para acompanhamento de projetos universitários.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Esta plataforma transita da habitual entrega e correção estática de documentos para um **"Workspace Dinâmico"**, onde equipas e docentes iteram, dialogam e programam lado a lado.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Funcionalidades Principais
+1. **Gestão Ágil Integrada (Kanban):** Painel interativo com sincronização imediata, permitindo criar, editar e mover tarefas entre estados (A Fazer, Em Progresso, Em Revisão, Concluído).
+2. **Chat de Mentoria Síncrona:** Sala de chat dedicada a cada projeto, com partilha bidirecional para *feedback* instantâneo.
+3. **Assistente IA Contextual (RAG):**
+   - **Piloto Automático Académico:** Ativação opcional por parte do docente. O LLM (OpenRouter/GPT-4o) assume o papel de Assistente Universitário 24/7 quando o mentor está ausente, fornecendo orientação e referências técnicas baseadas na tecnologia específica do grupo.
+   - **Geração de Tarefas:** Análise instantânea da documentação/conceito do projeto para sugerir e injetar automaticamente tarefas estruturadas de engenharia de software no Kanban do aluno.
+   - **Resumo e Clima:** Sumarização instantânea do progresso semântico e do sentimento da equipa.
+4. **Portefólio e Exposições:** Montra pública (Portal) para exibir a criatividade e resultados tecnológicos da academia.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ⚙️ Arquitetura e Stack
+- **Framework Base:** Laravel (PHP)
+- **Design System:** Tailwind CSS (Utilitários avançados, micro-interações, Glassmorphism).
+- **Client-Side:** JavaScript Vanilla focado na `Fetch API` para reatividade *Single-Page* (SPA-feel) em módulos como o Kanban e o Chat.
+- **Integração de IA:** OpenRouter REST API acoplada a um Controller específico de IA no back-end para *Prompting* contextualizado em RAG (Retrieval-Augmented Generation).
+- **Deploy:** Integração de pipeline local em bash (`deploy.sh`) suportado por instâncias em Cloud.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Desenvolvimento
+Para compreender toda a trajetória e as metodologias de evolução até ao paradigma de Inteligência Artificial implementado nesta versão, consulte o documento científico anexo: `HISTORICO_DEV.md`.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+*Universidade Licungo — Inovação, Tecnologia e Desenvolvimento.*

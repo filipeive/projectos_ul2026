@@ -138,6 +138,26 @@ class WorkspaceController extends Controller
             \Illuminate\Support\Facades\Log::error('Erro ao enviar email de notificação de chat: ' . $e->getMessage());
         }
 
+        // Auto-reply via AI if enabled and message is from student
+        if (!$isAdmin && $candidatura->ai_assistant_active) {
+            try {
+                $aiController = new AiController();
+                $prompt = "Atua como um Assistente Académico Universitário e Orientador Virtual. O estudante/grupo do projeto '{$candidatura->project_name}' (Tecnologia: {$candidatura->technology}) perguntou no chat: \"{$request->message}\". Responde de forma útil, encorajadora e focada no contexto do projeto. Mantém a resposta concisa (máx 2-3 parágrafos). Não uses formatação markdown complexa.";
+                
+                [$ok, $aiResponse] = $aiController->getAiResponse($prompt);
+                
+                if ($ok) {
+                    \App\Models\WorkspaceMessage::create([
+                        'candidatura_id' => $id,
+                        'sender_type' => 'ai',
+                        'message' => trim($aiResponse),
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Erro no AI Auto-Reply: ' . $e->getMessage());
+            }
+        }
+
         return redirect()->back();
     }
 
@@ -165,8 +185,30 @@ class WorkspaceController extends Controller
                 ->where('is_read', false)
                 ->update(['is_read' => true]);
         }
+        
+        $isTyping = false;
+        if ($isAdmin) {
+            $isTyping = \Illuminate\Support\Facades\Cache::has("typing_{$id}_student");
+        } elseif ($isStudent) {
+            $isTyping = \Illuminate\Support\Facades\Cache::has("typing_{$id}_mentor");
+        }
             
-        return response()->json($messages);
+        return response()->json([
+            'messages' => $messages,
+            'is_typing' => $isTyping
+        ]);
+    }
+
+    public function typing(Request $request, $id)
+    {
+        $isStudent = session('workspace_logged_in_' . $id);
+        $isAdmin = auth()->check();
+        if (!$isStudent && !$isAdmin) return response()->json([], 401);
+
+        $senderType = $isAdmin ? 'mentor' : 'student';
+        \Illuminate\Support\Facades\Cache::put("typing_{$id}_{$senderType}", true, 3);
+        
+        return response()->json(['success' => true]);
     }
 
     public function actualizarFase(Request $request, $id)
@@ -279,11 +321,33 @@ class WorkspaceController extends Controller
         if (!$isStudent && !$isAdmin) return response()->json(['error' => 'Não autorizado'], 401);
 
         $request->validate([
-            'status' => 'required|in:todo,in_progress,review,done'
+            'status' => 'sometimes|in:todo,in_progress,review,done',
+            'title' => 'sometimes|string|max:255',
+            'description' => 'nullable|string'
         ]);
 
         $task = \App\Models\KanbanTask::where('candidatura_id', $id)->findOrFail($taskId);
-        $task->update(['status' => $request->status]);
+        
+        $data = [];
+        if ($request->has('status')) $data['status'] = $request->status;
+        if ($request->has('title')) $data['title'] = $request->title;
+        if ($request->has('description')) $data['description'] = $request->description;
+
+        if (!empty($data)) {
+            $task->update($data);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteKanbanTask(Request $request, $id, $taskId)
+    {
+        $isStudent = session('workspace_logged_in_' . $id);
+        $isAdmin = auth()->check();
+        if (!$isStudent && !$isAdmin) return response()->json(['error' => 'Não autorizado'], 401);
+
+        $task = \App\Models\KanbanTask::where('candidatura_id', $id)->findOrFail($taskId);
+        $task->delete();
 
         return response()->json(['success' => true]);
     }

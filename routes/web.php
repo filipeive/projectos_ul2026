@@ -39,3 +39,16 @@ Route::get('/workspace/ficheiro/{id}/download', [WorkspaceController::class, 'do
 Route::get('/api/workspace/{id}/kanban', [WorkspaceController::class, 'getKanbanTasks'])->name('workspace.kanban.get');
 Route::post('/api/workspace/{id}/kanban', [WorkspaceController::class, 'storeKanbanTask'])->name('workspace.kanban.store');
 Route::put('/api/workspace/{id}/kanban/{taskId}', [WorkspaceController::class, 'updateKanbanTaskStatus'])->name('workspace.kanban.update');
+Route::delete('/api/workspace/{id}/kanban/{taskId}', [WorkspaceController::class, 'deleteKanbanTask'])->name('workspace.kanban.delete');
+Route::post('/api/workspace/{id}/typing', [WorkspaceController::class, 'typing'])->name('workspace.typing');
+
+// AI Routes
+use App\Http\Controllers\AiController;
+Route::post('/api/workspace/{id}/ai/suggest-tasks', [AiController::class, 'suggestTasks'])->name('workspace.ai.suggest');
+Route::get('/api/workspace/{id}/ai/summarize', [AiController::class, 'summarize'])->name('workspace.ai.summarize');
+Route::get('/api/workspace/{id}/ai/analyze-chat', [AiController::class, 'analyzeChat'])->name('workspace.ai.analyze');
+Route::post('/api/workspace/{id}/ai/ask', [AiController::class, 'askAssistant'])->name('workspace.ai.ask');
+Route::post('/api/workspace/{id}/ai/toggle-auto-reply', [AiController::class, 'toggleAutoReply'])->name('workspace.ai.toggle_auto_reply');
+
+// Portal AI Routes
+Route::post('/api/ai/suggest-idea', [AiController::class, 'suggestIdea'])->name('ai.suggest_idea');

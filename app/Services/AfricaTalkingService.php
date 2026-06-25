@@ -17,19 +17,124 @@ class AfricaTalkingService
     {
         $driver = env('SMS_DRIVER', 'africastalking');
 
-        if ($driver === 'twilio' || !empty(env('TWILIO_SID'))) {
+        if ($driver === 'twilio') {
             return self::sendViaTwilio($to, $message);
         }
-
-        if ($driver === 'd7' || !empty(env('D7_TOKEN'))) {
+        if ($driver === 'd7') {
             return self::sendViaD7($to, $message);
         }
+        if ($driver === 'vonage') {
+            return self::sendViaVonage($to, $message);
+        }
+        if ($driver === 'httpsms') {
+            return self::sendViaHttpSms($to, $message);
+        }
+        if ($driver === 'africastalking') {
+            return self::sendViaAfricaTalking($to, $message);
+        }
 
-        if ($driver === 'vonage' || !empty(env('VONAGE_KEY'))) {
+        // Fallbacks for compatibility if driver name is not explicit
+        if (!empty(env('HTTPSMS_KEY'))) {
+            return self::sendViaHttpSms($to, $message);
+        }
+        if (!empty(env('D7_TOKEN'))) {
+            return self::sendViaD7($to, $message);
+        }
+        if (!empty(env('TWILIO_SID'))) {
+            return self::sendViaTwilio($to, $message);
+        }
+        if (!empty(env('VONAGE_KEY'))) {
             return self::sendViaVonage($to, $message);
         }
 
         return self::sendViaAfricaTalking($to, $message);
+    }
+
+    /**
+     * Send SMS via httpSMS (httpsms.com)
+     */
+    private static function sendViaHttpSms($to, $message)
+    {
+        $apiKey = env('HTTPSMS_KEY');
+        $from = env('HTTPSMS_FROM');
+
+        if (empty($apiKey) || empty($from)) {
+            Log::warning("httpSMS configuration is missing in .env.");
+            return [false, "Configuração do httpSMS em falta no .env."];
+        }
+
+        // Clean phone number: remove spaces
+        $to = trim(str_replace(' ', '', $to));
+        
+        // If it starts with 8, assume Mozambique and prefix +258
+        if (preg_match('/^(82|83|84|85|86|87)\d{7,8}$/', $to)) {
+            $to = '+258' . $to;
+        } elseif (str_starts_with($to, '258') && strlen($to) === 12) {
+            $to = '+' . $to;
+        }
+
+        if (!str_starts_with($to, '+')) {
+            $to = '+' . $to;
+        }
+
+        // Clean from number
+        $from = trim(str_replace(' ', '', $from));
+        if (preg_match('/^(82|83|84|85|86|87)\d{7,8}$/', $from)) {
+            $from = '+258' . $from;
+        } elseif (str_starts_with($from, '258') && strlen($from) === 12) {
+            $from = '+' . $from;
+        }
+        if (!str_starts_with($from, '+')) {
+            $from = '+' . $from;
+        }
+
+        $url = 'https://api.httpsms.com/v1/messages/send';
+
+        $data = [
+            'content' => $message,
+            'from' => $from,
+            'to' => $to
+        ];
+
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'x-api-key: ' . $apiKey,
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+
+            $response = curl_exec($ch);
+            
+            if ($response === false) {
+                $error = curl_error($ch);
+                curl_close($ch);
+                Log::error("Erro cURL ao enviar SMS via httpSMS: " . $error);
+                return [false, "Erro de rede cURL: " . $error];
+            }
+            
+            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $result = json_decode($response, true);
+
+            if ($status >= 200 && $status < 300) {
+                Log::info("SMS enviado com sucesso via httpSMS para {$to}: " . $response);
+                return [true, "SMS enviado com sucesso."];
+            }
+
+            Log::error("Erro ao enviar SMS via httpSMS. Status: {$status} Body: {$response}");
+            return [false, "Resposta httpSMS: " . ($result['message'] ?? $response)];
+        } catch (\Exception $e) {
+            Log::error("Excepção ao enviar SMS via httpSMS: " . $e->getMessage());
+            return [false, "Erro de ligação: " . $e->getMessage()];
+        }
     }
 
     /**

@@ -1502,13 +1502,13 @@
             let htmlContent = '';
             
             if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext.toLowerCase())) {
-                htmlContent = `<div class="flex justify-center bg-slate-900 rounded-lg p-2"><img src="${url}" alt="${fileName}" class="max-w-full max-h-[70vh] rounded shadow-lg object-contain"></div>`;
+                htmlContent = `<div class="flex justify-center bg-slate-900 rounded-lg p-2"><img src="${url}" alt="${fileName}" class="max-w-full max-h-[50vh] sm:max-h-[70vh] rounded shadow-lg object-contain"></div>`;
             } else if (ext.toLowerCase() === 'pdf') {
-                htmlContent = `<iframe src="${url}" class="w-full h-[70vh] border-0 rounded-lg bg-white"></iframe>`;
+                htmlContent = `<iframe src="${url}" class="w-full h-[50vh] sm:h-[70vh] border-0 rounded-lg bg-white"></iframe>`;
             } else if (['mp4', 'webm', 'ogg'].includes(ext.toLowerCase())) {
-                htmlContent = `<video controls class="w-full max-h-[70vh] rounded-lg bg-black"><source src="${url}" type="video/${ext}">O seu navegador não suporta vídeos.</video>`;
+                htmlContent = `<video controls class="w-full max-h-[50vh] sm:max-h-[70vh] rounded-lg bg-black"><source src="${url}" type="video/${ext}">O seu navegador não suporta vídeos.</video>`;
             } else if (['txt', 'csv', 'json', 'md'].includes(ext.toLowerCase())) {
-                htmlContent = `<iframe src="${url}" class="w-full h-[70vh] border-0 rounded-lg bg-slate-900 text-slate-300"></iframe>`;
+                htmlContent = `<iframe src="${url}" class="w-full h-[50vh] sm:h-[70vh] border-0 rounded-lg bg-slate-900 text-slate-300"></iframe>`;
             } else {
                 Swal.fire({
                     icon: 'info',
@@ -1530,9 +1530,10 @@
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: {
-                    title: 'text-lg font-bold text-sky-400 mb-4',
-                    popup: 'border border-slate-800 rounded-2xl p-4',
-                    closeButton: 'text-slate-400 hover:text-white'
+                    title: 'text-sm sm:text-lg font-bold text-sky-400 mb-2 sm:mb-4 truncate px-4',
+                    popup: 'border border-slate-800 rounded-2xl p-2 sm:p-4',
+                    closeButton: 'text-slate-400 hover:text-white',
+                    htmlContainer: 'm-0 p-0'
                 }
             });
         }

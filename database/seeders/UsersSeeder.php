@@ -15,6 +15,7 @@ class UsersSeeder extends Seeder
             'email' => 'admin@unilicungo.ac.mz',
         ], [
             'name' => 'Admin TechHub',
+            'role' => 'admin',
             'password' => Hash::make('admin123'),
             'email_verified_at' => now(),
         ]);

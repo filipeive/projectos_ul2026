@@ -794,12 +794,12 @@
     <div id="ai-advisor-modal" class="fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6">
         <div class="glass-panel w-full max-w-xl max-h-[90vh] rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col relative animate-zoom-in overflow-hidden">
             <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center gap-3">
+            <div class="p-4 sm:px-6 sm:py-4 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-2 sm:gap-3">
                     <div class="w-8 h-8 rounded-full bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
                         <i data-lucide="bot" class="w-4 h-4"></i>
                     </div>
-                    <h2 class="text-md font-bold text-white font-display">TechHub AI Advisor</h2>
+                    <h2 class="text-sm sm:text-md font-bold text-white font-display">TechHub AI Advisor</h2>
                 </div>
                 <button onclick="closeAiModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center focus:outline-none">
                     <i data-lucide="x" class="w-4 h-4"></i>
@@ -807,7 +807,7 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 overflow-y-auto scrollbar-thin">
+            <div class="p-4 sm:p-6 overflow-y-auto scrollbar-thin">
                 <p class="text-sm text-slate-300 mb-4">
                     Escreve um pouco sobre ti. De que temas gostas? O que gostarias de resolver na tua comunidade? A IA vai sugerir-te um projeto.
                 </p>
@@ -858,18 +858,20 @@
     </footer>
 
     <!-- PROJECT DETAIL DIALOG (MODAL) -->
-    <div id="project-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-panel w-full max-w-5xl rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-zoom-in">
+    <div id="project-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-5xl rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-zoom-in">
             <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/60 flex-shrink-0">
-                <div class="flex items-center gap-3">
-                    <span id="modal-project-number" class="text-sm font-bold font-mono text-sky-400">#00</span>
-                    <h2 id="modal-project-name" class="text-lg font-bold text-white font-display">Nome do Projeto</h2>
-                    <span id="modal-project-difficulty" class="px-2.5 py-0.5 rounded-full text-xs font-semibold">Dificuldade</span>
+            <div class="p-4 sm:px-6 sm:py-4 border-b border-slate-800/80 flex items-start sm:items-center justify-between bg-slate-900/60 flex-shrink-0">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 pr-2">
+                    <div class="flex items-center gap-2">
+                        <span id="modal-project-number" class="text-xs sm:text-sm font-bold font-mono text-sky-400">#00</span>
+                        <span id="modal-project-difficulty" class="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap">Dificuldade</span>
+                    </div>
+                    <h2 id="modal-project-name" class="text-sm sm:text-lg font-bold text-white font-display leading-tight">Nome do Projeto</h2>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="printProject()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg text-slate-300 transition-colors flex items-center gap-1.5 focus:outline-none">
-                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir Ficha
+                <div class="flex items-center gap-2 flex-shrink-0 mt-1 sm:mt-0">
+                    <button onclick="printProject()" class="hidden md:flex px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg text-slate-300 transition-colors items-center gap-1.5 focus:outline-none">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir
                     </button>
                     <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors flex items-center justify-center focus:outline-none">
                         <i data-lucide="x" class="w-4 h-4"></i>
@@ -878,17 +880,17 @@
             </div>
 
             <!-- Modal Tabs Selection -->
-            <div class="px-6 py-2 border-b border-slate-800/80 bg-slate-900/30 flex gap-4 flex-shrink-0">
-                <button id="modal-tab-details" class="px-4 py-2 border-b-2 border-sky-500 text-sky-400 text-xs font-bold transition-all focus:outline-none flex items-center gap-1.5" onclick="switchModalTab('details')">
+            <div class="px-4 sm:px-6 py-2 border-b border-slate-800/80 bg-slate-900/30 flex gap-2 sm:gap-4 flex-shrink-0 overflow-x-auto scrollbar-none">
+                <button id="modal-tab-details" class="px-3 sm:px-4 py-2 border-b-2 border-sky-500 text-sky-400 text-xs font-bold transition-all focus:outline-none flex items-center justify-center gap-1.5 whitespace-nowrap" onclick="switchModalTab('details')">
                     <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Ficha Técnica
                 </button>
-                <button id="modal-tab-article" class="px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-xs font-bold transition-all focus:outline-none flex items-center gap-1.5" onclick="switchModalTab('article')">
-                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Para o teu Artigo (Jornadas)
+                <button id="modal-tab-article" class="px-3 sm:px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-xs font-bold transition-all focus:outline-none flex items-center justify-center gap-1.5 whitespace-nowrap" onclick="switchModalTab('article')">
+                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Para o teu Artigo
                 </button>
             </div>
             
             <!-- Modal Body (Scrollable) -->
-            <div class="p-6 overflow-y-auto flex-grow">
+            <div class="p-4 sm:p-6 overflow-y-auto flex-grow">
                 <!-- Details tab content container -->
                 <div id="modal-content-details" class="space-y-6">
                     <!-- Subtitle / Concept -->
@@ -1061,17 +1063,17 @@
             </div>
             
             <!-- Modal Footer -->
-            <div class="px-6 py-4 border-t border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
-                <span class="text-xs text-slate-500">Sector: <span id="modal-project-sector" class="text-slate-300">Saúde</span></span>
-                <div class="flex items-center gap-3">
-                    <button onclick="closeModal()" class="px-4 py-2 border border-slate-700 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
+            <div class="p-4 sm:px-6 sm:py-4 border-t border-slate-800/80 bg-slate-900/60 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 flex-shrink-0">
+                <span class="text-[10px] sm:text-xs text-slate-500 text-center sm:text-left">Sector: <span id="modal-project-sector" class="text-slate-300">Saúde</span></span>
+                <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                    <button onclick="closeModal()" class="w-full sm:w-auto px-4 py-2 border border-slate-700 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl transition-colors order-2 sm:order-1">
                         Fechar
                     </button>
-                    <button id="modal-apply-btn" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5">
-                        <i data-lucide="file-text" class="w-4 h-4"></i> Escolher este Projeto
+                    <button id="modal-apply-btn" class="w-full sm:w-auto px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 order-1 sm:order-2">
+                        <i data-lucide="file-text" class="w-4 h-4"></i> <span class="whitespace-nowrap">Escolher Projeto</span>
                     </button>
-                    <a id="modal-workspace-btn" href="#" class="hidden px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
-                        <i data-lucide="users" class="w-4 h-4"></i> Aceder ao Workspace
+                    <a id="modal-workspace-btn" href="#" class="hidden w-full sm:w-auto px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl transition-colors items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20 order-1 sm:order-3">
+                        <i data-lucide="users" class="w-4 h-4"></i> <span class="whitespace-nowrap">Aceder Workspace</span>
                     </a>
                 </div>
             </div>

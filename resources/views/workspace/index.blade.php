@@ -432,7 +432,7 @@
                         @foreach($messages as $msg)
                             @if($msg->sender_type === 'ai')
                                 <!-- AI Message (Left) -->
-                                <div class="flex items-start gap-3 w-4/5">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
                                     <div
                                         class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
                                         <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
@@ -457,7 +457,7 @@
                                 </div>
                             @elseif($msg->sender_type === 'mentor')
                                 <!-- Mentor Message (Left) -->
-                                <div class="flex items-start gap-3 w-4/5">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
                                     <div
                                         class="w-8 h-8 rounded-full bg-bronze-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-bronze-500/20">
                                         <i data-lucide="graduation-cap" class="w-4 h-4 text-white"></i>
@@ -482,7 +482,7 @@
                                 </div>
                             @else
                                 <!-- Student Message (Right) -->
-                                <div class="flex items-start gap-3 w-4/5 ml-auto justify-end">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 ml-auto justify-end">
                                     <div class="text-right">
                                         <div class="flex items-baseline gap-2 mb-1 justify-end">
                                             <span
@@ -511,7 +511,7 @@
                     </div>
 
                     <!-- Indicador "a escrever..." -->
-                    <div id="typing-indicator" class="hidden flex items-start gap-3 w-4/5">
+                    <div id="typing-indicator" class="hidden flex items-start gap-3 w-[92%] sm:w-4/5">
                         <div
                             class="w-8 h-8 rounded-full bg-indigo-500/60 flex items-center justify-center flex-shrink-0">
                             <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
@@ -929,7 +929,7 @@
                             let html = '';
                             if (msg.sender_type === 'ai') {
                                 html = `
-                                <div class="flex items-start gap-3 w-4/5 animate-fade-in">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 animate-fade-in">
                                     <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
                                         <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
                                     </div>
@@ -951,7 +951,7 @@
                                 </div>`;
                             } else if (msg.sender_type === 'mentor') {
                                 html = `
-                                <div class="flex items-start gap-3 w-4/5 animate-fade-in">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 animate-fade-in">
                                     <div class="w-8 h-8 rounded-full bg-bronze-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-bronze-500/20">
                                         <i data-lucide="graduation-cap" class="w-4 h-4 text-white"></i>
                                     </div>
@@ -973,7 +973,7 @@
                                 </div>`;
                             } else {
                                 html = `
-                                <div class="flex items-start gap-3 w-4/5 ml-auto justify-end animate-fade-in">
+                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 ml-auto justify-end animate-fade-in">
                                     <div class="text-right">
                                         <div class="flex items-baseline gap-2 mb-1 justify-end">
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
@@ -1326,7 +1326,7 @@
                         html: `<div class="text-sm text-left leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-indigo-400">${data.summary}</div>`,
                         background: '#0b0f19', color: '#fff',
                         confirmButtonColor: '#4f46e5',
-                        width: '600px',
+                        width: window.innerWidth < 640 ? '95%' : '600px',
                         didOpen: () => lucide.createIcons()
                     });
                 })
@@ -1345,7 +1345,7 @@
                         html: `<div class="text-sm text-left leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-indigo-400">${data.analysis}</div>`,
                         background: '#0b0f19', color: '#fff',
                         confirmButtonColor: '#4f46e5',
-                        width: '600px',
+                        width: window.innerWidth < 640 ? '95%' : '600px',
                         didOpen: () => lucide.createIcons()
                     });
                 })
@@ -1524,7 +1524,7 @@
             Swal.fire({
                 title: fileName,
                 html: htmlContent,
-                width: '80%',
+                width: window.innerWidth < 640 ? '95%' : '80%',
                 background: '#0b0f19',
                 color: '#fff',
                 showCloseButton: true,

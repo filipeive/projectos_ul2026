@@ -68,11 +68,11 @@ ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 "${REMOTE_USER}@${REMOTE_HO
     "cd ${REMOTE_PATH} && sudo git pull origin ${BRANCH}" 2>&1 | tail -3
 echo -e "${GREEN}  ✓ Código actualizado no servidor${NC}"
 
-# Step 5: Clear Laravel caches
-echo -e "${YELLOW}[5/6]${NC} Limpando caches do Laravel..."
+# Step 5: Clear Laravel caches and run migrations
+echo -e "${YELLOW}[5/6]${NC} Limpando caches e executando migrações..."
 ssh -o StrictHostKeyChecking=no "${REMOTE_USER}@${REMOTE_HOST}" \
-    "cd ${REMOTE_PATH} && sudo php artisan config:clear && sudo php artisan view:clear && sudo php artisan cache:clear" 2>&1 | grep -oP 'INFO.*' || true
-echo -e "${GREEN}  ✓ Caches limpos${NC}"
+    "cd ${REMOTE_PATH} && sudo php artisan config:clear && sudo php artisan view:clear && sudo php artisan cache:clear && sudo php artisan migrate --force" 2>&1
+echo -e "${GREEN}  ✓ Caches limpos e migrações executadas${NC}"
 
 # Step 6: Set permissions
 echo -e "${YELLOW}[6/6]${NC} Ajustando permissões..."

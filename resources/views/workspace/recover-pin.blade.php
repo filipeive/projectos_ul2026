@@ -31,7 +31,7 @@
                 <i data-lucide="key-round" class="w-8 h-8 text-amber-400"></i>
             </div>
             <h1 class="text-2xl font-bold text-white font-display">Recuperar PIN</h1>
-            <p class="text-xs text-slate-400 mt-2">Insira o email de contacto do grupo associado ao projeto <br><span class="text-sky-400 font-semibold">{{ $candidatura->project_name }}</span></p>
+            <p class="text-xs text-slate-400 mt-2">Insira o email ou telemóvel de contacto do grupo associado ao projeto <br><span class="text-sky-400 font-semibold">{{ $candidatura->project_name }}</span></p>
         </div>
 
 
@@ -40,11 +40,11 @@
             @csrf
             
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email de Contacto</label>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Contacto do Grupo</label>
                 <div class="relative">
-                    <input type="email" name="contact_email" placeholder="Digite o email do grupo..." required
+                    <input type="text" name="contact_email" placeholder="Email ou Telemóvel..." required
                         class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-amber-500 focus:outline-none rounded-xl text-white transition-colors pl-10">
-                    <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                    <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
                 </div>
             </div>
 

@@ -89,6 +89,7 @@ class PortalController extends Controller
             'member1_name' => 'required|string|max:150',
             'member1_code' => 'required|string|max:50',
             'contact_email' => 'required|email|max:150',
+            'contact_phone' => 'nullable|string|max:50',
             'member2_name' => 'required|string|max:150',
             'member2_code' => 'required|string|max:50',
             'member3_name' => 'nullable|string|max:150',
@@ -119,6 +120,7 @@ class PortalController extends Controller
             'member1_name' => $request->member1_name,
             'member1_code' => $request->member1_code,
             'contact_email' => $request->contact_email,
+            'contact_phone' => $request->contact_phone,
             'member2_name' => $request->member2_name,
             'member2_code' => $request->member2_code,
             'member3_name' => $request->member3_name,
@@ -301,6 +303,7 @@ class PortalController extends Controller
         $validated = $request->validate([
             'project_name' => 'required|string',
             'contact_email' => 'required|email',
+            'contact_phone' => 'nullable|string',
             'member1_name' => 'required|string',
             'member1_code' => 'required|string',
             'member2_name' => 'nullable|string',

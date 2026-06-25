@@ -29,18 +29,18 @@
             <div class="w-16 h-16 mx-auto bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
                 <i data-lucide="key" class="w-8 h-8 text-sky-400"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white font-display">Recuperar Senha</h1>
-            <p class="text-xs text-slate-400 mt-2">Insira o email de contacto do grupo para receber um novo PIN.</p>
+            <h1 class="text-2xl font-bold text-white font-display">Recuperar PIN</h1>
+            <p class="text-xs text-slate-400 mt-2">Insira o email ou telemóvel de contacto do grupo para receber um novo PIN.</p>
         </div>
 
         <form action="{{ route('workspace.recover-pin-geral.submit') }}" method="POST" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email do Grupo</label>
+                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Contacto do Grupo</label>
                 <div class="relative">
-                    <input type="email" name="contact_email" placeholder="estudante@unilicungo.ac.mz" required
+                    <input type="text" name="contact_email" placeholder="Email ou Telemóvel..." required
                         class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl text-white transition-colors pl-10 text-sm">
-                    <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                    <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
                 </div>
             </div>
 

@@ -494,14 +494,18 @@
                             </span>
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="grid grid-cols-3 gap-4 mb-6">
                             <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
                                 <div class="text-[10px] text-slate-500 uppercase font-bold mb-1">Tecnologia Principal</div>
                                 <div class="text-sm font-mono text-sky-400">${c.technology}</div>
                             </div>
                             <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
                                 <div class="text-[10px] text-slate-500 uppercase font-bold mb-1">Email de Contacto</div>
-                                <div class="text-sm text-slate-300">${c.contact_email}</div>
+                                <div class="text-sm text-slate-300 truncate">${c.contact_email}</div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+                                <div class="text-[10px] text-slate-500 uppercase font-bold mb-1">Telemóvel</div>
+                                <div class="text-sm text-slate-300">${c.contact_phone || 'Não definido'}</div>
                             </div>
                         </div>
 
@@ -554,9 +558,15 @@
                             <p class="text-[11px] text-sky-400 leading-tight"><i data-lucide="info" class="w-3 h-3 inline"></i> <strong>Atenção:</strong> O "Email do Grupo" é crucial. É com este email que os estudantes conseguirão recuperar o PIN de acesso ao Workspace se o perderem.</p>
                         </div>
 
-                        <div>
-                            <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Email do Grupo <span class="text-rose-400">*</span></label>
-                            <input type="email" name="contact_email" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm focus:border-sky-500 outline-none" value="${c.contact_email}" required>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Email do Grupo <span class="text-rose-400">*</span></label>
+                                <input type="email" name="contact_email" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm focus:border-sky-500 outline-none" value="${c.contact_email}" required>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Contacto Telefónico</label>
+                                <input type="text" name="contact_phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm focus:border-sky-500 outline-none" value="${c.contact_phone || ''}" placeholder="ex: 84xxxxxxx">
+                            </div>
                         </div>
                         
                         <div>

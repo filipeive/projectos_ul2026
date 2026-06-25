@@ -44,13 +44,25 @@ class WorkspaceController extends Controller
     public function recoverPinSubmitGeral(Request $request)
     {
         $request->validate([
-            'contact_email' => 'required|email',
+            'contact_email' => 'required|string',
         ]);
 
-        $candidaturas = \App\Models\Candidatura::where('contact_email', $request->contact_email)->get();
+        $input = trim($request->contact_email);
+
+        if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            $candidaturas = \App\Models\Candidatura::where('contact_email', $input)->get();
+        } else {
+            // Clean phone number
+            $cleaned = trim(str_replace([' ', '+', '-'], '', $input));
+            // If it starts with 258, strip it to search
+            if (str_starts_with($cleaned, '258') && strlen($cleaned) > 9) {
+                $cleaned = substr($cleaned, 3);
+            }
+            $candidaturas = \App\Models\Candidatura::where('contact_phone', 'like', "%{$cleaned}%")->get();
+        }
 
         if ($candidaturas->isEmpty()) {
-            return back()->with('error', 'O email fornecido não foi encontrado no sistema.');
+            return back()->with('error', 'O contacto fornecido não foi encontrado no sistema.');
         }
 
         // Generate a new PIN
@@ -70,10 +82,20 @@ class WorkspaceController extends Controller
             } catch (\Exception $e) {
                 \Log::error("Failed to send recover email: " . $e->getMessage());
             }
+
+            // Send SMS if contact_phone is set
+            if (!empty($candidatura->contact_phone)) {
+                try {
+                    $smsMessage = "Ola {$candidatura->member1_name}, o novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' e: {$newPin}. UniLicungo TechHub";
+                    \App\Services\AfricaTalkingService::sendSms($candidatura->contact_phone, $smsMessage);
+                } catch (\Exception $e) {
+                    \Log::error("Failed to send recover SMS: " . $e->getMessage());
+                }
+            }
         }
 
         return redirect()->route('workspace.login')
-            ->with('success', 'Um novo PIN foi enviado para o seu email de contacto.')->with('tab', 'estudante');
+            ->with('success', 'Um novo PIN foi enviado para o contacto do grupo.')->with('tab', 'estudante');
     }
 
     public function recoverPinForm($id)
@@ -85,13 +107,33 @@ class WorkspaceController extends Controller
     public function recoverPinSubmit(Request $request, $id)
     {
         $request->validate([
-            'contact_email' => 'required|email',
+            'contact_email' => 'required|string',
         ]);
 
         $candidatura = \App\Models\Candidatura::findOrFail($id);
+        $input = trim($request->contact_email);
 
-        if (strtolower($candidatura->contact_email) !== strtolower($request->contact_email)) {
-            return back()->with('error', 'O email fornecido não corresponde ao email de contacto do grupo.');
+        $match = false;
+        if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            if (strtolower($candidatura->contact_email) === strtolower($input)) {
+                $match = true;
+            }
+        } else {
+            $cleanedInput = trim(str_replace([' ', '+', '-'], '', $input));
+            if (str_starts_with($cleanedInput, '258') && strlen($cleanedInput) > 9) {
+                $cleanedInput = substr($cleanedInput, 3);
+            }
+            $cleanedDb = trim(str_replace([' ', '+', '-'], '', $candidatura->contact_phone));
+            if (str_starts_with($cleanedDb, '258') && strlen($cleanedDb) > 9) {
+                $cleanedDb = substr($cleanedDb, 3);
+            }
+            if (!empty($cleanedDb) && str_contains($cleanedDb, $cleanedInput)) {
+                $match = true;
+            }
+        }
+
+        if (!$match) {
+            return back()->with('error', 'O contacto fornecido não corresponde ao contacto do grupo.');
         }
 
         // Generate a new PIN
@@ -102,13 +144,27 @@ class WorkspaceController extends Controller
         ]);
 
         // Send Email
-        \Illuminate\Support\Facades\Mail::raw("Olá {$candidatura->member1_name},\n\nO novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' é: {$newPin}\n\nPor favor, aceda à plataforma para continuar.\n\nCumprimentos,\nUniLicungo TechHub", function ($message) use ($candidatura) {
-            $message->to($candidatura->contact_email)
-                    ->subject('Recuperação de PIN - UniLicungo TechHub');
-        });
+        try {
+            \Illuminate\Support\Facades\Mail::raw("Olá {$candidatura->member1_name},\n\nO novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' é: {$newPin}\n\nPor favor, aceda à plataforma para continuar.\n\nCumprimentos,\nUniLicungo TechHub", function ($message) use ($candidatura) {
+                $message->to($candidatura->contact_email)
+                        ->subject('Recuperação de PIN - UniLicungo TechHub');
+            });
+        } catch (\Exception $e) {
+            \Log::error("Failed to send recover email: " . $e->getMessage());
+        }
+
+        // Send SMS if contact_phone is set
+        if (!empty($candidatura->contact_phone)) {
+            try {
+                $smsMessage = "Ola {$candidatura->member1_name}, o novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' e: {$newPin}. UniLicungo TechHub";
+                \App\Services\AfricaTalkingService::sendSms($candidatura->contact_phone, $smsMessage);
+            } catch (\Exception $e) {
+                \Log::error("Failed to send recover SMS: " . $e->getMessage());
+            }
+        }
 
         return redirect()->route('workspace.login', ['project_number' => $candidatura->project_number])
-            ->with('success', 'Um novo PIN foi enviado para o vosso email de contacto.');
+            ->with('success', 'Um novo PIN foi enviado para o vosso contacto.');
     }
 
     public function index($id)

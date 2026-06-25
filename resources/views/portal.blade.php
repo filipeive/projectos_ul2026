@@ -697,8 +697,13 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
                             
-                            <div class="mb-3">
-                                <input type="email" name="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (Importante para recuperar PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                                <div>
+                                    <input type="email" name="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (para PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                                </div>
+                                <div>
+                                    <input type="text" name="contact_phone" value="{{ old('contact_phone') }}" placeholder="Telemóvel (para SMS, ex: 84xxxxxxx)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-3 gap-2 mb-2">

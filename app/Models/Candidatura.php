@@ -20,6 +20,7 @@ class Candidatura extends Model
         'member1_name',
         'member1_code',
         'contact_email',
+        'contact_phone',
         'member2_name',
         'member2_code',
         'member3_name',

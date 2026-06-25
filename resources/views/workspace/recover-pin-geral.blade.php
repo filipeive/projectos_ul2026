@@ -27,30 +27,30 @@
     <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-2xl border border-slate-800/80 relative z-10 shadow-2xl animate-zoom-in">
         <div class="text-center mb-8">
             <div class="w-16 h-16 mx-auto bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
-                <i data-lucide="key" class="w-8 h-8 text-sky-400"></i>
+                <i data-lucide="key" class="w-8 h-8 text-sky-400 animate-pulse"></i>
             </div>
             <h1 class="text-2xl font-bold text-white font-display">Recuperar PIN</h1>
             <p class="text-xs text-slate-400 mt-2">Insira o email ou telemóvel de contacto do grupo para receber um novo PIN.</p>
         </div>
 
-        <form action="{{ route('workspace.recover-pin-geral.submit') }}" method="POST" class="space-y-4">
+        <form action="{{ route('workspace.recover-pin-geral.submit') }}" method="POST" class="space-y-4" id="recover-form-geral">
             @csrf
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Contacto do Grupo</label>
+                <label for="contact_input_geral" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Contacto do Grupo</label>
                 <div class="relative">
-                    <input type="text" name="contact_email" placeholder="Email ou Telemóvel..." required
-                        class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl text-white transition-colors pl-10 text-sm">
-                    <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                    <input type="text" id="contact_input_geral" name="contact_email" placeholder="Email ou Telemóvel..." required autocomplete="username"
+                        class="peer w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-white transition-all duration-300 pl-10 text-sm placeholder-slate-500 focus:placeholder-slate-400">
+                    <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5 transition-colors duration-300 peer-focus:text-sky-400"></i>
                 </div>
             </div>
 
-            <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+            <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-550 hover:-translate-y-0.5 active:translate-y-0 text-white font-bold rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                 <i data-lucide="send" class="w-4 h-4"></i> Enviar novo PIN
             </button>
         </form>
 
         <div class="mt-6 text-center">
-            <a href="{{ route('workspace.login') }}" class="text-xs text-slate-500 hover:text-slate-300 transition-colors flex items-center justify-center gap-1 font-mono">
+            <a href="{{ route('workspace.login') }}" class="text-xs text-slate-500 hover:text-slate-300 transition-colors flex items-center justify-center gap-1 font-mono focus:outline-none focus-visible:underline">
                 <i data-lucide="arrow-left" class="w-3 h-3"></i> Voltar ao Login
             </a>
         </div>
@@ -59,6 +59,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         lucide.createIcons();
+
+        // Form Submit Loading Micro-interaction
+        document.getElementById('recover-form-geral').addEventListener('submit', function() {
+            const btn = this.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> A enviar...`;
+                btn.className = "w-full py-3 bg-sky-800 text-white/80 font-bold rounded-xl flex items-center justify-center gap-2 cursor-not-allowed opacity-75 transition-all duration-300";
+            }
+        });
 
         const Toast = Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 4000,

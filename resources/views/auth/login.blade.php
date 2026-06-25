@@ -52,77 +52,79 @@
         </div>
 
         <!-- Login Form Panel -->
-        <div class="glass-panel p-6 rounded-3xl border border-slate-800/80 shadow-2xl">
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800/80 shadow-2xl relative overflow-hidden">
             
-            <!-- Tabs -->
-            <div class="flex p-1 bg-slate-900/50 rounded-xl border border-slate-800 mb-6">
-                <button onclick="switchTab('estudante')" id="tab-estudante" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-white bg-slate-800 shadow shadow-black/20 flex items-center justify-center gap-1.5">
+            <!-- Tabs (WCAG 2.2 Compliant) -->
+            <div class="flex p-1 bg-slate-900/50 rounded-xl border border-slate-800/80 mb-6" role="tablist" aria-label="Opções de Acesso">
+                <button type="button" onclick="switchTab('estudante')" id="tab-estudante" role="tab" aria-selected="true" aria-controls="form-estudante" 
+                    class="flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 bg-slate-800 text-white shadow shadow-black/20">
                     <i data-lucide="users" class="w-4 h-4"></i> Estudante (Grupo)
                 </button>
-                <button onclick="switchTab('docente')" id="tab-docente" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5">
+                <button type="button" onclick="switchTab('docente')" id="tab-docente" role="tab" aria-selected="false" aria-controls="form-docente" 
+                    class="flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-400 hover:text-slate-200">
                     <i data-lucide="shield" class="w-4 h-4"></i> Docente / Admin
                 </button>
             </div>
 
             <!-- Formulário Estudante -->
-            <form id="form-estudante" action="{{ route('workspace.login.submit') }}" method="POST" class="space-y-4">
+            <form id="form-estudante" action="{{ route('workspace.login.submit') }}" method="POST" class="space-y-4" role="tabpanel" aria-labelledby="tab-estudante">
                 @csrf
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email do Grupo</label>
+                    <label for="student_email" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email do Grupo</label>
                     <div class="relative">
-                        <input type="email" name="contact_email" placeholder="estudante@unilicungo.ac.mz" required
-                            class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl text-white transition-colors pl-10 text-sm">
-                        <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                        <input type="email" id="student_email" name="contact_email" placeholder="estudante@unilicungo.ac.mz" required autocomplete="email"
+                            class="peer w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-white transition-all duration-300 pl-10 text-sm placeholder-slate-500 focus:placeholder-slate-400 hover:border-slate-700">
+                        <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5 transition-colors duration-300 peer-focus:text-sky-400"></i>
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Senha do Grupo</label>
+                        <label for="student_password" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Senha do Grupo</label>
                         <!-- Link recuperar senha Estudante -->
-                        <a href="{{ route('workspace.recover-pin-geral') }}" class="text-[10px] text-sky-400 hover:text-sky-300 font-semibold transition-colors">
+                        <a href="{{ route('workspace.recover-pin-geral') }}" class="text-[10px] text-sky-400 hover:text-sky-300 font-semibold transition-colors focus:outline-none focus-visible:underline">
                             Esqueceste a senha?
                         </a>
                     </div>
                     <div class="relative">
-                        <input type="password" name="group_password" placeholder="••••••••" required
-                            class="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:outline-none rounded-xl text-white transition-colors pl-10 text-sm">
-                        <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"></i>
+                        <input type="password" id="student_password" name="group_password" placeholder="••••••••" required autocomplete="current-password"
+                            class="peer w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-white transition-all duration-300 pl-10 text-sm placeholder-slate-500 focus:placeholder-slate-400 hover:border-slate-700">
+                        <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5 transition-colors duration-300 peer-focus:text-sky-400"></i>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-gradient-ul hover:opacity-90 active:opacity-100 text-white font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/10">
+                <button type="submit" class="w-full py-3 bg-gradient-ul hover:opacity-95 hover:-translate-y-0.5 active:translate-y-0 text-white font-semibold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-sky-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                     <i data-lucide="log-in" class="w-4 h-4"></i> Entrar no Workspace
                 </button>
             </form>
 
             <!-- Formulário Docente -->
-            <form id="form-docente" action="{{ url('/admin/login') }}" method="POST" class="space-y-4 hidden">
+            <form id="form-docente" action="{{ url('/admin/login') }}" method="POST" class="space-y-4 hidden" role="tabpanel" aria-labelledby="tab-docente">
                 @csrf
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="email">E-mail Institucional</label>
                     <div class="relative">
-                        <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500"></i>
-                        <input type="email" name="email" id="email" placeholder="nome@unilicungo.ac.mz"
-                            class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
+                        <input type="email" name="email" id="email" placeholder="nome@unilicungo.ac.mz" autocomplete="email"
+                            class="peer w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-sm transition-all duration-300 text-slate-200 placeholder-slate-500 focus:placeholder-slate-400">
+                        <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500 transition-colors duration-300 peer-focus:text-sky-400"></i>
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="password">Senha de Acesso</label>
                     <div class="relative">
-                        <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500"></i>
-                        <input type="password" name="password" id="password" placeholder="••••••••••••"
-                            class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
+                        <input type="password" name="password" id="password" placeholder="••••••••••••" autocomplete="current-password"
+                            class="peer w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-sm transition-all duration-300 text-slate-200 placeholder-slate-500 focus:placeholder-slate-400">
+                        <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500 transition-colors duration-300 peer-focus:text-sky-400"></i>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 hover:border-slate-600 text-white font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-black/10">
+                <button type="submit" class="w-full py-3 bg-slate-800 hover:bg-slate-750 hover:-translate-y-0.5 active:translate-y-0 border border-slate-700 hover:border-slate-600 text-white font-semibold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-black/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                     <i data-lucide="shield-check" class="w-4 h-4"></i> Entrar no Painel Docente
                 </button>
             </form>
         </div>
 
         <div class="text-center mt-6">
-            <a href="{{ route('portal.index') }}" class="text-xs text-slate-500 hover:text-sky-400 transition-colors flex items-center justify-center gap-1.5 font-mono uppercase tracking-wider">
+            <a href="{{ route('portal.index') }}" class="text-xs text-slate-500 hover:text-sky-400 transition-colors flex items-center justify-center gap-1.5 font-mono uppercase tracking-wider focus:outline-none focus-visible:underline">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Voltar ao Catálogo
             </a>
         </div>
@@ -144,31 +146,49 @@
                 formEstudante.classList.remove('hidden');
                 formDocente.classList.add('hidden');
                 
-                btnEstudante.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-white bg-slate-800 shadow shadow-black/20 flex items-center justify-center gap-1.5";
-                btnDocente.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                btnEstudante.className = "flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 bg-slate-800 text-white shadow shadow-black/20";
+                btnDocente.className = "flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-400 hover:text-slate-200";
+                
+                btnEstudante.setAttribute('aria-selected', 'true');
+                btnDocente.setAttribute('aria-selected', 'false');
                 
                 // Disable required fields in docente so it doesn't block submit
                 document.getElementById('email').required = false;
                 document.getElementById('password').required = false;
-                document.querySelector('input[name="contact_email"]').required = true;
-                document.querySelector('input[name="group_password"]').required = true;
+                document.getElementById('student_email').required = true;
+                document.getElementById('student_password').required = true;
 
             } else {
                 formEstudante.classList.add('hidden');
                 formDocente.classList.remove('hidden');
 
-                btnDocente.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-white bg-slate-800 shadow shadow-black/20 flex items-center justify-center gap-1.5";
-                btnEstudante.className = "flex-1 py-2 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                btnDocente.className = "flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 bg-slate-800 text-white shadow shadow-black/20";
+                btnEstudante.className = "flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-400 hover:text-slate-200";
+                
+                btnDocente.setAttribute('aria-selected', 'true');
+                btnEstudante.setAttribute('aria-selected', 'false');
                 
                 document.getElementById('email').required = true;
                 document.getElementById('password').required = true;
-                document.querySelector('input[name="contact_email"]').required = false;
-                document.querySelector('input[name="group_password"]').required = false;
+                document.getElementById('student_email').required = false;
+                document.getElementById('student_password').required = false;
             }
         }
         
         // Setup initial required states based on visible tab
         switchTab('{{ session("tab") ?? "estudante" }}');
+
+        // Form Submit Loading Micro-interaction
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const btn = this.querySelector('button[type="submit"]');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> A carregar...`;
+                    btn.className = "w-full py-3 bg-sky-800 text-white/80 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-75 transition-all duration-300";
+                }
+            });
+        });
 
         // SweetAlert2 configuration for custom dark theme
         const Toast = Swal.mixin({

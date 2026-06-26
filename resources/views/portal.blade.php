@@ -103,28 +103,28 @@
         </div>
         
         <!-- Navigation Tab bar -->
-        <nav class="flex border-b border-slate-800/80 mt-6 relative z-20 overflow-x-auto">
-            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-sky-500 text-sky-400 font-medium text-sm transition-all focus:outline-none" data-tab="catalogo">
+        <nav class="flex border-b border-slate-800/80 mt-6 relative z-20 overflow-x-auto" role="tablist" aria-label="Abas de Navegação">
+            <button id="tab-btn-catalogo" role="tab" aria-selected="true" aria-controls="section-catalogo" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-sky-500 text-sky-400 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="catalogo">
                 <span class="flex items-center gap-2">
                     <i data-lucide="grid" class="w-4 h-4"></i> Catálogo de Ideias ({{ count($projects) }})
                 </span>
             </button>
-            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="mobilizacao">
+            <button id="tab-btn-mobilizacao" role="tab" aria-selected="false" aria-controls="section-mobilizacao" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="mobilizacao">
                 <span class="flex items-center gap-2">
                     <i data-lucide="calendar" class="w-4 h-4"></i> Linha de Ação & Mentoria
                 </span>
             </button>
-            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="boilerplates">
+            <button id="tab-btn-boilerplates" role="tab" aria-selected="false" aria-controls="section-boilerplates" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="boilerplates">
                 <span class="flex items-center gap-2">
                     <i data-lucide="code-2" class="w-4 h-4"></i> Kit do Estudante (Starter)
                 </span>
             </button>
-            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="guia">
+            <button id="tab-btn-guia" role="tab" aria-selected="false" aria-controls="section-guia" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="guia">
                 <span class="flex items-center gap-2">
                     <i data-lucide="graduation-cap" class="w-4 h-4"></i> Guia do Investigador
                 </span>
             </button>
-            <button class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none" data-tab="estudante">
+            <button id="tab-btn-estudante" role="tab" aria-selected="false" aria-controls="section-estudante" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="estudante">
                 <span class="flex items-center gap-2">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Inscrição de Grupo
                 </span>
@@ -161,7 +161,7 @@
         @endif
         
         <!-- 1. SECTION: CATALOG -->
-        <section id="section-catalogo" class="content-section">
+        <section id="section-catalogo" role="tabpanel" aria-labelledby="tab-btn-catalogo" class="content-section">
             
             <!-- Global Stats Banner -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
@@ -209,6 +209,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                     <!-- Search input -->
                     <div class="relative md:col-span-2">
+                        <label for="search-input" class="sr-only">Pesquisar projeto, palavra-chave, tecnologia...</label>
                         <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500"></i>
                         <input type="text" id="search-input" placeholder="Pesquisar projeto, palavra-chave, tecnologia..." 
                             class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm placeholder:text-slate-500 transition-all text-slate-200">
@@ -216,6 +217,7 @@
                     
                     <!-- Difficulty select -->
                     <div>
+                        <label for="filter-difficulty" class="sr-only">Filtrar por Dificuldade</label>
                         <select id="filter-difficulty" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
                             <option value="Todos">Dificuldade (Todas)</option>
                             <option value="Fácil">Fácil</option>
@@ -226,6 +228,7 @@
 
                     <!-- Tech select -->
                     <div>
+                        <label for="filter-tech" class="sr-only">Filtrar por Tecnologia</label>
                         <select id="filter-tech" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
                             <option value="Todos">Tecnologia (Todas)</option>
                             <option value="Laravel">Laravel</option>
@@ -240,30 +243,30 @@
 
                 <!-- Row 2: Sector Buttons and Reset -->
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-3 border-t border-slate-800/60">
-                    <div class="flex flex-wrap gap-2 items-center">
+                    <div class="flex flex-wrap gap-2 items-center" role="group" aria-label="Filtros de Sector">
                         <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono mr-2">Sectores:</span>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all tab-active flex items-center gap-1.5" data-sector="Todos">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all tab-active flex items-center gap-1.5" data-sector="Todos" role="button" aria-pressed="true">
                             <i data-lucide="layers" class="w-3.5 h-3.5"></i> Todos
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Saúde">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Saúde" role="button" aria-pressed="false">
                             <i data-lucide="heart-pulse" class="w-3.5 h-3.5"></i> Saúde
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Educação">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Educação" role="button" aria-pressed="false">
                             <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Educação
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Agricultura e Ambiente">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Agricultura e Ambiente" role="button" aria-pressed="false">
                             <i data-lucide="sprout" class="w-3.5 h-3.5"></i> Agricultura
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Empreendedorismo e PMEs">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Empreendedorismo e PMEs" role="button" aria-pressed="false">
                             <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> PMEs / Negócios
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inclusão Social">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inclusão Social" role="button" aria-pressed="false">
                             <i data-lucide="accessibility" class="w-3.5 h-3.5"></i> Inclusão
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Governação">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Governação" role="button" aria-pressed="false">
                             <i data-lucide="landmark" class="w-3.5 h-3.5"></i> Governação
                         </button>
-                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inteligência Artificial">
+                        <button class="sector-filter-btn px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-medium transition-all flex items-center gap-1.5" data-sector="Inteligência Artificial" role="button" aria-pressed="false">
                             <i data-lucide="cpu" class="w-3.5 h-3.5"></i> I.A.
                         </button>
                     </div>
@@ -289,7 +292,7 @@
         </section>
 
         <!-- 2. SECTION: ROADMAP & STRATEGY -->
-        <section id="section-mobilizacao" class="content-section hidden">
+        <section id="section-mobilizacao" role="tabpanel" aria-labelledby="tab-btn-mobilizacao" class="content-section hidden">
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Timeline Column -->
@@ -420,7 +423,7 @@
         </section>
 
         <!-- 3. SECTION: BOILERPLATES / STARTER KIT -->
-        <section id="section-boilerplates" class="content-section hidden">
+        <section id="section-boilerplates" role="tabpanel" aria-labelledby="tab-btn-boilerplates" class="content-section hidden">
             
             <div class="max-w-4xl mx-auto space-y-6">
                 <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 mb-6">
@@ -478,7 +481,7 @@
         </section>
 
         <!-- NEW SECTION: GUIA DO INVESTIGADOR -->
-        <section id="section-guia" class="content-section hidden">
+        <section id="section-guia" role="tabpanel" aria-labelledby="tab-btn-guia" class="content-section hidden">
             <div class="max-w-4xl mx-auto space-y-6">
                 <!-- Header Card -->
                 <div class="glass-panel p-6 rounded-2xl border border-slate-800/80 mb-6 flex flex-col md:flex-row items-center gap-6">
@@ -646,7 +649,7 @@
         </section>
 
         <!-- 4. SECTION: APPLICATION GENERATOR -->
-        <section id="section-estudante" class="content-section hidden">
+        <section id="section-estudante" role="tabpanel" aria-labelledby="tab-btn-estudante" class="content-section hidden">
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 <!-- Form Column -->
@@ -655,89 +658,136 @@
                         <i data-lucide="edit" class="w-6 h-6 text-sky-400"></i> Ficha de Candidatura do Grupo
                     </h2>
                     
-                    <form action="{{ route('portal.submit') }}" method="POST" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4">
+                    <form id="step-by-step-form" action="{{ route('portal.submit') }}" method="POST" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-6">
                         @csrf
                         
-                        <!-- Project Select -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
-                            <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
-                                @foreach($projects as $p)
-                                    @php
-                                        $isReserved = in_array($p['number'], $approvedProjects);
-                                    @endphp
-                                    <option value="{{ $p['number'] }}" data-name="{{ $p['name'] }}" {{ $isReserved ? 'disabled' : '' }}>
-                                        #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' (Reservado 🔒)' : '' !!}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <input type="hidden" name="project_name" id="app-project-name-hidden">
+                        <!-- Step Progress Bar -->
+                        <div class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-slate-900/60" role="navigation" aria-label="Progresso do formulário">
+                            <div class="flex items-center gap-2 step-indicator" data-step="1" id="indicator-step-1">
+                                <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center text-xs font-bold font-mono">1</span>
+                                <span class="text-[10px] uppercase tracking-wider font-bold text-white hidden sm:inline">Projeto</span>
+                            </div>
+                            <div class="flex-grow mx-2 h-0.5 bg-slate-800 step-line" id="line-step-1"></div>
+                            <div class="flex items-center gap-2 step-indicator" data-step="2" id="indicator-step-2">
+                                <span class="w-6 h-6 rounded-full bg-slate-800 text-slate-500 border border-transparent flex items-center justify-center text-xs font-bold font-mono">2</span>
+                                <span class="text-[10px] uppercase tracking-wider font-bold text-slate-500 hidden sm:inline">Grupo</span>
+                            </div>
+                            <div class="flex-grow mx-2 h-0.5 bg-slate-800 step-line" id="line-step-2"></div>
+                            <div class="flex items-center gap-2 step-indicator" data-step="3" id="indicator-step-3">
+                                <span class="w-6 h-6 rounded-full bg-slate-800 text-slate-500 border border-transparent flex items-center justify-center text-xs font-bold font-mono">3</span>
+                                <span class="text-[10px] uppercase tracking-wider font-bold text-slate-500 hidden sm:inline">Motivação</span>
+                            </div>
                         </div>
 
-                        <!-- Tech Select -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-tech-select">2. Tecnologia Principal Selecionada</label>
-                            <select name="technology" id="app-tech-select" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
-                                <option value="PHP Puro + MySQL (Web App)">PHP Puro + MySQL (Web App)</option>
-                                <option value="Laravel + MySQL (Web Framework)">Laravel + MySQL (Web Framework)</option>
-                                <option value="Flutter + SQLite / API Laravel (Mobile)">Flutter + SQLite / API Laravel (Mobile)</option>
-                                <option value="React.js + Node.js (Full Stack SPA)">React.js + Node.js (Full Stack SPA)</option>
-                                <option value="Python + Flask API + SQLite">Python + Flask API + SQLite</option>
-                            </select>
+                        <!-- STEP 1: PROJECT & TECH -->
+                        <div id="step-container-1" class="space-y-4">
+                            <!-- Project Select -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
+                                <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                    @foreach($projects as $p)
+                                        @php
+                                            $isReserved = in_array($p['number'], $approvedProjects);
+                                        @endphp
+                                        <option value="{{ $p['number'] }}" data-name="{{ $p['name'] }}" {{ $isReserved ? 'disabled' : '' }}>
+                                            #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' (Reservado 🔒)' : '' !!}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="project_name" id="app-project-name-hidden">
+                            </div>
+
+                            <!-- Tech Select -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-tech-select">2. Tecnologia Principal Selecionada</label>
+                                <select name="technology" id="app-tech-select" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                    <option value="PHP Puro + MySQL (Web App)">PHP Puro + MySQL (Web App)</option>
+                                    <option value="Laravel + MySQL (Web Framework)">Laravel + MySQL (Web Framework)</option>
+                                    <option value="Flutter + SQLite / API Laravel (Mobile)">Flutter + SQLite / API Laravel (Mobile)</option>
+                                    <option value="React.js + Node.js (Full Stack SPA)">React.js + Node.js (Full Stack SPA)</option>
+                                    <option value="Python + Flask API + SQLite">Python + Flask API + SQLite</option>
+                                </select>
+                            </div>
+
+                            <!-- Mentor Suggested -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-mentor">3. Mentor Sugerido (Finalista de Informática)</label>
+                                <input type="text" name="mentor" id="app-mentor" value="{{ old('mentor') }}" placeholder="Nome do estudante do 3.º ou 4.º ano (opcional)" 
+                                    class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
+                            </div>
                         </div>
 
-                        <!-- Mentor Suggested -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-mentor">3. Mentor Sugerido (Finalista de Informática)</label>
-                            <input type="text" name="mentor" id="app-mentor" value="{{ old('mentor') }}" placeholder="Nome do estudante do 3.º ou 4.º ano (opcional)" 
-                                class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
-                        </div>
-
-                        <!-- Members of the group -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
-                                <div>
-                                    <input type="email" name="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (para PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                        <!-- STEP 2: MEMBERS & CONTACTS -->
+                        <div id="step-container-2" class="space-y-4 hidden">
+                            <!-- Members of the group -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                                    <div>
+                                        <label for="contact_email" class="sr-only">Email de Contacto</label>
+                                        <input type="email" name="contact_email" id="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (para PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    </div>
+                                    <div>
+                                        <label for="contact_phone" class="sr-only">Telemóvel</label>
+                                        <input type="text" name="contact_phone" id="contact_phone" value="{{ old('contact_phone') }}" placeholder="Telemóvel (para SMS, ex: 84xxxxxxx)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    </div>
                                 </div>
-                                <div>
-                                    <input type="text" name="contact_phone" value="{{ old('contact_phone') }}" placeholder="Telemóvel (para SMS, ex: 84xxxxxxx)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                    <label for="member1_name" class="sr-only">Líder do Grupo</label>
+                                    <input type="text" name="member1_name" id="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <label for="member1_code" class="sr-only">N.º Mec. Líder</label>
+                                    <input type="text" name="member1_code" id="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                    <label for="member2_name" class="sr-only">Estudante 2</label>
+                                    <input type="text" name="member2_name" id="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <label for="member2_code" class="sr-only">N.º Mec. Estudante 2</label>
+                                    <input type="text" name="member2_code" id="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                    <label for="member3_name" class="sr-only">Estudante 3 (Opcional)</label>
+                                    <input type="text" name="member3_name" id="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <label for="member3_code" class="sr-only">N.º Mec. Estudante 3</label>
+                                    <input type="text" name="member3_code" id="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                    <label for="member4_name" class="sr-only">Estudante 4 (Opcional)</label>
+                                    <input type="text" name="member4_name" id="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <label for="member4_code" class="sr-only">N.º Mec. Estudante 4</label>
+                                    <input type="text" name="member4_code" id="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
-                                <input type="text" name="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                        <!-- STEP 3: RATIONALE -->
+                        <div id="step-container-3" class="space-y-4 hidden">
+                            <!-- Motivation and context -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-rationale">5. Porquê este Projeto? (Desafios locais em Quelimane)</label>
+                                <textarea name="rationale" id="app-rationale" rows="5" placeholder="Descreva por que o seu grupo escolheu este projeto e que impacto espera causar em Quelimane ou na Província da Zambézia." 
+                                    class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-xs transition-all text-slate-200 resize-none">{{ old('rationale') }}</textarea>
                             </div>
+                        </div>
+
+                        <!-- Form Navigation / Buttons -->
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-800/60">
+                            <button type="button" id="btn-prev-step" class="opacity-0 pointer-events-none px-4 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all">
+                                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Anterior
+                            </button>
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
-                                <input type="text" name="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                                <input type="text" name="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                <input type="text" name="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <input type="text" name="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                <input type="text" name="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                            </div>
+                            <button type="button" id="btn-next-step" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/10">
+                                Seguinte <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            
+                            <button type="submit" id="btn-submit-form" class="hidden px-5 py-2.5 bg-gradient-ul hover:opacity-90 active:opacity-100 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/15">
+                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Registar Grupo
+                            </button>
                         </div>
-
-                        <!-- Motivation and context -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-rationale">5. Porquê este Projeto? (Desafios locais em Quelimane)</label>
-                            <textarea name="rationale" id="app-rationale" rows="4" placeholder="Descreva por que o seu grupo escolheu este projeto e que impacto espera causar em Quelimane ou na Província da Zambézia." 
-                                class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-xs transition-all text-slate-200 resize-none" required>{{ old('rationale') }}</textarea>
-                        </div>
-                        
-                        <!-- Submit Action -->
-                        <button type="submit" class="w-full py-2.5 bg-gradient-ul hover:opacity-90 active:opacity-100 text-white font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/10">
-                            <i data-lucide="check" class="w-4 h-4"></i> Registar Grupo no Sistema
-                        </button>
                     </form>
                 </div>
 
@@ -792,8 +842,8 @@
     </main>
 
     <!-- AI STARTUP ADVISOR MODAL -->
-    <div id="ai-advisor-modal" class="fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-        <div class="glass-panel w-full max-w-xl rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] relative animate-zoom-in overflow-hidden">
+    <div id="ai-advisor-modal" class="fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-xl mx-auto rounded-2xl sm:rounded-3xl border border-slate-800/80 shadow-2xl flex flex-col max-h-[90dvh] relative animate-zoom-in overflow-hidden my-auto">
             <!-- Modal Header -->
             <div class="p-4 sm:px-6 sm:py-4 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between flex-shrink-0">
                 <div class="flex items-center gap-2 sm:gap-3">
@@ -833,10 +883,13 @@
                         <!-- Actions Area -->
                         <div id="ai-actions-area" class="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                             <button onclick="copyAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
-                                <i data-lucide="copy" class="w-3.5 h-3.5 text-sky-400"></i> Copiar Ideia
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-sky-400"></i> Copiar
                             </button>
                             <button onclick="shareAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
                                 <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i> Partilhar
+                            </button>
+                            <button onclick="downloadAiSuggestionPdf(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
+                                <i data-lucide="download" class="w-3.5 h-3.5 text-rose-400"></i> PDF
                             </button>
                         </div>
                     </div>
@@ -1868,15 +1921,172 @@
                 navigator.clipboard.writeText(content).then(() => {
                     const btn = event.currentTarget;
                     const originalHTML = btn.innerHTML;
-                    btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Copiado para Partilhar!';
+                    btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Copiado!';
                     lucide.createIcons();
                     setTimeout(() => {
                         btn.innerHTML = originalHTML;
                         lucide.createIcons();
                     }, 2000);
+                }).catch(err => {
+                    console.error('Erro no fallback de partilha:', err);
                 });
             }
         }
+
+        function downloadAiSuggestionPdf(event) {
+            const contentHTML = document.getElementById('ai-suggestion-content').innerHTML;
+            const printWindow = window.open('', '_blank', 'height=600,width=800');
+            if(!printWindow) {
+                alert("Por favor, permita pop-ups para descarregar o PDF.");
+                return;
+            }
+            printWindow.document.write('<!DOCTYPE html><html><head><title>Ideia de Projeto - TechHub</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #334155; padding: 40px; max-width: 800px; margin: 0 auto; }');
+            printWindow.document.write('h1 { color: #0284c7; border-bottom: 2px solid #e0f2fe; padding-bottom: 10px; margin-bottom: 30px; }');
+            printWindow.document.write('h2, h3, h4 { color: #0f172a; margin-top: 25px; }');
+            printWindow.document.write('p { margin-bottom: 15px; }');
+            printWindow.document.write('strong { color: #0369a1; }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write('<h1>Ideia de Projeto - UniLicungo TechHub</h1>');
+            printWindow.document.write(contentHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            
+            // Wait for resources to load if any
+            setTimeout(() => {
+                printWindow.focus();
+                printWindow.print();
+                // We don't automatically close so the user can see the dialog properly on mobile
+            }, 500);
+        }
+
+
+        // Step-by-Step Form Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('step-by-step-form');
+            if(!form) return;
+
+            const btnNext = document.getElementById('btn-next-step');
+            const btnPrev = document.getElementById('btn-prev-step');
+            const btnSubmit = document.getElementById('btn-submit-form');
+            
+            let currentStep = 1;
+            const totalSteps = 3;
+
+            function validateStep(step) {
+                let isValid = true;
+                const currentContainer = document.getElementById(`step-container-${step}`);
+                const requiredInputs = currentContainer.querySelectorAll('input[required], select[required], textarea[required]');
+                
+                // Reset custom validities first just in case
+                requiredInputs.forEach(input => {
+                    input.setCustomValidity('');
+                });
+                
+                // Check each required field
+                for (let input of requiredInputs) {
+                    if (!input.checkValidity()) {
+                        input.reportValidity();
+                        isValid = false;
+                        break; // Stop at first error and report
+                    }
+                }
+                
+                return isValid;
+            }
+
+            function updateUI() {
+                // Hide all steps
+                for(let i = 1; i <= totalSteps; i++) {
+                    const stepContainer = document.getElementById(`step-container-${i}`);
+                    if (stepContainer) {
+                        stepContainer.classList.add('hidden');
+                    }
+                    
+                    // Update indicators
+                    const indicator = document.getElementById(`indicator-step-${i}`);
+                    if (indicator) {
+                        const numSpan = indicator.querySelector('span:first-child');
+                        const textSpan = indicator.querySelector('span:last-child');
+                        
+                        if(i < currentStep) {
+                            // Completed
+                            numSpan.className = 'w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs font-bold font-mono';
+                            numSpan.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i>';
+                            textSpan.className = 'text-[10px] uppercase tracking-wider font-bold text-emerald-400 hidden sm:inline';
+                            
+                            if(i < totalSteps) {
+                                document.getElementById(`line-step-${i}`).className = 'flex-grow mx-2 h-0.5 bg-emerald-500/30 step-line transition-colors';
+                            }
+                        } else if(i === currentStep) {
+                            // Current
+                            numSpan.className = 'w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center text-xs font-bold font-mono';
+                            numSpan.innerHTML = i;
+                            textSpan.className = 'text-[10px] uppercase tracking-wider font-bold text-white hidden sm:inline';
+                            
+                            if(i < totalSteps) {
+                                document.getElementById(`line-step-${i}`).className = 'flex-grow mx-2 h-0.5 bg-slate-800 step-line transition-colors';
+                            }
+                        } else {
+                            // Pending
+                            numSpan.className = 'w-6 h-6 rounded-full bg-slate-800 text-slate-500 border border-transparent flex items-center justify-center text-xs font-bold font-mono';
+                            numSpan.innerHTML = i;
+                            textSpan.className = 'text-[10px] uppercase tracking-wider font-bold text-slate-500 hidden sm:inline';
+                            
+                            if(i < totalSteps) {
+                                document.getElementById(`line-step-${i}`).className = 'flex-grow mx-2 h-0.5 bg-slate-800 step-line transition-colors';
+                            }
+                        }
+                    }
+                }
+                
+                // Show current step
+                const currentContainer = document.getElementById(`step-container-${currentStep}`);
+                if (currentContainer) {
+                    currentContainer.classList.remove('hidden');
+                    currentContainer.classList.add('animate-fade-in');
+                }
+                
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+                
+                // Update buttons
+                if(currentStep === 1) {
+                    btnPrev.classList.add('opacity-0', 'pointer-events-none');
+                    btnPrev.classList.remove('opacity-100');
+                } else {
+                    btnPrev.classList.remove('opacity-0', 'pointer-events-none');
+                    btnPrev.classList.add('opacity-100');
+                }
+                
+                if(currentStep === totalSteps) {
+                    btnNext.classList.add('hidden');
+                    btnSubmit.classList.remove('hidden');
+                } else {
+                    btnNext.classList.remove('hidden');
+                    btnSubmit.classList.add('hidden');
+                }
+            }
+
+            btnNext.addEventListener('click', () => {
+                if(validateStep(currentStep)) {
+                    currentStep++;
+                    updateUI();
+                }
+            });
+
+            btnPrev.addEventListener('click', () => {
+                if(currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+
+            // Init UI
+            updateUI();
+        });
     </script>
     <!-- FLOATING WHATSAPP BUTTON -->
     <a href="https://wa.me/258862134230" target="_blank" class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:shadow-emerald-500/20 group" title="Dúvidas no WhatsApp">

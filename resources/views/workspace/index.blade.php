@@ -433,23 +433,20 @@
                             @if($msg->sender_type === 'ai')
                                 <!-- AI Message (Left) -->
                                 <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
-                                        <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                                    <div class="w-8 h-8 rounded-full bg-sky-500/20 border border-sky-500/30 flex items-center justify-center flex-shrink-0 shadow-lg shadow-sky-500/10">
+                                        <i data-lucide="bot" class="w-4 h-4 text-sky-400"></i>
                                     </div>
                                     <div>
-                                        <div class="flex items-baseline gap-2 mb-1">
-                                            <span class="text-xs font-bold text-indigo-400">Assistente IA (Académico)</span>
-                                            <span
-                                                class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
+                                        <div class="flex items-baseline gap-2 mb-1.5">
+                                            <span class="text-xs font-bold text-sky-400">TechHub AI</span>
+                                            <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
-                                        <div
-                                            class="group relative p-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                        <div class="group relative p-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if($isAdmin)
-                                                <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
-                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                <div class="absolute -right-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
                                             @endif
                                         </div>
@@ -458,23 +455,20 @@
                             @elseif($msg->sender_type === 'mentor')
                                 <!-- Mentor Message (Left) -->
                                 <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-bronze-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-bronze-500/20">
-                                        <i data-lucide="graduation-cap" class="w-4 h-4 text-white"></i>
+                                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/10">
+                                        <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-400"></i>
                                     </div>
                                     <div>
-                                        <div class="flex items-baseline gap-2 mb-1">
-                                            <span class="text-xs font-bold text-bronze-400">Docente Mentor</span>
-                                            <span
-                                                class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
+                                        <div class="flex items-baseline gap-2 mb-1.5">
+                                            <span class="text-xs font-bold text-emerald-400">Docente Mentor</span>
+                                            <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
-                                        <div
-                                            class="group relative p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                        <div class="group relative p-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if($isAdmin)
-                                                <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
-                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                <div class="absolute -right-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-emerald-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
                                             @endif
                                         </div>
@@ -484,25 +478,21 @@
                                 <!-- Student Message (Right) -->
                                 <div class="flex items-start gap-3 w-[92%] sm:w-4/5 ml-auto justify-end">
                                     <div class="text-right">
-                                        <div class="flex items-baseline gap-2 mb-1 justify-end">
-                                            <span
-                                                class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
-                                            <span class="text-xs font-bold text-sky-400">Grupo:
-                                                {{ $candidatura->project_name }}</span>
+                                        <div class="flex items-baseline gap-2 mb-1.5 justify-end">
+                                            <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
+                                            <span class="text-xs font-bold text-sky-400">Grupo: {{ $candidatura->project_name }}</span>
                                         </div>
-                                        <div
-                                            class="group relative p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">
+                                        <div class="group relative p-4 bg-sky-900/40 border border-sky-500/30 shadow-md rounded-xl rounded-tr-sm text-sm text-sky-100 whitespace-pre-wrap text-left leading-relaxed">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if(!$isAdmin)
-                                                <div class="absolute -left-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
-                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-200 hover:text-white bg-slate-800 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
-                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-200 hover:text-red-400 bg-slate-800 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                                <div class="absolute -left-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                    <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+                                                    <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
-                                    <div
-                                        class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0">
                                         <i data-lucide="users" class="w-4 h-4 text-sky-400"></i>
                                     </div>
                                 </div>
@@ -1277,14 +1267,15 @@
         function showAILoading() {
             Swal.fire({
                 title: 'Assistente IA a Processar...',
-                html: '<div class="text-slate-400 text-sm mt-2 mb-4">Por favor aguarde enquanto a Inteligência Artificial analisa o contexto do projeto.</div><div class="flex justify-center"><i data-lucide="loader-2" class="w-8 h-8 text-indigo-500 animate-spin"></i></div>',
-                background: '#0b0f19',
-                color: '#fff',
+                html: '<div class="text-slate-400 text-sm mt-2 mb-4">Por favor aguarde enquanto a Inteligência Artificial analisa o contexto do projeto.</div><div class="flex justify-center"><i data-lucide="loader-2" class="w-8 h-8 text-sky-500 animate-spin"></i></div>',
+                background: '#0f172a', // bg-slate-900
+                color: '#f8fafc',
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 width: window.innerWidth < 640 ? '90%' : '500px',
                 customClass: {
-                    popup: 'border border-slate-800 rounded-2xl p-4 sm:p-6 text-center'
+                    popup: 'border border-slate-800/80 rounded-3xl p-4 sm:p-6 text-center shadow-2xl backdrop-blur-xl bg-slate-950/80',
+                    title: 'text-lg font-bold text-white font-display'
                 },
                 didOpen: () => { 
                     lucide.createIcons();
@@ -1302,20 +1293,25 @@
                 .then(data => {
                     if (data.success) {
                         Swal.fire({
-                            iconHtml: '<div class="w-20 h-20 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30"><i data-lucide="sparkles" class="w-10 h-10 text-indigo-400"></i></div>',
-                            customClass: { icon: 'border-none mx-auto mb-4' },
+                            iconHtml: '<div class="w-20 h-20 rounded-full bg-sky-500/20 flex items-center justify-center border border-sky-500/30"><i data-lucide="sparkles" class="w-10 h-10 text-sky-400"></i></div>',
+                            customClass: { 
+                                popup: 'border border-slate-800/80 rounded-3xl shadow-2xl backdrop-blur-xl bg-slate-950/80',
+                                icon: 'border-none mx-auto mb-4',
+                                title: 'text-xl font-bold text-white font-display',
+                                confirmButton: 'px-6 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-sky-500/20'
+                            },
+                            buttonsStyling: false,
                             title: 'Tarefas Criadas!',
-                            text: 'A IA sugeriu novas tarefas e colocou-as na coluna "A Fazer"!',
-                            background: '#0b0f19', color: '#fff',
-                            confirmButtonColor: '#4f46e5',
+                            html: '<p class="text-slate-300 text-sm">A IA sugeriu novas tarefas e colocou-as na coluna "A Fazer"!</p>',
+                            background: '#0f172a', color: '#f8fafc',
                             didOpen: () => lucide.createIcons()
                         });
                         loadKanbanTasks();
                     } else {
-                        Swal.fire({ icon: 'error', title: 'Oops...', text: data.error || data.raw, background: '#0b0f19', color: '#fff' });
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: data.error || data.raw, background: '#0f172a', color: '#f8fafc', customClass: { popup: 'border border-slate-800/80 rounded-3xl backdrop-blur-xl bg-slate-950/80' } });
                     }
                 })
-                .catch(() => Swal.fire({ icon: 'error', title: 'Erro de rede', text: 'Não foi possível contactar a IA.', background: '#0b0f19', color: '#fff' }));
+                .catch(() => Swal.fire({ icon: 'error', title: 'Erro de rede', text: 'Não foi possível contactar a IA.', background: '#0f172a', color: '#f8fafc', customClass: { popup: 'border border-slate-800/80 rounded-3xl backdrop-blur-xl bg-slate-950/80' } }));
         }
 
         function aiSummarize() {
@@ -1324,17 +1320,23 @@
                 .then(res => res.json())
                 .then(data => {
                     Swal.fire({
-                        iconHtml: '<div class="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30"><i data-lucide="brain" class="w-8 h-8 text-indigo-400"></i></div>',
-                        customClass: { icon: 'border-none mx-auto mb-4', htmlContainer: 'mt-4' },
+                        iconHtml: '<div class="w-16 h-16 rounded-full bg-sky-500/20 flex items-center justify-center border border-sky-500/30"><i data-lucide="brain" class="w-8 h-8 text-sky-400"></i></div>',
+                        customClass: { 
+                            popup: 'border border-slate-800/80 rounded-3xl shadow-2xl backdrop-blur-xl bg-slate-950/80 text-left',
+                            icon: 'border-none mx-auto mb-4', 
+                            htmlContainer: 'mt-4',
+                            title: 'text-xl font-bold text-white font-display text-center',
+                            confirmButton: 'px-6 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-sky-500/20 w-full'
+                        },
+                        buttonsStyling: false,
                         title: 'Análise de Progresso IA',
-                        html: `<div class="text-sm text-left leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-indigo-400">${data.summary}</div>`,
-                        background: '#0b0f19', color: '#fff',
-                        confirmButtonColor: '#4f46e5',
+                        html: `<div class="text-sm leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-sky-400">${data.summary}</div>`,
+                        background: '#0f172a', color: '#f8fafc',
                         width: window.innerWidth < 640 ? '95%' : '600px',
                         didOpen: () => lucide.createIcons()
                     });
                 })
-                .catch(() => Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível gerar o resumo.', background: '#0b0f19', color: '#fff' }));
+                .catch(() => Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível gerar o resumo.', background: '#0f172a', color: '#f8fafc', customClass: { popup: 'border border-slate-800/80 rounded-3xl backdrop-blur-xl bg-slate-950/80' } }));
         }
 
         function aiAnalyzeChat() {
@@ -1343,17 +1345,23 @@
                 .then(res => res.json())
                 .then(data => {
                     Swal.fire({
-                        iconHtml: '<div class="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30"><i data-lucide="lightbulb" class="w-8 h-8 text-indigo-400"></i></div>',
-                        customClass: { icon: 'border-none mx-auto mb-4', htmlContainer: 'mt-4' },
+                        iconHtml: '<div class="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center border border-amber-500/30"><i data-lucide="lightbulb" class="w-8 h-8 text-amber-400"></i></div>',
+                        customClass: { 
+                            popup: 'border border-slate-800/80 rounded-3xl shadow-2xl backdrop-blur-xl bg-slate-950/80 text-left',
+                            icon: 'border-none mx-auto mb-4', 
+                            htmlContainer: 'mt-4',
+                            title: 'text-xl font-bold text-white font-display text-center',
+                            confirmButton: 'px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-amber-500/20 w-full'
+                        },
+                        buttonsStyling: false,
                         title: 'Análise da Conversa IA',
-                        html: `<div class="text-sm text-left leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-indigo-400">${data.analysis}</div>`,
-                        background: '#0b0f19', color: '#fff',
-                        confirmButtonColor: '#4f46e5',
+                        html: `<div class="text-sm leading-relaxed text-slate-300 max-h-[60vh] overflow-y-auto scrollbar-thin pr-2 prose prose-invert prose-p:mb-2 prose-strong:text-amber-400">${data.analysis}</div>`,
+                        background: '#0f172a', color: '#f8fafc',
                         width: window.innerWidth < 640 ? '95%' : '600px',
                         didOpen: () => lucide.createIcons()
                     });
                 })
-                .catch(() => Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao analisar a conversa.', background: '#0b0f19', color: '#fff' }));
+                .catch(() => Swal.fire({ icon: 'error', title: 'Erro', text: 'Falha ao analisar a conversa.', background: '#0f172a', color: '#f8fafc', customClass: { popup: 'border border-slate-800/80 rounded-3xl backdrop-blur-xl bg-slate-950/80' } }));
         }
         function aiAskAssistant() {
             const input = document.getElementById('message-input');
@@ -1506,21 +1514,25 @@
             let htmlContent = '';
             
             if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext.toLowerCase())) {
-                htmlContent = `<div class="flex justify-center bg-slate-900 rounded-lg p-2"><img src="${url}" alt="${fileName}" class="max-w-full max-h-[50vh] sm:max-h-[70vh] rounded shadow-lg object-contain"></div>`;
+                htmlContent = `<div class="flex justify-center bg-slate-900/50 rounded-xl p-2 w-full overflow-hidden"><img src="${url}" alt="${fileName}" class="max-w-full max-h-[60vh] sm:max-h-[75vh] rounded shadow-lg object-contain"></div>`;
             } else if (ext.toLowerCase() === 'pdf') {
-                htmlContent = `<iframe src="${url}" class="w-full h-[50vh] sm:h-[70vh] border-0 rounded-lg bg-white"></iframe>`;
+                htmlContent = `<div class="w-full overflow-hidden rounded-xl bg-white"><iframe src="${url}" class="w-full h-[65vh] sm:h-[75vh] border-0"></iframe></div>`;
             } else if (['mp4', 'webm', 'ogg'].includes(ext.toLowerCase())) {
-                htmlContent = `<video controls class="w-full max-h-[50vh] sm:max-h-[70vh] rounded-lg bg-black"><source src="${url}" type="video/${ext}">O seu navegador não suporta vídeos.</video>`;
+                htmlContent = `<div class="w-full overflow-hidden rounded-xl bg-black flex justify-center"><video controls class="w-full max-h-[60vh] sm:max-h-[75vh] object-contain"><source src="${url}" type="video/${ext}">O seu navegador não suporta vídeos.</video></div>`;
             } else if (['txt', 'csv', 'json', 'md'].includes(ext.toLowerCase())) {
-                htmlContent = `<iframe src="${url}" class="w-full h-[50vh] sm:h-[70vh] border-0 rounded-lg bg-slate-900 text-slate-300"></iframe>`;
+                htmlContent = `<div class="w-full overflow-hidden rounded-xl bg-slate-900/80 border border-slate-800"><iframe src="${url}" class="w-full h-[60vh] sm:h-[75vh] border-0 text-slate-300"></iframe></div>`;
             } else {
                 Swal.fire({
                     icon: 'info',
                     title: 'Pré-visualização Indisponível',
                     text: `Não é possível pré-visualizar ficheiros do tipo .${ext} no navegador. Por favor, descarregue o ficheiro para o visualizar.`,
-                    background: '#0b0f19',
-                    color: '#fff',
-                    confirmButtonColor: '#0ea5e9'
+                    background: '#0f172a',
+                    color: '#f8fafc',
+                    confirmButtonColor: '#0ea5e9',
+                    customClass: {
+                        popup: 'border border-slate-800/80 rounded-3xl shadow-2xl backdrop-blur-xl bg-slate-950/80',
+                        confirmButton: 'px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-sky-500/20'
+                    }
                 });
                 return;
             }
@@ -1528,16 +1540,16 @@
             Swal.fire({
                 title: fileName,
                 html: htmlContent,
-                width: window.innerWidth < 640 ? '95%' : '80%',
-                background: '#0b0f19',
-                color: '#fff',
+                width: window.innerWidth < 640 ? '95%' : '85%',
+                background: '#0f172a',
+                color: '#f8fafc',
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: {
-                    title: 'text-sm sm:text-lg font-bold text-sky-400 mb-2 sm:mb-4 truncate px-4',
-                    popup: 'border border-slate-800 rounded-2xl p-2 sm:p-4',
-                    closeButton: 'text-slate-400 hover:text-white',
-                    htmlContainer: 'm-0 p-0'
+                    title: 'text-sm sm:text-lg font-bold text-sky-400 mb-2 sm:mb-4 truncate px-6',
+                    popup: 'border border-slate-800/80 rounded-3xl p-3 sm:p-5 shadow-2xl backdrop-blur-xl bg-slate-950/80 w-full max-w-full overflow-hidden',
+                    closeButton: 'text-slate-400 hover:text-white focus:outline-none transition-colors',
+                    htmlContainer: 'm-0 p-0 w-full overflow-x-hidden'
                 }
             });
         }

@@ -119,37 +119,57 @@
         <!-- CONTENT SCROLL -->
         <main class="flex-1 overflow-y-auto p-4 md:p-8 relative z-10 custom-scrollbar">
             
-            <!-- STATS GRID -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Total de Inscrições</span>
-                    <div class="flex items-end justify-between mt-3">
-                        <span class="text-4xl font-black text-white leading-none">{{ $stats['total'] }}</span>
-                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400"><i data-lucide="folder" class="w-5 h-5"></i></div>
+            <!-- BENTO GRID STATS -->
+            <div class="grid grid-cols-2 md:grid-cols-12 gap-4 mb-8">
+                <!-- Total (Featured) -->
+                <div class="col-span-2 md:col-span-6 glass-panel border border-slate-800/80 rounded-3xl p-6 shadow-2xl flex flex-col justify-between relative overflow-hidden group min-h-[160px]">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/20 rounded-full blur-3xl group-hover:bg-sky-500/30 transition-all duration-500"></div>
+                    <div class="flex items-start justify-between relative z-10">
+                        <span class="text-xs sm:text-sm font-bold text-sky-400 uppercase tracking-wider font-mono">Total de Inscrições</span>
+                        <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner group-hover:scale-110 transition-transform duration-300"><i data-lucide="folders" class="w-6 h-6"></i></div>
+                    </div>
+                    <div class="mt-4 relative z-10">
+                        <span class="text-5xl sm:text-6xl font-black text-white leading-none tracking-tight">{{ $stats['total'] }}</span>
+                        <p class="text-xs text-slate-400 mt-2 font-medium">Projetos submetidos na plataforma</p>
                     </div>
                 </div>
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500/80"></div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Em Avaliação</span>
-                    <div class="flex items-end justify-between mt-3">
-                        <span class="text-4xl font-black text-amber-500 leading-none">{{ $stats['pendente'] }}</span>
-                        <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500"><i data-lucide="clock" class="w-5 h-5"></i></div>
+
+                <!-- Em Avaliação -->
+                <div class="col-span-1 md:col-span-3 glass-panel border border-slate-800/80 rounded-3xl p-5 shadow-2xl flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500/80 rounded-l-3xl"></div>
+                    <div class="flex items-start justify-between relative z-10">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shadow-inner group-hover:rotate-12 transition-transform duration-300"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                    </div>
+                    <div class="mt-4 relative z-10">
+                        <span class="text-3xl sm:text-4xl font-black text-amber-500 leading-none">{{ $stats['pendente'] }}</span>
+                        <span class="block text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider font-mono mt-2">Pendentes</span>
                     </div>
                 </div>
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500/80"></div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Aprovados</span>
-                    <div class="flex items-end justify-between mt-3">
-                        <span class="text-4xl font-black text-emerald-400 leading-none">{{ $stats['aprovado'] }}</span>
-                        <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+
+                <!-- Aprovados -->
+                <div class="col-span-1 md:col-span-3 glass-panel border border-slate-800/80 rounded-3xl p-5 shadow-2xl flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500/80 rounded-l-3xl"></div>
+                    <div class="flex items-start justify-between relative z-10">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-inner group-hover:scale-110 transition-transform duration-300"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+                    </div>
+                    <div class="mt-4 relative z-10">
+                        <span class="text-3xl sm:text-4xl font-black text-emerald-400 leading-none">{{ $stats['aprovado'] }}</span>
+                        <span class="block text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider font-mono mt-2">Aprovados</span>
                     </div>
                 </div>
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-rose-500/80"></div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Rejeitados</span>
-                    <div class="flex items-end justify-between mt-3">
-                        <span class="text-4xl font-black text-rose-400 leading-none">{{ $stats['rejeitado'] }}</span>
-                        <div class="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400"><i data-lucide="x-circle" class="w-5 h-5"></i></div>
+
+                <!-- Rejeitados -->
+                <div class="col-span-1 md:col-span-3 lg:col-span-12 glass-panel border border-slate-800/80 rounded-3xl p-3 sm:p-5 shadow-2xl flex flex-col lg:flex-row lg:items-center justify-between relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-rose-500/80 rounded-l-3xl"></div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 shadow-inner"><i data-lucide="x-circle" class="w-5 h-5"></i></div>
+                        <span class="block text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Rejeitados</span>
+                    </div>
+                    <div class="mt-2 lg:mt-0 relative z-10 text-right">
+                        <span class="text-2xl sm:text-3xl font-black text-rose-400 leading-none">{{ $stats['rejeitado'] }}</span>
                     </div>
                 </div>
             </div>
@@ -157,7 +177,21 @@
             <!-- TABS CONTENT -->
             <!-- TAB: GRUPOS -->
             <div id="tab-grupos" class="admin-tab-content block animate-fade-in space-y-6">
-                <div class="bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-800 shadow-2xl overflow-hidden">
+                
+                <!-- Smart Filters -->
+                <div class="glass-panel p-4 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col sm:flex-row gap-4 items-center justify-between relative z-20">
+                    <div class="relative w-full sm:w-96">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                        <input type="text" id="project-search" onkeyup="filterProjects()" placeholder="Pesquisar por projeto, mentor ou tecnologia..." class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all placeholder:text-slate-500">
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                        <button onclick="filterStatus('Todos')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all">Todos</button>
+                        <button onclick="filterStatus('Pendente')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all">Pendentes</button>
+                        <button onclick="filterStatus('Aprovado')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all">Aprovados</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-800/80 shadow-2xl overflow-hidden">
                     <div class="px-6 py-5 border-b border-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h3 class="text-base font-bold text-white flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-sky-500"></i> Projetos Submetidos</h3>
@@ -830,6 +864,57 @@
                         }
                     });
                 }
+            });
+        }
+
+        // Smart Filters Logic
+        let currentStatusFilter = 'Todos';
+        function filterStatus(status) {
+            currentStatusFilter = status;
+            
+            // Update UI for buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const btnText = btn.innerText.trim();
+                const isActive = (btnText === status) || 
+                    (status === 'Pendente' && btnText === 'Pendentes') || 
+                    (status === 'Aprovado' && btnText === 'Aprovados') ||
+                    (status === 'Todos' && btnText === 'Todos');
+                if (isActive) {
+                    btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all';
+                } else {
+                    btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all';
+                }
+            });
+            filterProjects();
+        }
+
+        function filterProjects() {
+            const query = document.getElementById('project-search').value.toLowerCase();
+            const rowsDesktop = document.querySelectorAll('tbody tr');
+            const cardsMobile = document.querySelectorAll('#tab-grupos .grid.grid-cols-1 > div');
+
+            // Filter Desktop rows
+            rowsDesktop.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const statusBadge = row.querySelector('[id^="badge-status-"]');
+                const rowStatus = statusBadge ? statusBadge.innerText.trim() : '';
+                
+                const matchesSearch = text.includes(query);
+                const matchesStatus = currentStatusFilter === 'Todos' || rowStatus === currentStatusFilter;
+                
+                row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+            });
+
+            // Filter Mobile cards
+            cardsMobile.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                const statusBadge = card.querySelector('[id^="badge-status-mobile-"]');
+                const cardStatus = statusBadge ? statusBadge.innerText.trim() : '';
+
+                const matchesSearch = text.includes(query);
+                const matchesStatus = currentStatusFilter === 'Todos' || cardStatus === currentStatusFilter;
+
+                card.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
             });
         }
     </script>

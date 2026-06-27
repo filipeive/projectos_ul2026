@@ -129,8 +129,11 @@ class AfricaTalkingService
                 return [true, "SMS enviado com sucesso."];
             }
 
-            Log::error("Erro ao enviar SMS via httpSMS. Status: {$status} Body: {$response}");
-            return [false, "Resposta httpSMS: " . ($result['message'] ?? $response)];
+            $errDetail = $result['message'] ?? $response;
+            if (is_array($errDetail) || is_object($errDetail)) {
+                $errDetail = json_encode($errDetail, JSON_UNESCAPED_UNICODE);
+            }
+            return [false, "Resposta httpSMS: " . $errDetail];
         } catch (\Exception $e) {
             Log::error("Excepção ao enviar SMS via httpSMS: " . $e->getMessage());
             return [false, "Erro de ligação: " . $e->getMessage()];
@@ -216,8 +219,11 @@ class AfricaTalkingService
                 return [true, "SMS enviado com sucesso."];
             }
 
-            Log::error("Erro ao enviar SMS via D7 Networks. Status: {$status} Body: {$response}");
-            return [false, "Resposta D7 Networks: " . ($result['detail'] ?? $response)];
+            $errDetail = $result['detail'] ?? $response;
+            if (is_array($errDetail) || is_object($errDetail)) {
+                $errDetail = json_encode($errDetail, JSON_UNESCAPED_UNICODE);
+            }
+            return [false, "Resposta D7 Networks: " . $errDetail];
         } catch (\Exception $e) {
             Log::error("Excepção ao enviar SMS via D7 Networks: " . $e->getMessage());
             return [false, "Erro de ligação: " . $e->getMessage()];
@@ -287,6 +293,9 @@ class AfricaTalkingService
             }
 
             $errMsg = $result['messages'][0]['error-text'] ?? $response;
+            if (is_array($errMsg) || is_object($errMsg)) {
+                $errMsg = json_encode($errMsg, JSON_UNESCAPED_UNICODE);
+            }
             Log::error("Erro ao enviar SMS via Vonage. Status: {$status} Response: " . $errMsg);
             return [false, "Resposta Vonage: " . $errMsg];
         } catch (\Exception $e) {
@@ -361,8 +370,11 @@ class AfricaTalkingService
                 return [true, "SMS enviado com sucesso."];
             }
 
-            Log::error("Erro ao enviar SMS via Twilio. Status: {$status} Body: {$response}");
-            return [false, "Resposta Twilio: " . ($result['message'] ?? $response)];
+            $errDetail = $result['message'] ?? $response;
+            if (is_array($errDetail) || is_object($errDetail)) {
+                $errDetail = json_encode($errDetail, JSON_UNESCAPED_UNICODE);
+            }
+            return [false, "Resposta Twilio: " . $errDetail];
         } catch (\Exception $e) {
             Log::error("Excepção ao enviar SMS via Twilio: " . $e->getMessage());
             return [false, "Erro de ligação: " . $e->getMessage()];
@@ -441,8 +453,11 @@ class AfricaTalkingService
                 return [true, "SMS enviado com sucesso."];
             }
 
-            Log::error("Erro ao enviar SMS via Africa's Talking. Status: {$status} Body: {$response}");
-            return [false, "Resposta do servidor: " . ($result['SMSMessageData']['Recipients'][0]['status'] ?? $response)];
+            $errDetail = $result['SMSMessageData']['Recipients'][0]['status'] ?? $response;
+            if (is_array($errDetail) || is_object($errDetail)) {
+                $errDetail = json_encode($errDetail, JSON_UNESCAPED_UNICODE);
+            }
+            return [false, "Resposta do servidor: " . $errDetail];
         } catch (\Exception $e) {
             Log::error("Excepção ao enviar SMS via Africa's Talking: " . $e->getMessage());
             return [false, "Erro de ligação: " . $e->getMessage()];

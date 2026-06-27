@@ -36,7 +36,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom CSS Styles -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
+    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
 </head>
 <body class="h-screen bg-slate-950 text-slate-100 flex overflow-hidden antialiased">
     
@@ -58,20 +59,20 @@
         </div>
         
         <!-- Navigation -->
-        <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto relative z-10">
+        <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto relative z-10" role="tablist" aria-label="Áreas do painel administrativo">
             <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3 px-2">Menu Principal</div>
             
-            <button onclick="switchAdminTab('grupos', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl bg-sky-500/10 text-sky-400 font-semibold admin-tab-btn transition-all border border-sky-500/20">
+            <button onclick="switchAdminTab('grupos', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl bg-sky-500/10 text-sky-400 font-semibold admin-tab-btn transition-all border border-sky-500/20" role="tab" aria-selected="true" aria-controls="tab-grupos">
                 <i data-lucide="layers" class="w-4 h-4"></i> Gestão de Grupos
             </button>
             
             @if($user->role === 'admin')
-            <button onclick="switchAdminTab('users', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 font-medium admin-tab-btn transition-all border border-transparent hover:border-slate-700">
+            <button onclick="switchAdminTab('users', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 font-medium admin-tab-btn transition-all border border-transparent hover:border-slate-700" role="tab" aria-selected="false" aria-controls="tab-users">
                 <i data-lucide="users" class="w-4 h-4"></i> Gestão de Utilizadores
             </button>
             @endif
             
-            <button onclick="switchAdminTab('perfil', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 font-medium admin-tab-btn transition-all border border-transparent hover:border-slate-700">
+            <button onclick="switchAdminTab('perfil', this)" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 font-medium admin-tab-btn transition-all border border-transparent hover:border-slate-700" role="tab" aria-selected="false" aria-controls="tab-perfil">
                 <i data-lucide="user" class="w-4 h-4"></i> Meu Perfil
             </button>
         </nav>
@@ -176,7 +177,7 @@
 
             <!-- TABS CONTENT -->
             <!-- TAB: GRUPOS -->
-            <div id="tab-grupos" class="admin-tab-content block animate-fade-in space-y-6">
+            <div id="tab-grupos" class="admin-tab-content block animate-fade-in space-y-6" role="tabpanel">
                 
                 <!-- Smart Filters -->
                 <div class="glass-panel p-4 rounded-2xl border border-slate-800/80 shadow-lg flex flex-col sm:flex-row gap-4 items-center justify-between relative z-20">
@@ -185,9 +186,9 @@
                         <input type="text" id="project-search" onkeyup="filterProjects()" placeholder="Pesquisar por projeto, mentor ou tecnologia..." class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all placeholder:text-slate-500">
                     </div>
                     <div class="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-                        <button onclick="filterStatus('Todos')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all">Todos</button>
-                        <button onclick="filterStatus('Pendente')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all">Pendentes</button>
-                        <button onclick="filterStatus('Aprovado')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all">Aprovados</button>
+                        <button onclick="filterStatus('Todos')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all" aria-pressed="true">Todos</button>
+                        <button onclick="filterStatus('Pendente')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all" aria-pressed="false">Pendentes</button>
+                        <button onclick="filterStatus('Aprovado')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all" aria-pressed="false">Aprovados</button>
                     </div>
                 </div>
 
@@ -410,7 +411,7 @@
 
             <!-- TAB: UTILIZADORES -->
             @if($user->role === 'admin')
-            <div id="tab-users" class="admin-tab-content hidden animate-fade-in space-y-6">
+            <div id="tab-users" class="admin-tab-content hidden animate-fade-in space-y-6" role="tabpanel">
                 <!-- Add User Form -->
                 <div class="bg-slate-900/80 backdrop-blur-xl p-6 rounded-2xl border border-slate-800 shadow-2xl">
                     <h3 class="text-base font-bold text-white mb-5 flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5 text-sky-500"></i> Registar Novo Utilizador</h3>
@@ -528,7 +529,7 @@
             @endif
 
             <!-- TAB: PERFIL -->
-            <div id="tab-perfil" class="admin-tab-content hidden animate-fade-in">
+            <div id="tab-perfil" class="admin-tab-content hidden animate-fade-in" role="tabpanel">
                 <div class="bg-slate-900/80 backdrop-blur-xl p-8 rounded-2xl border border-slate-800 shadow-2xl max-w-xl mx-auto mt-4">
                     <div class="flex flex-col items-center justify-center mb-8">
                         <div class="w-20 h-20 rounded-full bg-sky-500/10 text-sky-500 flex items-center justify-center font-bold text-3xl border-2 border-sky-500/30 shadow-lg mb-4">
@@ -627,10 +628,12 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => {
                 b.classList.remove('bg-sky-500/10', 'text-sky-400', 'border-sky-500/20');
                 b.classList.add('text-slate-400', 'border-transparent');
+                b.setAttribute('aria-selected', 'false');
             });
             document.getElementById(`tab-${tabId}`).classList.replace('hidden', 'block');
             btn.classList.remove('text-slate-400', 'border-transparent');
             btn.classList.add('bg-sky-500/10', 'text-sky-400', 'border-sky-500/20');
+            btn.setAttribute('aria-selected', 'true');
 
             // Close mobile menu if open
             const sidebar = document.getElementById('sidebar');
@@ -884,6 +887,7 @@
                 } else {
                     btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all';
                 }
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
             filterProjects();
         }

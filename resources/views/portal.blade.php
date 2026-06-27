@@ -39,7 +39,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom CSS Styles -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
+    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative antialiased selection:bg-sky-500 selection:text-white pb-12">
     
@@ -816,8 +817,20 @@
                                 <p class="text-[10px] text-rose-400 mt-2">Atenção: Por questões de segurança, esta senha não voltará a ser mostrada. Guarde-a!</p>
                             </div>
 
+                            @if(session('sms_status'))
+                                <div class="w-full px-4 py-3 rounded-xl border text-left text-xs flex items-start gap-2
+                                    {{ str_contains(session('sms_status'), 'não') || str_contains(session('sms_status'), 'não foi') ? 'bg-amber-500/10 border-amber-500/30 text-amber-500' : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' }}">
+                                    <i data-lucide="{{ str_contains(session('sms_status'), 'não') || str_contains(session('sms_status'), 'não foi') ? 'alert-circle' : 'message-circle' }}" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                                    <span>{{ session('sms_status') }}</span>
+                                </div>
+                            @endif
+
                             <a href="{{ route('candidatura.pdf', session('candidatura_id')) }}" target="_blank" class="w-full py-3 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20">
                                 <i data-lucide="download-cloud" class="w-5 h-5"></i> Baixar Comprovativo PDF
+                            </a>
+
+                            <a href="https://wa.me/?text={{ urlencode('UniLicungo TechHub - Registo concluído para o projeto "' . session('project_name') . '". PIN de acesso ao Workspace: ' . session('generated_pin') . '. Comprovativo PDF: ' . route('candidatura.pdf', session('candidatura_id'))) }}" target="_blank" rel="noopener" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i> Partilhar no WhatsApp
                             </a>
                             
                             <p class="text-[10px] text-slate-500 mt-2">
@@ -885,8 +898,11 @@
                             <button onclick="copyAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
                                 <i data-lucide="copy" class="w-3.5 h-3.5 text-sky-400"></i> Copiar
                             </button>
-                            <button onclick="shareAiSuggestion(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
-                                <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i> Partilhar
+                            <button onclick="shareAiSuggestion('whatsapp')" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
+                                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-400"></i> WhatsApp
+                            </button>
+                            <button onclick="shareAiSuggestion('email')" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
+                                <i data-lucide="mail" class="w-3.5 h-3.5 text-sky-400"></i> Email
                             </button>
                             <button onclick="downloadAiSuggestionPdf(event)" class="flex-1 py-2.5 px-3 bg-slate-800/80 hover:bg-slate-750 active:scale-95 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all border border-slate-700/50 flex items-center justify-center gap-2">
                                 <i data-lucide="download" class="w-3.5 h-3.5 text-rose-400"></i> PDF
@@ -1160,21 +1176,26 @@
                 document.querySelectorAll('.nav-tab-btn').forEach(b => {
                     b.classList.remove('border-sky-500', 'text-sky-400');
                     b.classList.add('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                    b.setAttribute('aria-selected', 'false');
                 });
                 
                 // Add active to current
                 btn.classList.add('border-sky-500', 'text-sky-400');
                 btn.classList.remove('border-transparent', 'text-slate-400', 'hover:text-slate-200');
+                btn.setAttribute('aria-selected', 'true');
                 
                 const tab = btn.getAttribute('data-tab');
                 
                 // Hide all sections
                 document.querySelectorAll('.content-section').forEach(sec => {
                     sec.classList.add('hidden');
+                    sec.setAttribute('hidden', '');
                 });
                 
                 // Show current section
-                document.getElementById(`section-${tab}`).classList.remove('hidden');
+                const activeSection = document.getElementById(`section-${tab}`);
+                activeSection.classList.remove('hidden');
+                activeSection.removeAttribute('hidden');
             });
         });
 
@@ -1400,8 +1421,12 @@
         // Sector buttons selection
         document.querySelectorAll('.sector-filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.sector-filter-btn').forEach(b => b.classList.remove('tab-active'));
+                document.querySelectorAll('.sector-filter-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
                 btn.classList.add('tab-active');
+                btn.setAttribute('aria-pressed', 'true');
                 activeSector = btn.getAttribute('data-sector');
                 applyFilters();
             });
@@ -1418,8 +1443,13 @@
             difficultySelect.value = 'Todos';
             techSelect.value = 'Todos';
             activeSector = 'Todos';
-            document.querySelectorAll('.sector-filter-btn').forEach(b => b.classList.remove('tab-active'));
-            document.querySelector('.sector-filter-btn[data-sector="Todos"]').classList.add('tab-active');
+            document.querySelectorAll('.sector-filter-btn').forEach(b => {
+                b.classList.remove('tab-active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            const allSectorsBtn = document.querySelector('.sector-filter-btn[data-sector="Todos"]');
+            allSectorsBtn.classList.add('tab-active');
+            allSectorsBtn.setAttribute('aria-pressed', 'true');
             applyFilters();
         });
 
@@ -1491,13 +1521,16 @@
                 copyBtn.innerHTML = `<i data-lucide="copy" class="w-3 h-3"></i> Copiar`;
                 copyBtn.onclick = () => {
                     const cleanRef = ref.replace(/\*/g, '');
-                    navigator.clipboard.writeText(cleanRef).then(() => {
+                    copyTextToClipboard(cleanRef).then(() => {
                         copyBtn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-emerald-400"></i> Copiado!`;
+                        showPortalToast('Referência copiada.');
                         lucide.createIcons();
                         setTimeout(() => {
                             copyBtn.innerHTML = `<i data-lucide="copy" class="w-3 h-3"></i> Copiar`;
                             lucide.createIcons();
                         }, 2000);
+                    }).catch(() => {
+                        showPortalToast('Não foi possível copiar a referência.', 'error');
                     });
                 };
                 
@@ -1582,6 +1615,48 @@
             window.print();
         }
 
+        function showPortalToast(message, type = 'success') {
+            const previous = document.getElementById('portal-toast');
+            if (previous) previous.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'portal-toast';
+            const palette = type === 'error'
+                ? 'bg-rose-500 text-white border-rose-400/60'
+                : 'bg-emerald-500 text-white border-emerald-400/60';
+            toast.className = `fixed top-5 left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 rounded-xl border shadow-2xl text-sm font-semibold flex items-center gap-2 animate-fade-in ${palette}`;
+            toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : 'check-circle'}" class="w-4 h-4"></i><span>${message}</span>`;
+            document.body.appendChild(toast);
+            if (window.lucide) lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 250);
+            }, 2600);
+        }
+
+        async function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return;
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            const copied = document.execCommand('copy');
+            textarea.remove();
+
+            if (!copied) {
+                throw new Error('Clipboard copy failed');
+            }
+        }
+
         // Close details modal
         function closeModal() {
             modal.classList.add('hidden');
@@ -1597,14 +1672,17 @@
         // Copy SQL code helper
         document.getElementById('copy-sql-btn').addEventListener('click', () => {
             const sqlText = document.getElementById('modal-val-db-schema').innerText;
-            navigator.clipboard.writeText(sqlText).then(() => {
+            copyTextToClipboard(sqlText).then(() => {
                 const btn = document.getElementById('copy-sql-btn');
                 btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 mr-1"></i> Copiado!`;
+                showPortalToast('SQL copiado para a área de transferência.');
                 lucide.createIcons();
                 setTimeout(() => {
                     btn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar SQL`;
                     lucide.createIcons();
                 }, 2000);
+            }).catch(() => {
+                showPortalToast('Não foi possível copiar o SQL.', 'error');
             });
         });
 
@@ -1613,13 +1691,16 @@
         if (copyProposalBtn) {
             copyProposalBtn.addEventListener('click', () => {
                 const proposalText = document.getElementById('generated-proposal-text').value;
-                navigator.clipboard.writeText(proposalText).then(() => {
+                copyTextToClipboard(proposalText).then(() => {
                     copyProposalBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 mr-1"></i> Copiado!`;
+                    showPortalToast('Ficha copiada para a área de transferência.');
                     lucide.createIcons();
                     setTimeout(() => {
                         copyProposalBtn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copiar Ficha (Markdown)`;
                         lucide.createIcons();
                     }, 2000);
+                }).catch(() => {
+                    showPortalToast('Não foi possível copiar a ficha.', 'error');
                 });
             });
         }
@@ -1893,10 +1974,11 @@
 
         function copyAiSuggestion(event) {
             const content = document.getElementById('ai-suggestion-content').innerText;
-            navigator.clipboard.writeText(content).then(() => {
+            copyTextToClipboard(content).then(() => {
                 const btn = event.currentTarget;
                 const originalHTML = btn.innerHTML;
                 btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Copiado!';
+                showPortalToast('Sugestão da IA copiada.');
                 lucide.createIcons();
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
@@ -1904,32 +1986,22 @@
                 }, 2000);
             }).catch(err => {
                 console.error('Erro ao copiar:', err);
+                showPortalToast('Não foi possível copiar a sugestão.', 'error');
             });
         }
 
-        function shareAiSuggestion(event) {
+        function shareAiSuggestion(channel) {
             const content = document.getElementById('ai-suggestion-content').innerText;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Sugestão de Projeto - UniLicungo TechHub',
-                    text: content,
-                }).catch(err => {
-                    console.log('Partilha cancelada ou erro:', err);
-                });
-            } else {
-                // Fallback to copy and notify
-                navigator.clipboard.writeText(content).then(() => {
-                    const btn = event.currentTarget;
-                    const originalHTML = btn.innerHTML;
-                    btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Copiado!';
-                    lucide.createIcons();
-                    setTimeout(() => {
-                        btn.innerHTML = originalHTML;
-                        lucide.createIcons();
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Erro no fallback de partilha:', err);
-                });
+            const title = 'Sugestão de Projeto - UniLicungo TechHub';
+            const body = `${title}\n\n${content}\n\nPortal: ${window.location.origin}`;
+
+            if (channel === 'whatsapp') {
+                window.open(`https://wa.me/?text=${encodeURIComponent(body)}`, '_blank', 'noopener');
+                return;
+            }
+
+            if (channel === 'email') {
+                window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
             }
         }
 

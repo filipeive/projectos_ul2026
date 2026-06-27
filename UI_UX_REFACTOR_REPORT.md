@@ -8,10 +8,12 @@ Este documento serve como a **Documentação Contínua** do processo de refatora
 
 A plataforma é composta por 7 vistas Blade ativas que compõem o ecossistema. Atualmente, cada ficheiro Blade funciona como um monólito HTML5 completo, importando individualmente scripts e folhas de estilo.
 
-| # | Caminho do Blade | Função / Tipo de Página | Esta| 1 | `resources/views/portal.blade.php` | Catálogo de Projetos & Candidatura (Página Principal) | Pendente |
+| # | Caminho do Blade | Função / Tipo de Página | Estado |
+|---|---|---|---|
+| 1 | `resources/views/portal.blade.php` | Catálogo de Projetos & Candidatura (Página Principal) | **Concluído** |
 | 2 | `resources/views/auth/login.blade.php` | Central de Acesso (Login Unificado Estudante/Docente) | **Concluído** |
-| 3 | `resources/views/admin-dashboard.blade.php` | Painel de Coordenação / Mentoria (Admin/Docente) | Pendente |
-| 4 | `resources/views/workspace/index.blade.php` | Sala de Mentoria & Workspace Kanban (Estudante/Docente) | Pendente |
+| 3 | `resources/views/admin-dashboard.blade.php` | Painel de Coordenação / Mentoria (Admin/Docente) | **Concluído** |
+| 4 | `resources/views/workspace/index.blade.php` | Sala de Mentoria & Workspace Kanban (Estudante/Docente) | **Concluído** |
 | 5 | `resources/views/workspace/recover-pin.blade.php` | Recuperação de PIN específica para grupo | **Concluído** |
 | 6 | `resources/views/workspace/recover-pin-geral.blade.php` | Recuperação de PIN geral | **Concluído** |
 | 7 | `resources/views/pdf/comprovativo.blade.php` | Exportação de Ficha de Registo em PDF (DomPDF) | Conservado |
@@ -26,8 +28,11 @@ Para garantir consistência e harmonia em toda a plataforma, estabelecemos um **
 *   **Primary (Licungo Blue):** `#008ad2` | Tailwind `sky-500` (Acentos de progresso, botões primários, branding).
 *   **Secondary (Licungo Gold):** `#c27a1e` | Tailwind `amber-500` (Acentos de destaque, avisos, estados pendentes).
 *   **Background (Escuro Premium):** `#070a13` (Fundo geral de alta imersão, contrastando com luz azul difusa).
+*   **Background (Claro Institucional):** `#f4f7fb` com superfícies brancas translúcidas, inspirado no portal público da Universidade Licungo.
 *   **Surface (Cartões e Painéis):** `rgba(11, 15, 25, 0.7)` com `backdrop-filter: blur(12px)` e borda semi-transparente `border-slate-800/80` (Estilo Glassmorphism).
+*   **Surface Light:** `rgba(255, 255, 255, 0.82)` com borda `rgba(15, 23, 42, 0.12)` para preservar o layout premium em fundo claro.
 *   **Text Principal:** `#f8fafc` | Tailwind `slate-50`.
+*   **Text Principal Light:** `#0f172a` com texto secundário `#64748b`.
 *   **Text Secundário (Muted):** `#94a3b8` | Tailwind `slate-400`.
 *   **Success (Aprovado):** Tailwind `emerald-500` / `emerald-400`.
 *   **Danger (Rejeitado/Erro):** Tailwind `rose-500` / `rose-400`.
@@ -96,6 +101,18 @@ Abaixo, detalhamos o estado atual de cada página com avaliações de qualidade 
 2.  **Fase 2: Catálogo de Projetos (Portal)** (Concluído ✅) -> Refinamento de filtros, animações, acessibilidade de modais, multi-step form de candidatura e geração de PDF da Inteligência Artificial.
 3.  **Fase 3: Sala de Mentoria (Workspace)** (Concluído ✅) -> Unificação do visual Glassmorphism, responsividade mobile de alto impacto no chat e ficheiros, e customização global dos SweetAlerts da IA.
 4.  **Fase 4: Painel de Administração (Dashboard)** (Concluído ✅) -> Bento Grid polido com métricas interativas, barra de pesquisa inteligente com filtros por estado, e otimização de tabelas para mobile (card layout responsivo).
+
+## ✅ Continuação Executada
+
+*   Corrigida a tabela de mapeamento para refletir o estado real das fases já concluídas.
+*   Reforçada a acessibilidade dinâmica do Portal: tabs atualizam `aria-selected`, painéis alternam `hidden`, e filtros de sector atualizam `aria-pressed`.
+*   Reforçada a acessibilidade do Painel Administrativo: menu lateral com semântica de tabs, filtros de estado com `aria-pressed`, e painéis marcados como `tabpanel`.
+*   Reforçada a navegação mobile do Workspace: subabas com `role="tab"`, `aria-selected`, `aria-controls` e painéis associados; corrigido o caminho do logótipo para o asset existente `ul.png`.
+*   Implementado suporte global a tema claro/escuro/sistema via `public/theme.js`, com preferência persistida em `localStorage` e botão de alternância no topo direito para evitar conflito com ações flutuantes inferiores.
+*   Adicionada camada `light theme` em `public/style.css`, preservando o tema escuro atual e aproximando a experiência clara da identidade visual institucional da Universidade Licungo.
+*   Aplicado o carregamento do tema em todas as Blades HTML da aplicação, mantendo `resources/views/pdf/comprovativo.blade.php` fora por ser uma view de exportação DomPDF/impressão.
+*   Reforçada compatibilidade Firefox: `theme.js` agora tolera bloqueios de `localStorage`, usa fallback `MediaQueryList.addListener`, e os assets `style.css`/`theme.js` são carregados com versão para evitar cache antigo.
+*   Refinado o fluxo de partilha do Portal: sugestões da IA podem ser enviadas por WhatsApp ou email, cópias mostram notificação visual, o PIN inicial é enviado por SMS quando há telemóvel registado, e o comprovativo/PIN pode ser partilhado por WhatsApp após submissão.
 
 ---
 *Nota: Este relatório será atualizado à medida que as fases forem concluídas.*

@@ -32,7 +32,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom CSS Styles -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
+    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative antialiased">
     

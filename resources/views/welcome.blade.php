@@ -7,6 +7,8 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         @fonts
+        <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
+        <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

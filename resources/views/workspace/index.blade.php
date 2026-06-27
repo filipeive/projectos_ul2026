@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workspace | {{ $candidatura->project_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
+    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -154,7 +155,7 @@
         <div class="flex items-center gap-3 md:gap-4 min-w-0">
             <div
                 class="w-10 h-10 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800 flex items-center justify-center flex-shrink-0">
-                <img src="{{ asset('projectos_ul/ul.png') }}" alt="Universidade Licungo"
+                <img src="{{ asset('ul.png') }}" alt="Universidade Licungo"
                     class="w-full h-full object-contain"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                 <i data-lucide="terminal" class="w-5 h-5 text-sky-400" style="display:none"></i>
@@ -203,17 +204,17 @@
     </header>
 
     <!-- MOBILE SUBNAV: alterna entre os 3 blocos no telemóvel -->
-    <nav class="md:hidden relative z-10 flex border-b border-slate-900 bg-slate-950/90 overflow-x-auto">
+    <nav class="md:hidden relative z-10 flex border-b border-slate-900 bg-slate-950/90 overflow-x-auto" role="tablist" aria-label="Painéis do workspace">
         <button onclick="switchMobilePanel('info')" id="mobile-tab-info"
-            class="mobile-subtab active flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1">
+            class="mobile-subtab active flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" role="tab" aria-selected="true" aria-controls="panel-info">
             <i data-lucide="info" class="w-3.5 h-3.5"></i> Detalhes
         </button>
         <button onclick="switchMobilePanel('room')" id="mobile-tab-room"
-            class="mobile-subtab flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1">
+            class="mobile-subtab flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" role="tab" aria-selected="false" aria-controls="panel-room">
             <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Sala
         </button>
         <button onclick="switchMobilePanel('files')" id="mobile-tab-files"
-            class="mobile-subtab flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1">
+            class="mobile-subtab flex-1 min-w-[90px] py-2.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" role="tab" aria-selected="false" aria-controls="panel-files">
             <i data-lucide="folder" class="w-3.5 h-3.5"></i> Ficheiros
         </button>
     </nav>
@@ -224,7 +225,7 @@
 
         <!-- SIDEBAR LEFT: Info, IA & Timeline (25%) -->
         <aside id="panel-info"
-            class="w-full md:w-[25%] lg:w-[20%] flex flex-col gap-4 md:gap-6 flex-shrink-0 md:overflow-y-auto md:pr-1 scrollbar-thin">
+            class="w-full md:w-[25%] lg:w-[20%] flex flex-col gap-4 md:gap-6 flex-shrink-0 md:overflow-y-auto md:pr-1 scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-info">
 
             <!-- Details -->
             <div class="glass-panel rounded-2xl border border-slate-800/80 p-5 flex-shrink-0">
@@ -378,7 +379,7 @@
 
         <!-- CENTER: CHAT & KANBAN AREA (55%) -->
         <section id="panel-room"
-            class="hidden md:flex w-full md:w-[50%] lg:w-[60%] min-h-[600px] md:min-h-0 h-auto md:h-full glass-panel rounded-2xl border border-slate-800/80 flex-col overflow-hidden relative shadow-2xl">
+            class="hidden md:flex w-full md:w-[50%] lg:w-[60%] min-h-[600px] md:min-h-0 h-auto md:h-full glass-panel rounded-2xl border border-slate-800/80 flex-col overflow-hidden relative shadow-2xl" role="tabpanel" aria-labelledby="mobile-tab-room">
 
             <!-- TABS HEADER -->
             <div class="flex border-b border-slate-800 bg-slate-900/50">
@@ -649,7 +650,7 @@
 
         <!-- SIDEBAR RIGHT: Files (25%) -->
         <aside id="panel-files"
-            class="hidden w-full md:w-[25%] lg:w-[20%] glass-panel rounded-2xl border border-slate-800/80 p-5 flex-col md:flex md:overflow-y-auto scrollbar-thin">
+            class="hidden w-full md:w-[25%] lg:w-[20%] glass-panel rounded-2xl border border-slate-800/80 p-5 flex-col md:flex md:overflow-y-auto scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-files">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
                 <i data-lucide="folder" class="w-4 h-4 text-sky-400"></i> Ficheiros e Recursos
             </h3>
@@ -843,11 +844,15 @@
         function switchMobilePanel(panel) {
             ['info', 'room', 'files'].forEach(p => {
                 document.getElementById('panel-' + p).classList.add('hidden');
-                document.getElementById('mobile-tab-' + p).classList.remove('active');
+                const tab = document.getElementById('mobile-tab-' + p);
+                tab.classList.remove('active');
+                tab.setAttribute('aria-selected', 'false');
             });
             document.getElementById('panel-' + panel).classList.remove('hidden');
             document.getElementById('panel-' + panel).classList.add(window.innerWidth < 768 ? 'flex' : '');
-            document.getElementById('mobile-tab-' + panel).classList.add('active');
+            const activeTab = document.getElementById('mobile-tab-' + panel);
+            activeTab.classList.add('active');
+            activeTab.setAttribute('aria-selected', 'true');
         }
         // Garante que em desktop os 3 painéis ficam sempre visíveis, ignorando o estado mobile
         function syncPanelsForViewport() {

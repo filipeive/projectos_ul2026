@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidatura;
+use App\Services\AfricaTalkingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class PortalController extends Controller
@@ -135,11 +137,28 @@ class PortalController extends Controller
         // Store the PIN temporarily in session so it can be generated in the PDF
         session()->put('generated_pin_' . $candidatura->id, $generatedPin);
 
+        $smsStatus = null;
+        if (!empty($candidatura->contact_phone)) {
+            try {
+                [$sent, $message] = AfricaTalkingService::sendSms(
+                    $candidatura->contact_phone,
+                    "UniLicungo TechHub: o PIN do projeto '{$candidatura->project_name}' e {$generatedPin}. Guarde este codigo para aceder ao Workspace."
+                );
+                $smsStatus = $sent
+                    ? 'PIN enviado por SMS para o telemóvel registado.'
+                    : 'Registo concluído, mas o SMS não foi enviado: ' . $message;
+            } catch (\Throwable $e) {
+                Log::error('Failed to send initial PIN SMS: ' . $e->getMessage());
+                $smsStatus = 'Registo concluído, mas não foi possível enviar o SMS do PIN.';
+            }
+        }
+
         return redirect()->back()->with([
             'success' => 'Candidatura submetida com sucesso no sistema!',
             'candidatura_id' => $candidatura->id,
             'generated_pin' => $generatedPin,
-            'project_name' => $candidatura->project_name
+            'project_name' => $candidatura->project_name,
+            'sms_status' => $smsStatus,
         ]);
     }
 

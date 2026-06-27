@@ -58,9 +58,38 @@
                     <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Cadastrar Projeto
                 </a>
                 <span class="text-slate-800">|</span>
-                <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
-                    <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
-                </a>
+                @php
+                    $studentCandidaturaId = session('student_candidatura_id');
+                    if (!$studentCandidaturaId) {
+                        foreach (session()->all() as $key => $value) {
+                            if (str_starts_with($key, 'workspace_logged_in_') && $value === true) {
+                                $studentCandidaturaId = str_replace('workspace_logged_in_', '', $key);
+                                session(['student_candidatura_id' => $studentCandidaturaId]);
+                                break;
+                            }
+                        }
+                    }
+                @endphp
+
+                @if(auth()->check())
+                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'docente')
+                        <a href="{{ route('admin.dashboard') }}" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors font-bold">
+                            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Painel Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
+                        </a>
+                    @endif
+                @elseif($studentCandidaturaId)
+                    <a href="{{ route('workspace.index', $studentCandidaturaId) }}" class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors font-bold">
+                        <i data-lucide="monitor" class="w-3.5 h-3.5"></i> Aceder ao Workspace
+                    </a>
+                @else
+                    <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                        <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -686,6 +715,7 @@
                             <div>
                                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
                                 <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                    <option value="0" data-name="">💡 Propor minha própria ideia (Novo Tema)</option>
                                     @foreach($projects as $p)
                                         @php
                                             $isReserved = in_array($p['number'], $approvedProjects);
@@ -696,6 +726,12 @@
                                     @endforeach
                                 </select>
                                 <input type="hidden" name="project_name" id="app-project-name-hidden">
+                                
+                                <!-- Custom Project Name Input Container -->
+                                <div id="own-project-name-container" class="hidden mt-3 animate-fade-in">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono mb-1.5" for="own_project_name">Nome da sua Ideia de Projeto</label>
+                                    <input type="text" name="own_project_name" id="own_project_name" placeholder="Escreva o título do seu projeto personalizado..." class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm transition-all text-slate-200">
+                                </div>
                             </div>
 
                             <!-- Tech Select -->
@@ -720,14 +756,29 @@
 
                         <!-- STEP 2: MEMBERS & CONTACTS -->
                         <div id="step-container-2" class="space-y-4 hidden">
+                            <!-- Tipo de Inscrição Selector -->
+                            <div class="bg-slate-950/40 p-3 rounded-xl border border-slate-900/60">
+                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono mb-2">Tipo de Inscrição</label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors">
+                                        <input type="radio" name="registration_type" value="group" class="w-4 h-4 text-sky-500 focus:ring-sky-500 bg-slate-900 border-slate-800 focus:ring-1" checked onchange="toggleRegistrationType('group')">
+                                        <i data-lucide="users" class="w-4 h-4 text-sky-400"></i> Em Grupo
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors">
+                                        <input type="radio" name="registration_type" value="individual" class="w-4 h-4 text-sky-500 focus:ring-sky-500 bg-slate-900 border-slate-800 focus:ring-1" onchange="toggleRegistrationType('individual')">
+                                        <i data-lucide="user" class="w-4 h-4 text-sky-400"></i> Individual (Apenas 1 Estudante)
+                                    </label>
+                                </div>
+                            </div>
+
                             <!-- Members of the group -->
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
+                                <label id="members-label" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2">4. Integrantes do Grupo (Estudantes do 1.º Ano)</label>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                                     <div>
                                         <label for="contact_email" class="sr-only">Email de Contacto</label>
-                                        <input type="email" name="contact_email" id="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (para PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                        <input type="email" name="contact_email" id="contact_email" value="{{ old('contact_email') }}" placeholder="Email de Contacto do Grupo (para PIN)" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                                     </div>
                                     <div>
                                         <label for="contact_phone" class="sr-only">Telemóvel</label>
@@ -737,30 +788,32 @@
 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
                                     <label for="member1_name" class="sr-only">Líder do Grupo</label>
-                                    <input type="text" name="member1_name" id="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <input type="text" name="member1_name" id="member1_name" value="{{ old('member1_name') }}" placeholder="Nome Estudante 1 (Líder)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                                     <label for="member1_code" class="sr-only">N.º Mec. Líder</label>
-                                    <input type="text" name="member1_code" id="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <input type="text" name="member1_code" id="member1_code" value="{{ old('member1_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
                                 </div>
                                 
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                                    <label for="member2_name" class="sr-only">Estudante 2</label>
-                                    <input type="text" name="member2_name" id="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                    <label for="member2_code" class="sr-only">N.º Mec. Estudante 2</label>
-                                    <input type="text" name="member2_code" id="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                </div>
+                                <div id="group-members-container" class="space-y-2 mt-2">
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                        <label for="member2_name" class="sr-only">Estudante 2</label>
+                                        <input type="text" name="member2_name" id="member2_name" value="{{ old('member2_name') }}" placeholder="Nome Estudante 2" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                                        <label for="member2_code" class="sr-only">N.º Mec. Estudante 2</label>
+                                        <input type="text" name="member2_code" id="member2_code" value="{{ old('member2_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200" required>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+                                        <label for="member3_name" class="sr-only">Estudante 3 (Opcional)</label>
+                                        <input type="text" name="member3_name" id="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                        <label for="member3_code" class="sr-only">N.º Mec. Estudante 3</label>
+                                        <input type="text" name="member3_code" id="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                                    <label for="member3_name" class="sr-only">Estudante 3 (Opcional)</label>
-                                    <input type="text" name="member3_name" id="member3_name" value="{{ old('member3_name') }}" placeholder="Nome Estudante 3 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                    <label for="member3_code" class="sr-only">N.º Mec. Estudante 3</label>
-                                    <input type="text" name="member3_code" id="member3_code" value="{{ old('member3_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                    <label for="member4_name" class="sr-only">Estudante 4 (Opcional)</label>
-                                    <input type="text" name="member4_name" id="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
-                                    <label for="member4_code" class="sr-only">N.º Mec. Estudante 4</label>
-                                    <input type="text" name="member4_code" id="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                        <label for="member4_name" class="sr-only">Estudante 4 (Opcional)</label>
+                                        <input type="text" name="member4_name" id="member4_name" value="{{ old('member4_name') }}" placeholder="Nome Estudante 4 (Opcional)" class="sm:col-span-2 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                        <label for="member4_code" class="sr-only">N.º Mec. Estudante 4</label>
+                                        <input type="text" name="member4_code" id="member4_code" value="{{ old('member4_code') }}" placeholder="N.º Mec." class="sm:col-span-1 px-3 py-2 bg-slate-900 border border-slate-800 hover:border-sky-500 focus:outline-none rounded-lg text-xs transition-all text-slate-200">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1720,9 +1773,47 @@
         function updateProjectFields() {
             const select = document.getElementById('app-project-select');
             const selectedOption = select.options[select.selectedIndex];
+            const ownContainer = document.getElementById('own-project-name-container');
+            const ownInput = document.getElementById('own_project_name');
+
             if (selectedOption) {
                 const projectName = selectedOption.getAttribute('data-name');
                 document.getElementById('app-project-name-hidden').value = projectName;
+
+                // Toggle own project name input
+                if (select.value === '0') {
+                    if (ownContainer) {
+                        ownContainer.classList.remove('hidden');
+                        if (ownInput) ownInput.required = true;
+                    }
+                } else {
+                    if (ownContainer) {
+                        ownContainer.classList.add('hidden');
+                        if (ownInput) {
+                            ownInput.required = false;
+                            ownInput.value = '';
+                        }
+                    }
+                }
+            }
+        }
+
+        function toggleRegistrationType(type) {
+            const groupContainer = document.getElementById('group-members-container');
+            const membersLabel = document.getElementById('members-label');
+            const m2name = document.getElementById('member2_name');
+            const m2code = document.getElementById('member2_code');
+
+            if (type === 'individual') {
+                if (groupContainer) groupContainer.classList.add('hidden');
+                if (membersLabel) membersLabel.textContent = '4. Dados do Estudante (1.º Ano)';
+                if (m2name) { m2name.required = false; m2name.value = ''; }
+                if (m2code) { m2code.required = false; m2code.value = ''; }
+            } else {
+                if (groupContainer) groupContainer.classList.remove('hidden');
+                if (membersLabel) membersLabel.textContent = '4. Integrantes do Grupo (Estudantes do 1.º Ano)';
+                if (m2name) m2name.required = true;
+                if (m2code) m2code.required = true;
             }
         }
 

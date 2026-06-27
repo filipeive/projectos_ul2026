@@ -30,6 +30,7 @@ class WorkspaceController extends Controller
         if (\Hash::check($request->group_password, $candidatura->group_password)) {
             // Password is correct
             session(['workspace_logged_in_' . $candidatura->id => true]);
+            session(['student_candidatura_id' => $candidatura->id]);
             return redirect()->route('workspace.index', $candidatura->id);
         }
 
@@ -563,5 +564,16 @@ class WorkspaceController extends Controller
         $task->delete();
 
         return response()->json(['success' => true]);
+    }
+
+    public function logout()
+    {
+        $studentCandidaturaId = session('student_candidatura_id');
+        if ($studentCandidaturaId) {
+            session()->forget('workspace_logged_in_' . $studentCandidaturaId);
+        }
+        session()->forget('student_candidatura_id');
+
+        return redirect()->route('portal.index')->with('success', 'Sessão encerrada com sucesso.');
     }
 }

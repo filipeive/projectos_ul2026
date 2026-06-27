@@ -7,6 +7,29 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 
 ---
 
+## [v0.9.1] — 2026-06-27 — Candidaturas Flexíveis e Correções de Produção
+
+### feat
+- Candidatura Individual: estudantes podem agora registar-se sozinhos (radio "Individual" vs "Em Grupo").
+- Ideias Próprias: estudantes podem propor temas próprios de projeto (opção "Propor minha própria ideia").
+- Ideias próprias aprovadas são injetadas no catálogo do portal como "Ideia Própria" com badge "Reservado".
+- Botão "Eliminar" no dashboard admin, visível apenas para candidaturas rejeitadas, com confirmação SweetAlert2.
+- Botão de acesso dinâmico no portal: Admin/Docente → "Painel Dashboard"; Estudante logado → "Aceder ao Workspace".
+- Logout explícito do Workspace para estudantes (limpa sessão e redireciona ao portal).
+
+### fix
+- Corrigido erro 500 em produção: instalação do `barryvdh/laravel-dompdf` via `composer install` no servidor remoto.
+- Pipeline de deploy (`deploy.sh`) agora inclui `composer install --no-dev --optimize-autoloader` automaticamente.
+
+### refactor
+- Validação condicional no `PortalController@submit` para suportar inscrição individual sem exigir membro 2.
+- Gestão de sessão do Workspace (`student_candidatura_id`) centralizada para redirecionamento dinâmico.
+
+### docs
+- Atualizado `02_PROJECT_STATUS.md`, `03_ROADMAP.md`, `06_DATABASE.md`, `13_CHANGELOG.md`.
+
+---
+
 ## [v0.9] — 2026-06 — Estabilização e UI/UX Premium
 
 ### feat

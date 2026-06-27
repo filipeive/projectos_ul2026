@@ -23,6 +23,15 @@
 ## v1.0 — AcademicHub Base (evol1.0)
 > Estado: 🚧 Em Desenvolvimento
 
+### Concluído ✅
+- [x] Candidatura Individual (1 estudante) e em Grupo (2-4 estudantes)
+- [x] Submissão de ideias próprias de projeto com autonumeração
+- [x] Eliminação de candidaturas rejeitadas (Admin Dashboard)
+- [x] Botão de acesso dinâmico no portal (Dashboard / Workspace)
+- [x] Logout explícito do Workspace com limpeza de sessão
+- [x] Correção do pipeline de deploy com `composer install` automático
+- [x] Correção do DomPDF em produção
+
 ### Prioridade Alta
 - [ ] Reestruturação arquitetural: `Workspace` substitui `Grupo`
 - [ ] Multi-papel no Workspace (Supervisor, Coorientador, Júri)

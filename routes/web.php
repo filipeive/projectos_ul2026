@@ -23,6 +23,7 @@ Route::post('/admin/profile', [PortalController::class, 'updateProfile'])->name(
 Route::post('/admin/users', [PortalController::class, 'createUser'])->name('admin.users.create');
 Route::put('/admin/users/{user}', [PortalController::class, 'updateUser'])->name('admin.users.update');
 Route::delete('/admin/users/{user}', [PortalController::class, 'deleteUser'])->name('admin.users.delete');
+Route::delete('/admin/candidaturas/{candidatura}', [PortalController::class, 'deleteCandidatura'])->name('admin.delete-candidatura');
 
 // Workspace Routes
 use App\Http\Controllers\WorkspaceController;
@@ -32,6 +33,7 @@ Route::get('/workspace/recuperar-pin', [WorkspaceController::class, 'recoverPinF
 Route::post('/workspace/recuperar-pin', [WorkspaceController::class, 'recoverPinSubmitGeral'])->name('workspace.recover-pin-geral.submit');
 Route::get('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class, 'recoverPinForm'])->name('workspace.recover-pin');
 Route::post('/workspace/{candidatura}/recuperar-pin', [WorkspaceController::class, 'recoverPinSubmit'])->name('workspace.recover-pin.submit');
+Route::get('/workspace/logout', [WorkspaceController::class, 'logout'])->name('workspace.logout');
 Route::get('/workspace/{id}', [WorkspaceController::class, 'index'])->name('workspace.index');
 Route::post('/workspace/{id}/message', [WorkspaceController::class, 'storeMessage'])->name('workspace.message');
 Route::put('/api/workspace/{id}/messages/{messageId}', [WorkspaceController::class, 'updateMessage'])->name('workspace.message.update');

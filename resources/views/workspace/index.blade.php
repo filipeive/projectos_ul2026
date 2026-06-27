@@ -197,7 +197,7 @@
                 <a href="{{ route('admin.dashboard') }}"
                     class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors">Voltar</a>
             @else
-                <a href="{{ route('portal.index') }}"
+                <a href="{{ route('workspace.logout') }}"
                     class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors">Sair</a>
             @endif
         </div>

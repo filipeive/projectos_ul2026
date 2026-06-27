@@ -309,6 +309,13 @@
                                                         <i data-lucide="check" class="w-4 h-4"></i>
                                                     </button>
                                                     @endif
+
+                                                    <!-- Delete Candidatura (Rejected) -->
+                                                    @if($user->role === 'admin' && $c->status === 'Rejeitado')
+                                                    <button onclick="deleteCandidatura({{ $c->id }})" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg text-rose-400 transition-colors shadow-sm" title="Eliminar Candidatura">
+                                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                                    </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -399,6 +406,13 @@
                                         @if($user->role === 'admin' && $c->status === 'Pendente')
                                         <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500 border border-emerald-400 rounded-lg text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20" title="Aprovar Agora">
                                             <i data-lucide="check" class="w-4 h-4"></i>
+                                        </button>
+                                        @endif
+
+                                        <!-- Delete Candidatura (Rejected) -->
+                                        @if($user->role === 'admin' && $c->status === 'Rejeitado')
+                                        <button onclick="deleteCandidatura({{ $c->id }})" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg text-rose-400 transition-colors shadow-sm" title="Eliminar Candidatura">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                         @endif
                                     </div>
@@ -804,6 +818,54 @@
                         body: JSON.stringify({ status: newStatus })
                     }).then(res => res.json()).then(data => {
                         if(data.success) window.location.reload();
+                    });
+                }
+            });
+        }
+
+        // Delete Candidatura (Only for Rejected projects)
+        function deleteCandidatura(id) {
+            Swal.fire({
+                title: 'Eliminar Candidatura?',
+                text: "Esta ação é irreversível e apagará todos os dados associados a esta candidatura.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, eliminar',
+                cancelButtonText: 'Cancelar',
+                background: '#0b0f19', color: '#fff',
+                customClass: {
+                    popup: 'border border-slate-800 rounded-2xl',
+                    confirmButton: 'bg-rose-500 hover:bg-rose-400 text-white px-4 py-2 rounded-lg font-bold',
+                    cancelButton: 'bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold ml-2'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    fetch(`{{ url('/admin/candidaturas') }}/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then(res => res.json()).then(data => {
+                        if(data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Eliminado!',
+                                text: data.message || 'Candidatura eliminada com sucesso.',
+                                background: '#0b0f19', color: '#fff'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro',
+                                text: data.message || 'Ocorreu um erro ao tentar eliminar.',
+                                background: '#0b0f19', color: '#fff'
+                            });
+                        }
                     });
                 }
             });

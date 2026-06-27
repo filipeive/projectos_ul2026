@@ -75,6 +75,25 @@ class PortalController extends Controller
             ->pluck('project_number')
             ->toArray();
 
+        // Inject approved own-idea projects into the catalog
+        $ownIdeaProjects = Candidatura::where('project_number', '>=', 1000)
+            ->where('status', 'Aprovado')
+            ->get();
+
+        foreach ($ownIdeaProjects as $ownIdea) {
+            $projects[] = [
+                'number' => $ownIdea->project_number,
+                'name' => $ownIdea->project_name,
+                'sector' => 'Ideia Própria',
+                'dificuldade' => 'Médio',
+                'descricao' => $ownIdea->rationale ?? 'Projeto proposto por estudante.',
+                'tecnologias' => [$ownIdea->technology],
+                'perguntas_artigo' => $this->getFallbackQuestions('Tecnologia', $ownIdea->project_name),
+                'referencias_artigo' => $this->getFallbackReferences('Tecnologia'),
+                'imrad_artigo' => $this->getFallbackImrad('Tecnologia', $ownIdea->project_name),
+            ];
+        }
+
         return view('portal', compact('projects', 'approvedProjects', 'stats'));
     }
 
@@ -83,40 +102,73 @@ class PortalController extends Controller
      */
     public function submit(Request $request)
     {
-        $request->validate([
+        $registrationType = $request->input('registration_type', 'group');
+        $isOwnIdea = (int)$request->input('project_number') === 0;
+
+        // Build validation rules dynamically
+        $rules = [
             'project_number' => 'required|integer',
-            'project_name' => 'required|string',
             'technology' => 'required|string',
             'mentor' => 'nullable|string|max:100',
             'member1_name' => 'required|string|max:150',
             'member1_code' => 'required|string|max:50',
             'contact_email' => 'required|email|max:150',
             'contact_phone' => 'nullable|string|max:50',
-            'member2_name' => 'required|string|max:150',
-            'member2_code' => 'required|string|max:50',
             'member3_name' => 'nullable|string|max:150',
             'member3_code' => 'nullable|string|max:50',
             'member4_name' => 'nullable|string|max:150',
             'member4_code' => 'nullable|string|max:50',
             'rationale' => 'required|string|min:20',
-        ], [
+        ];
+
+        // Conditional: group registration requires member2
+        if ($registrationType === 'group') {
+            $rules['member2_name'] = 'required|string|max:150';
+            $rules['member2_code'] = 'required|string|max:50';
+        } else {
+            $rules['member2_name'] = 'nullable|string|max:150';
+            $rules['member2_code'] = 'nullable|string|max:50';
+        }
+
+        // Conditional: own idea requires own_project_name
+        if ($isOwnIdea) {
+            $rules['own_project_name'] = 'required|string|max:200';
+        } else {
+            $rules['project_name'] = 'required|string';
+        }
+
+        $messages = [
             'member1_name.required' => 'O nome do Líder do Grupo (Estudante 1) é obrigatório.',
             'member1_code.required' => 'O código de estudante do Líder é obrigatório.',
             'contact_email.required' => 'O email de contacto é obrigatório para recuperação do PIN.',
             'contact_email.email' => 'Insira um email de contacto válido.',
-            'member2_name.required' => 'O nome do Estudante 2 é obrigatório.',
-            'member2_code.required' => 'O código de estudante do Estudante 2 é obrigatório.',
+            'member2_name.required' => 'O nome do Estudante 2 é obrigatório para inscrição em grupo.',
+            'member2_code.required' => 'O código de estudante do Estudante 2 é obrigatório para inscrição em grupo.',
             'rationale.required' => 'A justificativa do projeto é obrigatória para submissão.',
             'rationale.min' => 'Explique a justificativa do projeto com mais detalhes (mínimo 20 caracteres).',
-        ]);
+            'own_project_name.required' => 'Quando propõe a sua própria ideia, o nome do projeto é obrigatório.',
+        ];
+
+        $request->validate($rules, $messages);
+
+        // Determine project name and number
+        if ($isOwnIdea) {
+            // Assign a sequential number starting from 1000 for own ideas
+            $lastOwn = Candidatura::where('project_number', '>=', 1000)->max('project_number');
+            $projectNumber = $lastOwn ? $lastOwn + 1 : 1000;
+            $projectName = $request->own_project_name;
+        } else {
+            $projectNumber = $request->project_number;
+            $projectName = $request->project_name;
+        }
 
         // Generate a 6-digit random PIN
         $generatedPin = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
         // Create the application
         $candidatura = Candidatura::create([
-            'project_number' => $request->project_number,
-            'project_name' => $request->project_name,
+            'project_number' => $projectNumber,
+            'project_name' => $projectName,
             'technology' => $request->technology,
             'mentor' => $request->mentor,
             'member1_name' => $request->member1_name,
@@ -405,6 +457,33 @@ class PortalController extends Controller
 
         $user->delete();
         return redirect()->back()->with('success', 'Utilizador removido.');
+    }
+
+    public function deleteCandidatura(\App\Models\Candidatura $candidatura)
+    {
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Não autorizado.'], 403);
+        }
+
+        if ($candidatura->status !== 'Rejeitado') {
+            return response()->json(['success' => false, 'message' => 'Apenas candidaturas rejeitadas podem ser eliminadas.'], 400);
+        }
+
+        try {
+            // Delete files from storage
+            foreach ($candidatura->ficheiros as $file) {
+                if (\Storage::disk('public')->exists($file->caminho)) {
+                    \Storage::disk('public')->delete($file->caminho);
+                }
+            }
+
+            // Delete the candidatura itself
+            $candidatura->delete();
+
+            return response()->json(['success' => true, 'message' => 'Candidatura eliminada com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Ocorreu um erro ao eliminar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

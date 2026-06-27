@@ -27,62 +27,83 @@ Base de dados relacional **MySQL/MariaDB** gerida via **Eloquent ORM** do Larave
 
 ### `candidaturas`
 | Coluna           | Tipo         | Descrição                          |
-|------------------|--------------|------------------------------------|
-| id               | bigint PK    | Identificador único                |
-| project_id       | bigint FK    | Referência ao projeto candidatado  |
-| lider_nome       | varchar      | Nome do líder do grupo             |
-| lider_email      | varchar      | Email do líder                     |
-| lider_phone      | varchar      | Telemóvel do líder                 |
-| membro2_nome     | varchar      | Nome do 2º membro (opcional)       |
-| membro3_nome     | varchar      | Nome do 3º membro (opcional)       |
-| membro4_nome     | varchar      | Nome do 4º membro (opcional)       |
-| status           | enum         | `pendente`, `aprovado`, `rejeitado`|
-| created_at       | timestamp    |                                    |
+|------------------|--------------|--------------------------------------|
+| id               | bigint PK    | Identificador único                  |
+| project_number   | integer      | Número do projeto (>= 1000 = ideia própria) |
+| project_name     | varchar      | Nome do projeto                      |
+| technology       | varchar      | Tecnologia principal selecionada     |
+| mentor           | varchar?     | Mentor sugerido (opcional)           |
+| docente_id       | bigint FK?   | Docente responsável (atribuído pelo admin) |
+| member1_name     | varchar      | Nome do líder / estudante 1          |
+| member1_code     | varchar      | Código de estudante do líder         |
+| contact_email    | varchar      | Email de contacto (para PIN)         |
+| contact_phone    | varchar?     | Telemóvel de contacto                |
+| member2_name     | varchar?     | Nome do 2.º membro (obrig. em grupo)|
+| member2_code     | varchar?     | Código do 2.º membro                |
+| member3_name     | varchar?     | Nome do 3.º membro (opcional)        |
+| member3_code     | varchar?     | Código do 3.º membro                |
+| member4_name     | varchar?     | Nome do 4.º membro (opcional)        |
+| member4_code     | varchar?     | Código do 4.º membro                |
+| rationale        | text?        | Justificativa / motivação            |
+| status           | varchar      | `Pendente`, `Aprovado`, `Rejeitado`  |
+| group_password   | varchar      | PIN hasheado (bcrypt)                |
+| ai_assistant_active | boolean   | IA ativa no workspace                |
+| created_at       | timestamp    |                                      |
 
 ---
 
-### `workspaces` (Atual: `grupos`)
+### Tabelas Associadas (via `candidatura_id` FK com `onDelete cascade`)
+
+> **Nota:** Não existe tabela separada `workspaces` ou `grupos` no esquema atual.
+> A tabela `candidaturas` funciona como entidade central que agrega chat, kanban e ficheiros.
+
+#### `workspace_messages`
 | Coluna           | Tipo         | Descrição                          |
-|------------------|--------------|------------------------------------|
-| id               | bigint PK    |                                    |
-| candidatura_id   | bigint FK    | Candidatura associada              |
-| docente_id       | bigint FK    | Docente responsável                |
-| nome             | varchar      | Nome do grupo/projeto              |
-| descricao        | text         | Descrição do projeto               |
-| ai_enabled       | boolean      | IA ativa ou não                    |
-| created_at       | timestamp    |                                    |
+|------------------|--------------|--------------------------------------|
+| id               | bigint PK    |                                      |
+| candidatura_id   | bigint FK    | Referência à candidatura             |
+| sender_type      | enum         | `student`, `mentor`                  |
+| message          | text         | Conteúdo da mensagem                 |
+| created_at       | timestamp    |                                      |
 
----
-
-### `messages`
+#### `kanban_tasks`
 | Coluna           | Tipo         | Descrição                          |
-|------------------|--------------|------------------------------------|
-| id               | bigint PK    |                                    |
-| workspace_id     | bigint FK    |                                    |
-| user_id          | bigint FK    | Quem enviou                        |
-| content          | text         | Conteúdo da mensagem               |
-| is_ai            | boolean      | Mensagem gerada pela IA            |
-| created_at       | timestamp    |                                    |
+|------------------|--------------|--------------------------------------|
+| id               | bigint PK    |                                      |
+| candidatura_id   | bigint FK    | Referência à candidatura             |
+| title            | varchar      | Título da tarefa                     |
+| description      | text?        | Descrição                            |
+| status           | enum         | `todo`, `in_progress`, `review`, `done` |
+| created_by       | enum         | `student`, `mentor`                  |
+| created_at       | timestamp    |                                      |
 
----
-
-### `tasks` (Kanban)
+#### `candidatura_ficheiros`
 | Coluna           | Tipo         | Descrição                          |
-|------------------|--------------|------------------------------------|
-| id               | bigint PK    |                                    |
-| workspace_id     | bigint FK    |                                    |
-| title            | varchar      | Título da tarefa                   |
-| description      | text         | Descrição                          |
-| status           | enum         | `todo`, `in_progress`, `done`      |
-| assigned_to      | bigint FK    | Membro responsável                 |
-| created_by_ai    | boolean      | Gerada pela IA                     |
-| created_at       | timestamp    |                                    |
+|------------------|--------------|--------------------------------------|
+| id               | bigint PK    |                                      |
+| candidatura_id   | bigint FK    | Referência à candidatura             |
+| nome_ficheiro    | varchar      | Nome do ficheiro                     |
+| caminho          | varchar      | Caminho no storage                   |
+| tamanho_bytes    | integer?     | Tamanho do ficheiro                  |
+| uploaded_by      | varchar?     | Quem fez upload                      |
+| created_at       | timestamp    |                                      |
+
+#### `candidatura_progressos`
+| Coluna           | Tipo         | Descrição                          |
+|------------------|--------------|--------------------------------------|
+| id               | bigint PK    |                                      |
+| candidatura_id   | bigint FK    | Referência à candidatura             |
+| fase             | enum         | `sensibilizacao`, `campo`, `mvp`, `exposicao`, `artigo` |
+| estado           | enum         | `pendente`, `em_progresso`, `concluida` |
+| observacao       | text?        | Notas do docente                     |
+| updated_by       | varchar?     | Quem atualizou                       |
+| created_at       | timestamp    |                                      |
 
 ---
 
 ## Evolução Planeada (v1.0)
 
-- Renomear `grupos` → `workspaces`
+- Criar tabela `workspaces` para substituir a relação direta com `candidaturas`
 - Criar tabela `workspace_members` (pivot com papel: `estudante`, `supervisor`, `coorientador`, `juri`)
 - Criar tabela `ideas` para o Knowledge Hub
 - Criar tabela `project_phases` para o funil de progresso académico

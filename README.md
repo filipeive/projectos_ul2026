@@ -100,7 +100,7 @@ Para uma análise mais profunda sobre o planeamento técnico, decisões de desig
 *   **[`docs/FLUXO_PLATAFORMA.md`](file:///docs/FLUXO_PLATAFORMA.md):** Mapa de fluxo detalhado e proposta executiva para apresentação a Diretores e Reitoria.
 *   **[`docs/UI_UX_REFACTOR_REPORT.md`](file:///docs/UI_UX_REFACTOR_REPORT.md):** Relatório detalhado das 4 fases da refatoração de UI/UX, acessibilidade (WCAG 2.2) e consistência visual.
 *   **[`docs/RELATORIO_BRANCHES.md`](file:///docs/RELATORIO_BRANCHES.md):** Histórico de saneamento de branches Git.
-*   **[`HISTORICO_DEV.md`](file:///HISTORICO_DEV.md):** Relatório de evolução de engenharia do sistema.
+*   **[`docs/HISTORICO_DEV.md`](file:///docs/HISTORICO_DEV.md):** Relatório de evolução de engenharia do sistema.
 
 ---
 

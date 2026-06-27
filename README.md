@@ -97,10 +97,12 @@ php artisan serve
 
 Para uma análise mais profunda sobre o planeamento técnico, decisões de design e evolução do sistema, consulte a pasta `/docs`:
 
-*   **[`docs/FLUXO_PLATAFORMA.md`](file:///docs/FLUXO_PLATAFORMA.md):** Mapa de fluxo detalhado e proposta executiva para apresentação a Diretores e Reitoria.
-*   **[`docs/UI_UX_REFACTOR_REPORT.md`](file:///docs/UI_UX_REFACTOR_REPORT.md):** Relatório detalhado das 4 fases da refatoração de UI/UX, acessibilidade (WCAG 2.2) e consistência visual.
-*   **[`docs/RELATORIO_BRANCHES.md`](file:///docs/RELATORIO_BRANCHES.md):** Histórico de saneamento de branches Git.
-*   **[`docs/HISTORICO_DEV.md`](file:///docs/HISTORICO_DEV.md):** Relatório de evolução de engenharia do sistema.
+*   **[`docs/000_CHIEF_ARCHITECT_GUIDE.md`](file:///docs/000_CHIEF_ARCHITECT_GUIDE.md):** Manual operacional do Arquiteto de Software Chefe do sistema.
+*   **[`docs/001_PRODUCT_VISION.md`](file:///docs/001_PRODUCT_VISION.md):** Visão e objetivos estratégicos de longo prazo do AcademicHub.
+*   **[`docs/002_FLUXO_PLATAFORMA.md`](file:///docs/002_FLUXO_PLATAFORMA.md):** Mapa de fluxo detalhado e proposta executiva para apresentação a Diretores e Reitoria.
+*   **[`docs/003_UI_UX_REFACTOR_REPORT.md`](file:///docs/003_UI_UX_REFACTOR_REPORT.md):** Relatório detalhado das 4 fases da refatoração de UI/UX, acessibilidade (WCAG 2.2) e consistência visual.
+*   **[`docs/004_HISTORICO_DEV.md`](file:///docs/004_HISTORICO_DEV.md):** Relatório de evolução de engenharia do sistema.
+*   **[`docs/005_RELATORIO_BRANCHES.md`](file:///docs/005_RELATORIO_BRANCHES.md):** Histórico de saneamento e consolidação de branches Git.
 
 ---
 

@@ -141,20 +141,56 @@
         .ai-stub-btn:hover .ai-tooltip {
             opacity: 1;
         }
+
+        @media (max-width: 640px) {
+            .swal2-container {
+                padding: 0.75rem !important;
+            }
+
+            .swal2-popup {
+                width: min(100%, 22rem) !important;
+                max-width: calc(100vw - 1.5rem) !important;
+                border-radius: 1rem !important;
+                padding: 1rem !important;
+            }
+
+            .swal2-title {
+                font-size: 1rem !important;
+                line-height: 1.35 !important;
+                overflow-wrap: anywhere;
+            }
+
+            .swal2-html-container {
+                margin: 0.75rem 0 0 !important;
+                font-size: 0.875rem !important;
+                overflow-wrap: anywhere;
+            }
+
+            .swal2-actions {
+                width: 100% !important;
+                gap: 0.5rem !important;
+            }
+
+            .swal2-actions button {
+                flex: 1 1 0 !important;
+                margin: 0 !important;
+                min-height: 2.5rem;
+            }
+        }
     </style>
 </head>
 
 <body
-    class="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative antialiased md:h-screen md:overflow-hidden">
+    class="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative antialiased overflow-x-hidden md:h-screen md:overflow-hidden">
 
     <div class="glow-blob-blue"></div>
 
     <!-- HEADER -->
     <header
-        class="relative z-20 w-full px-4 md:px-6 py-3 md:py-4 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-3">
+        class="relative z-20 w-full px-3 sm:px-4 md:px-6 py-2.5 md:py-4 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-2 sm:gap-3">
         <div class="flex items-center gap-3 md:gap-4 min-w-0">
             <div
-                class="w-10 h-10 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800 flex items-center justify-center flex-shrink-0">
+                class="w-9 h-9 sm:w-10 sm:h-10 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800 flex items-center justify-center flex-shrink-0">
                 <img src="{{ asset('ul.png') }}" alt="Universidade Licungo"
                     class="w-full h-full object-contain"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -162,18 +198,18 @@
             </div>
             <div class="min-w-0">
                 <div class="flex items-center gap-2">
-                    <h1 class="text-base md:text-lg font-bold text-white font-display truncate">
+                    <h1 class="text-sm sm:text-base md:text-lg font-bold text-white font-display truncate max-w-[44vw] sm:max-w-none">
                         {{ $candidatura->project_name }}</h1>
                     <span
                         class="hidden sm:inline-flex text-[9px] uppercase font-bold tracking-wider text-bronze-400/90 bg-bronze-500/10 border border-bronze-500/30 px-1.5 py-0.5 rounded">Licungo
                         Hub</span>
                 </div>
-                <p class="text-[11px] text-slate-400 font-mono truncate">ID: #{{ $candidatura->id }} &middot; Status:
+                <p class="text-[10px] sm:text-[11px] text-slate-400 font-mono truncate">ID: #{{ $candidatura->id }} &middot; Status:
                     <span class="text-emerald-400">{{ $candidatura->status }}</span></p>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+        <div class="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
             @if($isStudent)
                 <a href="{{ route('candidatura.pdf', $candidatura->id) }}" target="_blank"
                     class="px-2.5 md:px-3 py-1.5 bg-sky-500/10 border border-sky-500/30 hover:bg-sky-500/20 text-sky-400 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors">
@@ -184,21 +220,21 @@
             @if($isAdmin)
                 @if($isViewer)
                     <span
-                        class="px-2.5 md:px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                    class="px-2.5 md:px-3 py-1.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 rounded-lg text-xs font-bold flex items-center gap-1.5">
                         <i data-lucide="eye" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Vista de Leitura</span>
                     </span>
                 @else
                     <span
-                        class="px-2.5 md:px-3 py-1.5 bg-bronze-500/10 border border-bronze-500/30 text-bronze-400 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                    class="px-2.5 md:px-3 py-1.5 bg-bronze-500/10 border border-bronze-500/30 text-bronze-400 rounded-lg text-xs font-bold flex items-center gap-1.5">
                         <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Vista de
                             Mentor</span>
                     </span>
                 @endif
                 <a href="{{ route('admin.dashboard') }}"
-                    class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors">Voltar</a>
+                    class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors"><span class="hidden sm:inline">Voltar</span><i data-lucide="arrow-left" class="w-3.5 h-3.5 sm:hidden"></i></a>
             @else
                 <a href="{{ route('workspace.logout') }}"
-                    class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors">Sair</a>
+                    class="px-2.5 md:px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center transition-colors"><span class="hidden sm:inline">Sair</span><i data-lucide="log-out" class="w-3.5 h-3.5 sm:hidden"></i></a>
             @endif
         </div>
     </header>
@@ -221,14 +257,14 @@
 
     <!-- MAIN -->
     <main
-        class="relative z-10 flex-grow w-full mx-auto px-2 md:px-6 py-4 flex flex-col md:flex-row gap-4 md:gap-6 md:h-[calc(100vh-128px)] md:overflow-hidden">
+        class="relative z-10 flex-grow w-full mx-auto px-3 md:px-6 py-3 md:py-4 flex flex-col md:flex-row gap-3 md:gap-6 md:h-[calc(100vh-128px)] md:overflow-hidden">
 
         <!-- SIDEBAR LEFT: Info, IA & Timeline (25%) -->
         <aside id="panel-info"
-            class="w-full md:w-[25%] lg:w-[20%] flex flex-col gap-4 md:gap-6 flex-shrink-0 md:overflow-y-auto md:pr-1 scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-info">
+            class="w-full md:w-[25%] lg:w-[20%] flex flex-col gap-3 md:gap-6 flex-shrink-0 md:overflow-y-auto md:pr-1 scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-info">
 
             <!-- Details -->
-            <div class="glass-panel rounded-2xl border border-slate-800/80 p-5 flex-shrink-0">
+            <div class="glass-panel rounded-2xl border border-slate-800/80 p-4 sm:p-5 flex-shrink-0">
                 <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
                     <i data-lucide="info" class="w-4 h-4 text-sky-400"></i> Detalhes do Projeto
                 </h3>
@@ -236,7 +272,7 @@
                 <div class="space-y-4">
                     <div>
                         <span class="text-[10px] uppercase font-bold text-slate-500 font-mono">Tecnologia</span>
-                        <p class="text-sm text-sky-400 font-mono">{{ $candidatura->technology }}</p>
+                        <p class="text-sm text-sky-400 font-mono break-words">{{ $candidatura->technology }}</p>
                     </div>
                     <div class="pt-4 border-t border-slate-800">
                         <span class="text-[10px] uppercase font-bold text-slate-500 font-mono mb-2 block">Membros do
@@ -268,7 +304,7 @@
             </div>
 
             <!-- Painel de IA (botões mudos / placeholders para integração futura) -->
-            <div class="glass-panel rounded-2xl border border-bronze-500/30 p-5 flex-shrink-0 relative overflow-hidden">
+            <div class="glass-panel rounded-2xl border border-bronze-500/30 p-4 sm:p-5 flex-shrink-0 relative overflow-hidden">
                 <div class="absolute -top-8 -right-8 w-24 h-24 bg-sky-500/10 rounded-full blur-2xl"></div>
                 <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2 relative z-10">
                     <i data-lucide="sparkles" class="w-4 h-4 text-sky-400"></i> Assistente IA
@@ -312,7 +348,7 @@
             </div>
 
             <!-- Timeline -->
-            <div class="glass-panel rounded-2xl border border-slate-800/80 p-5 flex-grow md:overflow-y-auto">
+            <div class="glass-panel rounded-2xl border border-slate-800/80 p-4 sm:p-5 flex-grow md:overflow-y-auto">
                 <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
                     <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i> Progresso do Projeto
                 </h3>
@@ -379,7 +415,7 @@
 
         <!-- CENTER: CHAT & KANBAN AREA (55%) -->
         <section id="panel-room"
-            class="hidden md:flex w-full md:w-[50%] lg:w-[60%] min-h-[600px] md:min-h-0 h-auto md:h-full glass-panel rounded-2xl border border-slate-800/80 flex-col overflow-hidden relative shadow-2xl" role="tabpanel" aria-labelledby="mobile-tab-room">
+            class="hidden md:flex w-full md:w-[50%] lg:w-[60%] min-h-[calc(100svh-150px)] md:min-h-0 h-auto md:h-full glass-panel rounded-2xl border border-slate-800/80 flex-col overflow-hidden relative shadow-2xl" role="tabpanel" aria-labelledby="mobile-tab-room">
 
             <!-- TABS HEADER -->
             <div class="flex border-b border-slate-800 bg-slate-900/50">
@@ -396,9 +432,9 @@
             </div>
 
             <!-- TAB CONTENT: CHAT -->
-            <div id="content-chat" class="flex-grow flex flex-col overflow-hidden h-full">
+            <div id="content-chat" class="flex-grow flex flex-col overflow-hidden h-full min-h-0">
                 <!-- Chat Messages -->
-                <div class="flex-grow p-4 md:p-6 overflow-y-auto space-y-4 max-h-[500px] md:max-h-none scrollbar-thin"
+                <div class="flex-grow p-3 sm:p-4 md:p-6 overflow-y-auto space-y-4 max-h-[calc(100svh-285px)] md:max-h-none scrollbar-thin"
                     id="chat-box" data-last-id="{{ $messages->last()->id ?? 0 }}">
 
                     <!-- Welcome Message -->
@@ -433,19 +469,19 @@
                         @foreach($messages as $msg)
                             @if($msg->sender_type === 'ai')
                                 <!-- AI Message (Left) -->
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 min-w-0">
                                     <div class="w-8 h-8 rounded-full bg-sky-500/20 border border-sky-500/30 flex items-center justify-center flex-shrink-0 shadow-lg shadow-sky-500/10">
                                         <i data-lucide="bot" class="w-4 h-4 text-sky-400"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1.5">
                                             <span class="text-xs font-bold text-sky-400">TechHub AI</span>
                                             <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
-                                        <div class="group relative p-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
+                                        <div class="group relative p-3 sm:p-4 pr-10 sm:pr-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed break-words">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if($isAdmin)
-                                                <div class="absolute -right-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <div class="absolute right-1 top-1 sm:-right-8 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                     <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
                                                     <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
@@ -455,19 +491,19 @@
                                 </div>
                             @elseif($msg->sender_type === 'mentor')
                                 <!-- Mentor Message (Left) -->
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 min-w-0">
                                     <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/10">
                                         <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-400"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1.5">
                                             <span class="text-xs font-bold text-emerald-400">Docente Mentor</span>
                                             <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                         </div>
-                                        <div class="group relative p-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
+                                        <div class="group relative p-3 sm:p-4 pr-10 sm:pr-4 bg-slate-800 border border-slate-700/80 shadow-md rounded-xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap leading-relaxed break-words">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if($isAdmin)
-                                                <div class="absolute -right-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <div class="absolute right-1 top-1 sm:-right-8 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                     <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-emerald-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
                                                     <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
@@ -477,16 +513,16 @@
                                 </div>
                             @else
                                 <!-- Student Message (Right) -->
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 ml-auto justify-end">
-                                    <div class="text-right">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 ml-auto justify-end min-w-0">
+                                    <div class="text-right min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1.5 justify-end">
                                             <span class="text-[10px] text-slate-500">{{ $msg->created_at->format('H:i') }}</span>
                                             <span class="text-xs font-bold text-sky-400">Grupo: {{ $candidatura->project_name }}</span>
                                         </div>
-                                        <div class="group relative p-4 bg-sky-900/40 border border-sky-500/30 shadow-md rounded-xl rounded-tr-sm text-sm text-sky-100 whitespace-pre-wrap text-left leading-relaxed">
+                                        <div class="group relative p-3 sm:p-4 pl-10 sm:pl-4 bg-sky-900/40 border border-sky-500/30 shadow-md rounded-xl rounded-tr-sm text-sm text-sky-100 whitespace-pre-wrap text-left leading-relaxed break-words">
                                             {!! renderChatMessage($msg->message) !!}
                                             @if(!$isAdmin)
-                                                <div class="absolute -left-8 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                                <div class="absolute left-1 top-1 sm:-left-8 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                     <button onclick="editMessage({{ $msg->id }}, '{{ addslashes($msg->message) }}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
                                                     <button onclick="deleteMessage({{ $msg->id }})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                                                 </div>
@@ -502,7 +538,7 @@
                     </div>
 
                     <!-- Indicador "a escrever..." -->
-                    <div id="typing-indicator" class="hidden flex items-start gap-3 w-[92%] sm:w-4/5">
+                    <div id="typing-indicator" class="hidden flex items-start gap-3 w-full sm:w-4/5">
                         <div
                             class="w-8 h-8 rounded-full bg-indigo-500/60 flex items-center justify-center flex-shrink-0">
                             <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
@@ -518,9 +554,9 @@
 
                 <!-- Input Area -->
                 @if(!$isViewer)
-                    <div class="p-4 border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm">
+                    <div class="p-2.5 sm:p-4 border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm">
                         <form id="chat-form" action="{{ route('workspace.message', $candidatura->id) }}" method="POST"
-                            class="flex gap-2 items-end">
+                            class="flex gap-1.5 sm:gap-2 items-end">
                             @csrf
                             <div class="relative w-full flex items-center bg-slate-950 border border-slate-800 focus-within:border-sky-500 rounded-xl transition-colors">
                                 <label for="chat-ficheiro-upload" class="cursor-pointer px-3 text-slate-400 hover:text-sky-400 transition-colors" title="Anexar ficheiro">
@@ -528,17 +564,17 @@
                                 </label>
                                 <textarea name="message" id="message-input" rows="1" placeholder="Escreva uma mensagem..."
                                     required
-                                    class="w-full bg-transparent border-none focus:outline-none focus:ring-0 py-3 pr-4 text-sm text-slate-200 resize-none overflow-hidden"
+                                    class="w-full min-h-11 max-h-28 bg-transparent border-none focus:outline-none focus:ring-0 py-3 pr-3 text-sm text-slate-200 resize-none overflow-y-auto"
                                     oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
                             </div>
                             <button type="button" onclick="aiAskAssistant()"
                                 title="Pedir orientação académica à IA (sobre a mensagem escrita)"
-                                class="w-12 h-12 bg-indigo-900/40 hover:bg-indigo-800/60 border border-indigo-800/50 text-indigo-400 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
+                                class="w-11 h-11 sm:w-12 sm:h-12 bg-indigo-900/40 hover:bg-indigo-800/60 border border-indigo-800/50 text-indigo-400 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
                                 <i data-lucide="sparkles" class="w-5 h-5"></i>
                             </button>
 
                             <button type="submit"
-                                class="w-12 h-12 bg-sky-600 hover:bg-sky-500 text-white rounded-xl flex items-center justify-center flex-shrink-0 transition-colors shadow-lg shadow-sky-500/20">
+                                class="w-11 h-11 sm:w-12 sm:h-12 bg-sky-600 hover:bg-sky-500 text-white rounded-xl flex items-center justify-center flex-shrink-0 transition-colors shadow-lg shadow-sky-500/20">
                                 <i data-lucide="send" class="w-5 h-5 ml-1"></i>
                             </button>
                         </form>
@@ -557,19 +593,19 @@
             </div>
 
             <!-- TAB CONTENT: KANBAN -->
-            <div id="content-kanban" class="hidden flex-grow flex flex-col overflow-hidden bg-slate-950">
+            <div id="content-kanban" class="hidden flex-grow flex flex-col overflow-hidden bg-slate-950 min-h-0">
                 <!-- Kanban Toolbar -->
-                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+                <div class="p-3 border-b border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-2 bg-slate-900/30">
                     <h3 class="text-xs font-bold text-slate-300 font-mono uppercase">Gestão de Tarefas</h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
                         <button type="button" onclick="aiSuggestTasks()" title="Sugerir tarefas com IA"
-                            class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-bronze-400 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors">
+                            class="flex-1 sm:flex-none justify-center px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-bronze-400 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors">
                             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span
                                 class="hidden sm:inline">Sugerir</span>
                         </button>
                         @if(!$isViewer)
                             <button onclick="openKanbanModal()"
-                                class="px-3 py-1.5 bg-sky-500/10 border border-sky-500/30 hover:bg-sky-500/20 text-sky-400 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors">
+                                class="flex-1 sm:flex-none justify-center px-3 py-1.5 bg-sky-500/10 border border-sky-500/30 hover:bg-sky-500/20 text-sky-400 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors">
                                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Tarefa
                             </button>
                         @endif
@@ -577,11 +613,11 @@
                 </div>
 
                 <!-- Kanban Board (Scrollable Container) -->
-                <div class="flex-grow p-4 overflow-y-auto md:overflow-y-hidden overflow-x-hidden md:overflow-x-auto flex flex-col md:flex-row gap-4 kanban-container scrollbar-thin">
+                <div class="flex-grow p-3 sm:p-4 overflow-y-auto md:overflow-y-hidden overflow-x-hidden md:overflow-x-auto flex flex-col md:flex-row gap-3 md:gap-4 kanban-container scrollbar-thin">
 
                     <!-- Coluna: A Fazer -->
                     <div
-                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[260px] sm:h-[310px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -597,7 +633,7 @@
 
                     <!-- Coluna: Em Progresso -->
                     <div
-                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[260px] sm:h-[310px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -614,7 +650,7 @@
 
                     <!-- Coluna: Em Revisão -->
                     <div
-                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[260px] sm:h-[310px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-bronze-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -630,7 +666,7 @@
 
                     <!-- Coluna: Concluído -->
                     <div
-                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[350px] md:h-full">
+                        class="w-full md:w-64 md:flex-shrink-0 flex flex-col bg-slate-900/50 border border-slate-800/80 rounded-xl overflow-hidden h-[260px] sm:h-[310px] md:h-full">
                         <div class="p-3 border-b border-slate-800 flex items-center justify-between bg-slate-800/30">
                             <span
                                 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -650,7 +686,7 @@
 
         <!-- SIDEBAR RIGHT: Files (25%) -->
         <aside id="panel-files"
-            class="hidden w-full md:w-[25%] lg:w-[20%] glass-panel rounded-2xl border border-slate-800/80 p-5 flex-col md:flex md:overflow-y-auto scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-files">
+            class="hidden w-full md:w-[25%] lg:w-[20%] glass-panel rounded-2xl border border-slate-800/80 p-4 sm:p-5 flex-col md:flex md:overflow-y-auto scrollbar-thin" role="tabpanel" aria-labelledby="mobile-tab-files">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-2">
                 <i data-lucide="folder" class="w-4 h-4 text-sky-400"></i> Ficheiros e Recursos
             </h3>
@@ -676,8 +712,8 @@
                         }
                     @endphp
                     <div
-                        class="p-3 bg-slate-900/50 border border-slate-800 rounded-xl flex items-center justify-between group hover:border-sky-500/50 transition-colors">
-                        <div class="flex items-center gap-3 overflow-hidden pr-2">
+                        class="p-3 bg-slate-900/50 border border-slate-800 rounded-xl flex items-center justify-between gap-2 group hover:border-sky-500/50 transition-colors">
+                        <div class="flex items-center gap-3 overflow-hidden pr-1 min-w-0">
                             <i data-lucide="{{ $icon }}" class="w-6 h-6 {{ $iconColor }} flex-shrink-0"></i>
                             <div class="overflow-hidden">
                                 <p class="text-xs text-white truncate" title="{{ $f->nome_ficheiro }}">
@@ -688,7 +724,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-1">
+                        <div class="flex gap-1 flex-shrink-0">
                             <button onclick="previewFile('{{ route('workspace.ficheiro.preview', $f->id) }}', '{{ $f->nome_ficheiro }}', '{{ $ext }}')"
                                 class="p-1.5 bg-slate-800 hover:bg-sky-600 text-sky-400 hover:text-white rounded-lg transition-colors flex-shrink-0 shadow-sm"
                                 title="Visualizar Ficheiro">
@@ -748,8 +784,8 @@
 
     <!-- KANBAN MOVE MODAL (MOBILE) -->
     <div id="kanban-move-modal"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 max-h-[85vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300 shadow-2xl"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300 p-3 sm:p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full max-w-sm p-4 sm:p-6 max-h-[85vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300 shadow-2xl"
             id="kanban-move-content">
             <div class="flex justify-between items-center mb-5 border-b border-slate-800 pb-3">
                 <h2 class="text-sm font-bold text-white flex items-center gap-2">
@@ -785,8 +821,8 @@
 
     <!-- KANBAN MODAL -->
     <div id="kanban-modal"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 shadow-2xl"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300 p-3 sm:p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full max-w-md p-4 sm:p-6 max-h-[88vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300 shadow-2xl"
             id="kanban-modal-content">
             <div class="flex justify-between items-center mb-5">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -821,11 +857,11 @@
                     </select>
                 </div>
 
-                <div class="flex justify-end gap-2 mt-6">
+                <div class="flex flex-col sm:flex-row justify-end gap-2 mt-6">
                     <button type="button" onclick="closeKanbanModal()"
-                        class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm transition-colors">Cancelar</button>
+                        class="w-full sm:w-auto px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm transition-colors">Cancelar</button>
                     <button type="submit"
-                        class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-sm font-bold transition-colors shadow-lg shadow-sky-500/20">Criar
+                        class="w-full sm:w-auto px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-sm font-bold transition-colors shadow-lg shadow-sky-500/20">Criar
                         Tarefa</button>
                 </div>
             </form>
@@ -924,19 +960,19 @@
                             let html = '';
                             if (msg.sender_type === 'ai') {
                                 html = `
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 animate-fade-in">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 min-w-0 animate-fade-in">
                                     <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/20">
                                         <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1">
                                             <span class="text-xs font-bold text-indigo-400">Assistente IA (Académico)</span>
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
                                         </div>
-                                        <div class="group relative p-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                        <div class="group relative p-3 pr-10 sm:pr-3 bg-slate-800 border border-indigo-500/30 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap break-words">
                                             ${textRendered}
                                             ${isAdmin ? `
-                                            <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                            <div class="absolute right-1 top-1 sm:-right-6 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                 <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1" title="Editar IA"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
                                                 <button onclick="deleteMessage(${msg.id})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1" title="Eliminar IA"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
                                             </div>
@@ -946,19 +982,19 @@
                                 </div>`;
                             } else if (msg.sender_type === 'mentor') {
                                 html = `
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 animate-fade-in">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 min-w-0 animate-fade-in">
                                     <div class="w-8 h-8 rounded-full bg-bronze-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-bronze-500/20">
                                         <i data-lucide="graduation-cap" class="w-4 h-4 text-white"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1">
                                             <span class="text-xs font-bold text-bronze-400">Docente Mentor</span>
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
                                         </div>
-                                        <div class="group relative p-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap">
+                                        <div class="group relative p-3 pr-10 sm:pr-3 bg-slate-800 border border-slate-700 rounded-2xl rounded-tl-sm text-sm text-slate-200 whitespace-pre-wrap break-words">
                                             ${textRendered}
                                             ${isAdmin ? `
-                                            <div class="absolute -right-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                            <div class="absolute right-1 top-1 sm:-right-6 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                 <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-400 hover:text-sky-400 bg-slate-900 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
                                                 <button onclick="deleteMessage(${msg.id})" class="text-slate-400 hover:text-red-400 bg-slate-900 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
                                             </div>
@@ -968,16 +1004,16 @@
                                 </div>`;
                             } else {
                                 html = `
-                                <div class="flex items-start gap-3 w-[92%] sm:w-4/5 ml-auto justify-end animate-fade-in">
-                                    <div class="text-right">
+                                <div class="flex items-start gap-2 sm:gap-3 w-full sm:w-4/5 ml-auto justify-end min-w-0 animate-fade-in">
+                                    <div class="text-right min-w-0 max-w-full">
                                         <div class="flex items-baseline gap-2 mb-1 justify-end">
                                             <span class="text-[10px] text-slate-500">${timeStr}</span>
                                             <span class="text-xs font-bold text-sky-400">Grupo: {{ addslashes($candidatura->project_name) }}</span>
                                         </div>
-                                        <div class="group relative p-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left">
+                                        <div class="group relative p-3 pl-10 sm:pl-3 bg-sky-600 border border-sky-500 rounded-2xl rounded-tr-sm text-sm text-white whitespace-pre-wrap text-left break-words">
                                             ${textRendered}
                                             ${!isAdmin ? `
-                                            <div class="absolute -left-6 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+                                            <div class="absolute left-1 top-1 sm:-left-6 sm:top-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col gap-1.5 sm:gap-2">
                                                 <button onclick="editMessage(${msg.id}, '${safeRawText}')" class="text-slate-200 hover:text-white bg-slate-800 rounded p-1"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
                                                 <button onclick="deleteMessage(${msg.id})" class="text-slate-200 hover:text-red-400 bg-slate-800 rounded p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
                                             </div>
@@ -1199,7 +1235,10 @@
         // Kanban Modal
         function openKanbanModal() {
             document.getElementById('kanban-modal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('kanban-modal').classList.remove('opacity-0'), 10);
+            setTimeout(() => {
+                document.getElementById('kanban-modal').classList.remove('opacity-0');
+                document.getElementById('kanban-modal-content').classList.remove('translate-y-full', 'sm:translate-y-0');
+            }, 10);
             document.getElementById('kanban-title').focus();
         }
 
@@ -1235,6 +1274,7 @@
 
         function closeKanbanModal() {
             document.getElementById('kanban-modal').classList.add('opacity-0');
+            document.getElementById('kanban-modal-content').classList.add('translate-y-full', 'sm:translate-y-0');
             setTimeout(() => {
                 document.getElementById('kanban-modal').classList.add('hidden');
                 document.getElementById('kanban-form').reset();

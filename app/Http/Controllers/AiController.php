@@ -366,12 +366,23 @@ Responde de forma útil, encorajadora, académica e focada no contexto do projet
                 ]);
             } else {
                 // Se for o Aluno, a IA responde diretamente no chat.
-                $candidatura->workspaceMessages()->create([
-                    'sender_type' => 'ai',
-                    'sender_id' => 0,
-                    'message' => trim($aiResponse)
-                ]);
-                return response()->json(['success' => true]);
+                try {
+                    $candidatura->workspaceMessages()->create([
+                        'sender_type' => 'ai',
+                        'message' => trim($aiResponse)
+                    ]);
+                    return response()->json(['success' => true]);
+                } catch (\Throwable $e) {
+                    Log::error('AiController: erro ao gravar resposta da IA no chat', [
+                        'candidatura_id' => $candidatura->id,
+                        'message' => $e->getMessage(),
+                    ]);
+
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'A IA respondeu, mas não foi possível guardar a resposta no chat. Tente novamente.'
+                    ], 500);
+                }
             }
         }
 

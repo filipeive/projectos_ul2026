@@ -189,6 +189,7 @@
                         <button onclick="filterStatus('Todos')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all" aria-pressed="true">Todos</button>
                         <button onclick="filterStatus('Pendente')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all" aria-pressed="false">Pendentes</button>
                         <button onclick="filterStatus('Aprovado')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all" aria-pressed="false">Aprovados</button>
+                        <button onclick="filterStatus('Rejeitado')" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-800 whitespace-nowrap transition-all" aria-pressed="false">Rejeitados</button>
                     </div>
                 </div>
 
@@ -304,10 +305,22 @@
                                                     @endif
 
                                                     <!-- Set Status (Quick Approvals) -->
-                                                    @if($user->role === 'admin' && $c->status === 'Pendente')
-                                                    <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500 border border-emerald-400 rounded-lg text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20" title="Aprovar Agora">
-                                                        <i data-lucide="check" class="w-4 h-4"></i>
-                                                    </button>
+                                                    @if($user->role === 'admin')
+                                                        @if($c->status !== 'Aprovado')
+                                                        <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 rounded-lg text-emerald-400 transition-colors shadow-sm" title="Marcar como Aprovado">
+                                                            <i data-lucide="check" class="w-4 h-4"></i>
+                                                        </button>
+                                                        @endif
+                                                        @if($c->status !== 'Rejeitado')
+                                                        <button onclick="setStatus({{ $c->id }}, 'Rejeitado')" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg text-rose-400 transition-colors shadow-sm" title="Marcar como Rejeitado">
+                                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                                        </button>
+                                                        @endif
+                                                        @if($c->status !== 'Pendente')
+                                                        <button onclick="setStatus({{ $c->id }}, 'Pendente')" class="p-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 rounded-lg text-amber-400 transition-colors shadow-sm" title="Voltar para Pendente">
+                                                            <i data-lucide="clock" class="w-4 h-4"></i>
+                                                        </button>
+                                                        @endif
                                                     @endif
 
                                                     <!-- Delete Candidatura (Rejected) -->
@@ -402,11 +415,23 @@
                                         </a>
                                         @endif
 
-                                        <!-- Quick Approve -->
-                                        @if($user->role === 'admin' && $c->status === 'Pendente')
-                                        <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500 border border-emerald-400 rounded-lg text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20" title="Aprovar Agora">
-                                            <i data-lucide="check" class="w-4 h-4"></i>
-                                        </button>
+                                        <!-- Status Management -->
+                                        @if($user->role === 'admin')
+                                            @if($c->status !== 'Aprovado')
+                                            <button onclick="setStatus({{ $c->id }}, 'Aprovado')" class="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 rounded-lg text-emerald-400 transition-colors shadow-sm" title="Marcar como Aprovado">
+                                                <i data-lucide="check" class="w-4 h-4"></i>
+                                            </button>
+                                            @endif
+                                            @if($c->status !== 'Rejeitado')
+                                            <button onclick="setStatus({{ $c->id }}, 'Rejeitado')" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg text-rose-400 transition-colors shadow-sm" title="Marcar como Rejeitado">
+                                                <i data-lucide="x" class="w-4 h-4"></i>
+                                            </button>
+                                            @endif
+                                            @if($c->status !== 'Pendente')
+                                            <button onclick="setStatus({{ $c->id }}, 'Pendente')" class="p-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 rounded-lg text-amber-400 transition-colors shadow-sm" title="Voltar para Pendente">
+                                                <i data-lucide="clock" class="w-4 h-4"></i>
+                                            </button>
+                                            @endif
                                         @endif
 
                                         <!-- Delete Candidatura (Rejected) -->
@@ -792,17 +817,36 @@
 
         // Change Status (Approve/Reject)
         function setStatus(id, newStatus) {
+            const statusMeta = {
+                Aprovado: {
+                    icon: 'success',
+                    confirm: 'bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg font-bold',
+                    text: 'A candidatura ficará aprovada e o workspace poderá ser acedido.'
+                },
+                Rejeitado: {
+                    icon: 'warning',
+                    confirm: 'bg-rose-500 hover:bg-rose-400 text-white px-4 py-2 rounded-lg font-bold',
+                    text: 'A candidatura ficará rejeitada. Depois disso, poderá eliminá-la se for apenas um teste.'
+                },
+                Pendente: {
+                    icon: 'question',
+                    confirm: 'bg-amber-500 hover:bg-amber-400 text-white px-4 py-2 rounded-lg font-bold',
+                    text: 'A candidatura voltará para avaliação pendente.'
+                }
+            };
+            const meta = statusMeta[newStatus] || statusMeta.Pendente;
+
             Swal.fire({
                 title: `Confirmar ${newStatus}?`,
-                text: "O estado do projeto será atualizado.",
-                icon: 'question',
+                text: meta.text,
+                icon: meta.icon,
                 showCancelButton: true,
                 confirmButtonText: 'Sim, confirmar',
                 cancelButtonText: 'Cancelar',
                 background: '#0b0f19', color: '#fff',
                 customClass: {
                     popup: 'border border-slate-800 rounded-2xl',
-                    confirmButton: 'bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg font-bold',
+                    confirmButton: meta.confirm,
                     cancelButton: 'bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold ml-2'
                 },
                 buttonsStyling: false
@@ -943,6 +987,7 @@
                 const isActive = (btnText === status) || 
                     (status === 'Pendente' && btnText === 'Pendentes') || 
                     (status === 'Aprovado' && btnText === 'Aprovados') ||
+                    (status === 'Rejeitado' && btnText === 'Rejeitados') ||
                     (status === 'Todos' && btnText === 'Todos');
                 if (isActive) {
                     btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 whitespace-nowrap transition-all';

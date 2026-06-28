@@ -25,7 +25,7 @@
 - AI Advisor com export PDF
 - Workspace com análise de sentimento e sugestão de tarefas IA
 - Tema Claro/Escuro com persistência
-- SMS Gateway multi-driver
+- SMS Gateway via httpSMS
 
 **Deploy:** VPS + `deploy.sh`
 **Ambiente:** Produção

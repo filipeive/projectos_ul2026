@@ -16,10 +16,12 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Botão "Eliminar" no dashboard admin, visível apenas para candidaturas rejeitadas, com confirmação SweetAlert2.
 - Botão de acesso dinâmico no portal: Admin/Docente → "Painel Dashboard"; Estudante logado → "Aceder ao Workspace".
 - Logout explícito do Workspace para estudantes (limpa sessão e redireciona ao portal).
+- SMS de PIN na submissão e recuperação de acesso usa exclusivamente httpSMS.
 
 ### fix
 - Corrigido erro 500 em produção: instalação do `barryvdh/laravel-dompdf` via `composer install` no servidor remoto.
 - Pipeline de deploy (`deploy.sh`) agora inclui `composer install --no-dev --optimize-autoloader` automaticamente.
+- Removidos os fallbacks para D7, Twilio, Vonage e Africa's Talking no envio de SMS para evitar seleção incorreta por `SMS_DRIVER`.
 
 ### refactor
 - Validação condicional no `PortalController@submit` para suportar inscrição individual sem exigir membro 2.
@@ -41,7 +43,7 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Piloto Automático (auto-reply) da IA no Workspace.
 - Sugestão privada de resposta para o Docente antes de enviar.
 - Tema Claro / Escuro / Sistema com persistência em localStorage.
-- SMS Gateway multi-driver: HTTP SMS, Africa's Talking, Twilio, D7, Vonage.
+- SMS Gateway via httpSMS.
 - Preview de ficheiros em modal glassmorphism (PDF, imagem, vídeo, código).
 
 ### fix

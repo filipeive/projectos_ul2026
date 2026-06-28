@@ -23,7 +23,7 @@ O AcademicHub segue uma arquitetura **Monolítica Modular** assente no padrão *
                          │
 ┌────────────────────────▼────────────────────────────────┐
 │                    CAMADA DE SERVIÇOS                   │
-│  - AfricaTalkingService (SMS)                           │
+│  - AfricaTalkingService (SMS via httpSMS)                │
 │  - AiService (OpenRouter)                              │
 │  (futuros: NotificationService, WorkspaceService...)   │
 └────────────────────────┬────────────────────────────────┘
@@ -50,7 +50,7 @@ O AcademicHub segue uma arquitetura **Monolítica Modular** assente no padrão *
 | JavaScript        | Vanilla JS (Fetch API)  |
 | Base de Dados     | MySQL / MariaDB         |
 | IA                | OpenRouter (GPT-4o)     |
-| SMS               | Africa's Talking / HTTP SMS |
+| SMS               | httpSMS                  |
 | Autenticação      | Laravel Sessions + PIN  |
 | Deploy            | bash `deploy.sh` + VPS  |
 
@@ -85,6 +85,6 @@ Browser → Route → Middleware → Controller → Service → Model → DB
 | Workspace       | Chat, Kanban, ficheiros, IA               |
 | Admin           | Dashboard, aprovações, métricas           |
 | AI              | OpenRouter API, prompts, segurança        |
-| SMS             | Gateways de envio de mensagens            |
+| SMS             | Envio de mensagens via httpSMS            |
 
 Ver detalhes em `07_MODULES.md`.

@@ -28,7 +28,7 @@ O **UniLicungo TechHub** é uma solução SaaS projetada para modernizar e digit
 *   **💬 Chat de Mentoria Directo:** Canal de comunicação persistente e integrado entre o grupo de estudantes e o docente mentor.
 *   **📂 Repositório Glassmorphism:** Carregamento de ficheiros com visualização direta e responsiva de PDFs, imagens e código-fonte, reduzindo o tráfego de downloads redundantes.
 *   **📱 Mobile-First & PWA-Ready:** Totalmente acessível em smartphones com suporte a **Tema Claro, Tema Escuro e Tema do Sistema**.
-*   **💬 SMS Gateway Integrado:** Envio automatizado de PINs e atualizações por SMS usando canais configuráveis (HTTP SMS, Africa's Talking, Twilio, D7 Networks, Vonage).
+*   **💬 SMS Gateway Integrado:** Envio automatizado de PINs e atualizações por SMS usando httpSMS.
 
 ---
 
@@ -74,9 +74,9 @@ No `.env`, introduza as credenciais da API do OpenRouter e do HTTP SMS Gateway:
 # Inteligência Artificial (OpenRouter API)
 OPENROUTER_API_KEY=seu_token_aqui
 
-# SMS Gateway (Exemplo usando HTTP SMS)
-HTTPSMS_API_KEY=sua_chave_http_sms_aqui
-HTTPSMS_PHONE_NUMBER=+258840000000
+# SMS Gateway (httpSMS)
+HTTPSMS_KEY=sua_chave_http_sms_aqui
+HTTPSMS_FROM=+258840000000
 ```
 
 ### 4. Executar Migrações e Seeders

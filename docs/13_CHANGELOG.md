@@ -26,6 +26,7 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Removidos os fallbacks para D7, Twilio, Vonage e Africa's Talking no envio de SMS para evitar seleção incorreta por `SMS_DRIVER`.
 - Ajustado layout mobile da ficha de candidatura e do cartão de sucesso.
 - Ajustado Workspace para ecrãs muito pequenos: header compacto, chat sem overflow, Kanban mais curto no mobile, modais bottom sheet e SweetAlert responsivo.
+- Corrigido erro "Oops..." no assistente IA do chat ao permitir mensagens com `sender_type = ai`.
 
 ### refactor
 - Validação condicional no `PortalController@submit` para suportar inscrição individual sem exigir membro 2.

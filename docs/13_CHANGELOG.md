@@ -17,11 +17,13 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Botão de acesso dinâmico no portal: Admin/Docente → "Painel Dashboard"; Estudante logado → "Aceder ao Workspace".
 - Logout explícito do Workspace para estudantes (limpa sessão e redireciona ao portal).
 - SMS de PIN na submissão e recuperação de acesso usa exclusivamente httpSMS.
+- Botão de reenvio de PIN por SMS no ecrã de sucesso da candidatura.
 
 ### fix
 - Corrigido erro 500 em produção: instalação do `barryvdh/laravel-dompdf` via `composer install` no servidor remoto.
 - Pipeline de deploy (`deploy.sh`) agora inclui `composer install --no-dev --optimize-autoloader` automaticamente.
 - Removidos os fallbacks para D7, Twilio, Vonage e Africa's Talking no envio de SMS para evitar seleção incorreta por `SMS_DRIVER`.
+- Ajustado layout mobile da ficha de candidatura e do cartão de sucesso.
 
 ### refactor
 - Validação condicional no `PortalController@submit` para suportar inscrição individual sem exigir membro 2.

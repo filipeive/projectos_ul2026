@@ -110,7 +110,7 @@
                         Universidade Licungo · Quelimane
                     </div>
                     <!-- Title -->
-                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight break-words">
                         UniLicungo <span class="text-gradient-primary">TechHub</span>
                     </h1>
                     <p class="text-sm text-slate-400 max-w-2xl font-light">
@@ -681,14 +681,14 @@
         <!-- 4. SECTION: APPLICATION GENERATOR -->
         <section id="section-estudante" role="tabpanel" aria-labelledby="tab-btn-estudante" class="content-section hidden">
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8 max-w-6xl mx-auto">
                 <!-- Form Column -->
                 <div class="space-y-6">
-                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-display flex items-center gap-2">
                         <i data-lucide="edit" class="w-6 h-6 text-sky-400"></i> Ficha de Candidatura do Grupo
                     </h2>
                     
-                    <form id="step-by-step-form" action="{{ route('portal.submit') }}" method="POST" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-6">
+                    <form id="step-by-step-form" action="{{ route('portal.submit') }}" method="POST" class="glass-panel p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-800/80 space-y-5 sm:space-y-6">
                         @csrf
                         
                         <!-- Step Progress Bar -->
@@ -759,14 +759,14 @@
                             <!-- Tipo de Inscrição Selector -->
                             <div class="bg-slate-950/40 p-3 rounded-xl border border-slate-900/60">
                                 <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono mb-2">Tipo de Inscrição</label>
-                                <div class="flex gap-6">
-                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors rounded-lg border border-slate-800 bg-slate-900/50 px-3 py-2 min-h-11">
                                         <input type="radio" name="registration_type" value="group" class="w-4 h-4 text-sky-500 focus:ring-sky-500 bg-slate-900 border-slate-800 focus:ring-1" checked onchange="toggleRegistrationType('group')">
                                         <i data-lucide="users" class="w-4 h-4 text-sky-400"></i> Em Grupo
                                     </label>
-                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors">
+                                    <label class="flex items-center gap-2 text-xs text-slate-200 cursor-pointer font-medium hover:text-white transition-colors rounded-lg border border-slate-800 bg-slate-900/50 px-3 py-2 min-h-11">
                                         <input type="radio" name="registration_type" value="individual" class="w-4 h-4 text-sky-500 focus:ring-sky-500 bg-slate-900 border-slate-800 focus:ring-1" onchange="toggleRegistrationType('individual')">
-                                        <i data-lucide="user" class="w-4 h-4 text-sky-400"></i> Individual (Apenas 1 Estudante)
+                                        <i data-lucide="user" class="w-4 h-4 text-sky-400"></i> Individual
                                     </label>
                                 </div>
                             </div>
@@ -829,16 +829,16 @@
                         </div>
 
                         <!-- Form Navigation / Buttons -->
-                        <div class="flex justify-between items-center pt-4 border-t border-slate-800/60">
-                            <button type="button" id="btn-prev-step" class="opacity-0 pointer-events-none px-4 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all">
+                        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 pt-4 border-t border-slate-800/60">
+                            <button type="button" id="btn-prev-step" class="opacity-0 pointer-events-none w-full sm:w-auto justify-center px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all">
                                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Anterior
                             </button>
                             
-                            <button type="button" id="btn-next-step" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/10">
+                            <button type="button" id="btn-next-step" class="w-full sm:w-auto justify-center px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/10">
                                 Seguinte <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                             </button>
                             
-                            <button type="submit" id="btn-submit-form" class="hidden px-5 py-2.5 bg-gradient-ul hover:opacity-90 active:opacity-100 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/15">
+                            <button type="submit" id="btn-submit-form" class="hidden w-full sm:w-auto justify-center px-5 py-2.5 bg-gradient-ul hover:opacity-90 active:opacity-100 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-sky-500/15">
                                 <i data-lucide="check" class="w-3.5 h-3.5"></i> Registar Grupo
                             </button>
                         </div>
@@ -847,13 +847,13 @@
 
                 <!-- Preview Column -->
                 <div class="space-y-6">
-                    <h2 class="text-2xl font-bold text-white font-display flex items-center gap-2">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-display flex items-center gap-2">
                         <i data-lucide="file-text" class="w-6 h-6 text-sky-400"></i> Ficha de Proposta Gerada
                     </h2>
                     
                     @if(session('candidatura_id'))
                         <!-- Output area -->
-                        <div id="generated-output-container" class="glass-panel p-6 rounded-2xl border border-slate-800/80 space-y-4 h-[calc(100%-3rem)] flex flex-col items-center justify-center text-center">
+                        <div id="generated-output-container" class="glass-panel p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-800/80 space-y-4 min-h-[360px] lg:h-[calc(100%-3rem)] flex flex-col items-center justify-center text-center scroll-mt-24">
                             
                             <div class="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-2 shadow-lg shadow-emerald-500/20">
                                 <i data-lucide="check" class="w-8 h-8 text-emerald-400"></i>
@@ -877,6 +877,13 @@
                                     <span>{{ session('sms_status') }}</span>
                                 </div>
                             @endif
+
+                            <form action="{{ route('candidatura.resend-pin', session('candidatura_id')) }}" method="POST" class="w-full">
+                                @csrf
+                                <button type="submit" class="w-full py-2.5 border border-slate-700 hover:border-sky-500 bg-slate-900/70 hover:bg-slate-800 text-slate-200 hover:text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="rotate-cw" class="w-4 h-4"></i> Não recebeu o código? Reenviar por SMS
+                                </button>
+                            </form>
 
                             <a href="{{ route('candidatura.pdf', session('candidatura_id')) }}" target="_blank" class="w-full py-3 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20">
                                 <i data-lucide="download-cloud" class="w-5 h-5"></i> Baixar Comprovativo PDF
@@ -1997,12 +2004,23 @@
             updateStats();
             applyFilters();
             updateProjectFields();
+
+            const requestedTab = new URLSearchParams(window.location.search).get('tab');
+            if (requestedTab) {
+                const requestedTabBtn = document.querySelector(`.nav-tab-btn[data-tab="${requestedTab}"]`);
+                if (requestedTabBtn) requestedTabBtn.click();
+            }
             
             // Check if there is a newly generated proposal/PDF to show
             @if(session('candidatura_id'))
                 // Switch to form tab automatically so the user can see the output
                 const formTabBtn = document.querySelector('.nav-tab-btn[data-tab="estudante"]');
                 if (formTabBtn) formTabBtn.click();
+
+                const outputCard = document.getElementById('generated-output-container');
+                if (outputCard && window.matchMedia('(max-width: 1023px)').matches) {
+                    setTimeout(() => outputCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+                }
             @endif
 
 

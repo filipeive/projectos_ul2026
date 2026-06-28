@@ -188,22 +188,9 @@ class PortalController extends Controller
 
         // Store the PIN temporarily in session so it can be generated in the PDF
         session()->put('generated_pin_' . $candidatura->id, $generatedPin);
+        session()->put('last_candidatura_id', $candidatura->id);
 
-        $smsStatus = null;
-        if (!empty($candidatura->contact_phone)) {
-            try {
-                [$sent, $message] = AfricaTalkingService::sendSms(
-                    $candidatura->contact_phone,
-                    "UniLicungo TechHub: o PIN do projeto '{$candidatura->project_name}' e {$generatedPin}. Guarde este codigo para aceder ao Workspace."
-                );
-                $smsStatus = $sent
-                    ? 'PIN enviado por SMS para o telemóvel registado.'
-                    : 'Registo concluído, mas o SMS não foi enviado: ' . $message;
-            } catch (\Throwable $e) {
-                Log::error('Failed to send initial PIN SMS: ' . $e->getMessage());
-                $smsStatus = 'Registo concluído, mas não foi possível enviar o SMS do PIN.';
-            }
-        }
+        $smsStatus = $this->sendPinSms($candidatura, $generatedPin, 'Registo concluído, mas');
 
         return redirect()->back()->with([
             'success' => 'Candidatura submetida com sucesso no sistema!',
@@ -212,6 +199,57 @@ class PortalController extends Controller
             'project_name' => $candidatura->project_name,
             'sms_status' => $smsStatus,
         ]);
+    }
+
+    public function resendPin(Request $request, Candidatura $candidatura)
+    {
+        $sessionOwnsCandidatura = (int) session('last_candidatura_id') === (int) $candidatura->id;
+
+        if (!$sessionOwnsCandidatura) {
+            return redirect()
+                ->route('workspace.recover-pin', $candidatura->id)
+                ->with('error', 'Por segurança, confirme o contacto do grupo para reenviar o PIN.');
+        }
+
+        $pinSessionKey = 'generated_pin_' . $candidatura->id;
+        $pin = session($pinSessionKey);
+
+        if (!$pin) {
+            $pin = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+            $candidatura->update(['group_password' => bcrypt($pin)]);
+            session()->put($pinSessionKey, $pin);
+        }
+
+        $smsStatus = $this->sendPinSms($candidatura, $pin, 'PIN não reenviado:');
+
+        return redirect()->route('portal.index')->with([
+            'success' => 'Pedido de reenvio processado.',
+            'candidatura_id' => $candidatura->id,
+            'generated_pin' => $pin,
+            'project_name' => $candidatura->project_name,
+            'sms_status' => $smsStatus,
+        ]);
+    }
+
+    private function sendPinSms(Candidatura $candidatura, string $pin, string $failurePrefix): ?string
+    {
+        if (empty($candidatura->contact_phone)) {
+            return 'Nenhum telemóvel foi registado para envio do PIN por SMS.';
+        }
+
+        try {
+            [$sent, $message] = AfricaTalkingService::sendSms(
+                $candidatura->contact_phone,
+                "UniLicungo TechHub: o PIN do projeto '{$candidatura->project_name}' e {$pin}. Guarde este codigo para aceder ao Workspace."
+            );
+
+            return $sent
+                ? 'PIN enviado por SMS para o telemóvel registado.'
+                : "{$failurePrefix} o SMS não foi enviado: {$message}";
+        } catch (\Throwable $e) {
+            Log::error('Failed to send PIN SMS: ' . $e->getMessage());
+            return "{$failurePrefix} não foi possível enviar o SMS do PIN.";
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\PortalController;
 // Student Portal Routes
 Route::get('/', [PortalController::class, 'index'])->name('portal.index');
 Route::post('/candidatura', [PortalController::class, 'submit'])->name('portal.submit');
+Route::post('/candidatura/{candidatura}/reenviar-pin', [PortalController::class, 'resendPin'])->name('candidatura.resend-pin')->middleware('throttle:3,1');
 Route::get('/candidatura/{id}/pdf', [PortalController::class, 'downloadPdf'])->name('candidatura.pdf');
 
 // Admin Routes

@@ -14,6 +14,7 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Ideias Próprias: estudantes podem propor temas próprios de projeto (opção "Propor minha própria ideia").
 - Ideias próprias aprovadas são injetadas no catálogo do portal como "Ideia Própria" com badge "Reservado".
 - Botão "Eliminar" no dashboard admin, visível apenas para candidaturas rejeitadas, com confirmação SweetAlert2.
+- Dashboard admin permite trocar candidaturas entre Pendente, Aprovado e Rejeitado diretamente nas ações rápidas.
 - Botão de acesso dinâmico no portal: Admin/Docente → "Painel Dashboard"; Estudante logado → "Aceder ao Workspace".
 - Logout explícito do Workspace para estudantes (limpa sessão e redireciona ao portal).
 - SMS de PIN na submissão e recuperação de acesso usa exclusivamente httpSMS.

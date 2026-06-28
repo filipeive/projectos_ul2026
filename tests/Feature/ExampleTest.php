@@ -74,4 +74,32 @@ class ExampleTest extends TestCase
             'status' => 'Rejeitado',
         ]);
     }
+
+    public function test_admin_can_render_workspace_page(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Workspace',
+            'email' => 'workspace-admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        $candidatura = Candidatura::create([
+            'project_number' => 3,
+            'project_name' => 'Workspace Responsivo',
+            'technology' => 'Laravel + MySQL',
+            'member1_name' => 'Estudante Um',
+            'member1_code' => 'UL003',
+            'contact_email' => 'workspace@example.com',
+            'contact_phone' => '841234569',
+            'rationale' => 'Projeto para testar a renderização responsiva do workspace.',
+            'status' => 'Aprovado',
+            'group_password' => Hash::make('123456'),
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('workspace.index', $candidatura))
+            ->assertOk()
+            ->assertSee('Workspace Responsivo');
+    }
 }

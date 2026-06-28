@@ -88,14 +88,14 @@ O sistema está organizado em módulos funcionais independentes. Cada módulo te
 ## 06 — SMS Gateway
 
 **Responsabilidade:** Envio de notificações por SMS.
-**Service:** `AfricaTalkingService`
+**Service:** `AfricaTalkingService` (nome legado; implementação atual via httpSMS)
 
-**Drivers suportados:**
-- `http_sms` (padrão ativo)
-- `africa_talking`
-- `twilio`
-- `d7_networks`
-- `vonage`
+**Fornecedor ativo:**
+- httpSMS, configurado por `HTTPSMS_KEY` e `HTTPSMS_FROM`
+
+**Notas operacionais:**
+- `SMS_DRIVER` deixou de controlar o fornecedor.
+- Integrações antigas com D7, Twilio, Vonage e Africa's Talking foram removidas para evitar fallbacks incorretos em produção.
 
 ---
 

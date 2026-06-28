@@ -13,7 +13,7 @@
 - [x] Assistente IA (OpenRouter GPT-4o)
 - [x] AI Advisor no Portal (Gerador de Ideias)
 - [x] Export PDF das sugestões de IA
-- [x] SMS Gateway (Africa's Talking / HTTP SMS)
+- [x] SMS Gateway (httpSMS)
 - [x] Tema Claro / Escuro / Sistema
 - [x] Painel Administrativo com Bento Grid
 - [x] Filtros inteligentes em tempo real (Admin)

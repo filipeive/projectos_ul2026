@@ -715,13 +715,13 @@
                             <div>
                                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
                                 <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
-                                    <option value="0" data-name="">💡 Propor minha própria ideia (Novo Tema)</option>
+                                    <option value="0" data-name="">[+] Propor minha própria ideia (Novo Tema)</option>
                                     @foreach($projects as $p)
                                         @php
                                             $isReserved = in_array($p['number'], $approvedProjects);
                                         @endphp
                                         <option value="{{ $p['number'] }}" data-name="{{ $p['name'] }}" {{ $isReserved ? 'disabled' : '' }}>
-                                            #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' (Reservado 🔒)' : '' !!}
+                                            #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' [Reservado]' : '' !!}
                                         </option>
                                     @endforeach
                                 </select>

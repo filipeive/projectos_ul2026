@@ -4,122 +4,140 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Log;
 
+/**
+ * SmsService — httpSMS only driver.
+ * Uses httpsms.com API to send SMS via the physical device registered in the account.
+ *
+ * Required .env:
+ *   SMS_DRIVER=httpsms
+ *   HTTPSMS_KEY=<api_key>
+ *   HTTPSMS_FROM=<your_registered_phone_number>  e.g. +258847xxxxxx
+ */
 class AfricaTalkingService
 {
     /**
-     * Legacy service name kept for controller compatibility.
+     * Send an SMS via httpSMS.
      *
-     * @param string $to The phone number in international format, e.g. +258841234567
-     * @param string $message The message content
-     * @return array [bool $success, string $message]
+     * @param string $to      Destination phone number (local or international format)
+     * @param string $message Message content
+     * @return array [bool $success, string $statusMessage]
      */
-    public static function sendSms($to, $message)
+    public static function sendSms(string $to, string $message): array
     {
         return self::sendViaHttpSms($to, $message);
     }
 
-    private static function sendViaHttpSms($to, $message)
+    /**
+     * Send SMS via httpSMS (httpsms.com)
+     */
+    private static function sendViaHttpSms(string $to, string $message): array
     {
         $apiKey = env('HTTPSMS_KEY');
-        $from = env('HTTPSMS_FROM');
+        $from   = env('HTTPSMS_FROM');
 
         if (empty($apiKey) || empty($from)) {
-            Log::warning('httpSMS configuration is missing in .env.');
+            Log::warning('[SMS] httpSMS configuration missing in .env (HTTPSMS_KEY or HTTPSMS_FROM).');
             return [false, 'Configuração do httpSMS em falta no .env.'];
         }
 
-        $to = self::normalizePhoneNumber($to);
-        $from = self::normalizePhoneNumber($from);
+        // Normalize destination number
+        $to = self::normalizePhone($to);
+        if ($to === null) {
+            return [false, 'Número de telefone inválido ou não reconhecido.'];
+        }
 
-        $payload = [
+        // Normalize source number
+        $from = self::normalizePhone($from);
+        if ($from === null) {
+            return [false, 'Número de origem (HTTPSMS_FROM) inválido no .env.'];
+        }
+
+        $url  = 'https://api.httpsms.com/v1/messages/send';
+        $body = json_encode([
             'content' => $message,
-            'from' => $from,
-            'to' => $to,
-        ];
+            'from'    => $from,
+            'to'      => $to,
+        ]);
 
         try {
-            $ch = curl_init('https://api.httpsms.com/v1/messages/send');
-
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'x-api-key: ' . $apiKey,
-                'Content-Type: application/json',
-                'Accept: application/json',
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => $url,
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $body,
+                CURLOPT_HTTPHEADER     => [
+                    'x-api-key: '    . $apiKey,
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                ],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 5,
+                CURLOPT_TIMEOUT        => 10,
             ]);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 
             $response = curl_exec($ch);
 
             if ($response === false) {
                 $error = curl_error($ch);
                 curl_close($ch);
-
-                Log::error('Erro cURL ao enviar SMS via httpSMS: ' . $error);
-                return [false, 'Erro de rede cURL: ' . $error];
+                Log::error('[SMS] cURL error (httpSMS): ' . $error);
+                return [false, 'Erro de rede: ' . $error];
             }
 
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
-            if ($status >= 200 && $status < 300) {
-                Log::info("SMS enviado com sucesso via httpSMS para {$to}: " . $response);
+            $result = json_decode($response, true);
+
+            if ($httpCode >= 200 && $httpCode < 300) {
+                Log::info("[SMS] Mensagem enviada com sucesso via httpSMS para {$to}.");
                 return [true, 'SMS enviado com sucesso.'];
             }
 
-            $detail = self::extractErrorDetail($response);
-            Log::error("Erro ao enviar SMS via httpSMS. Status: {$status} Response: " . $detail);
+            // Build human-readable error
+            $detail = $result['message'] ?? $response;
+            if (is_array($detail) || is_object($detail)) {
+                $detail = json_encode($detail, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
 
-            return [false, 'Resposta httpSMS: ' . $detail];
+            Log::error("[SMS] httpSMS error HTTP {$httpCode}: {$detail}");
+            return [false, 'httpSMS: ' . $detail];
+
         } catch (\Throwable $e) {
-            Log::error('Excepção ao enviar SMS via httpSMS: ' . $e->getMessage());
-            return [false, 'Erro de ligação: ' . $e->getMessage()];
+            Log::error('[SMS] Exception (httpSMS): ' . $e->getMessage());
+            return [false, 'Erro interno: ' . $e->getMessage()];
         }
     }
 
-    private static function normalizePhoneNumber($phone)
+    /**
+     * Normalize a phone number to E.164 international format (+258XXXXXXXXX for MZ numbers).
+     * Returns null if the number cannot be normalized.
+     */
+    private static function normalizePhone(string $phone): ?string
     {
-        $phone = trim((string) $phone);
-        $phone = preg_replace('/[^\d+]/', '', $phone);
+        // Strip spaces, dashes, parentheses
+        $phone = preg_replace('/[\s\-().]+/', '', $phone);
 
-        if (str_starts_with($phone, '00')) {
-            $phone = '+' . substr($phone, 2);
+        // Already in E.164 format
+        if (preg_match('/^\+\d{8,15}$/', $phone)) {
+            return $phone;
         }
 
-        if (preg_match('/^8[2-7]\d{7}$/', $phone)) {
+        // Mozambique: starts with 82|83|84|85|86|87 + 7 digits
+        if (preg_match('/^(8[2-7])\d{7}$/', $phone)) {
             return '+258' . $phone;
         }
 
-        if (preg_match('/^2588[2-7]\d{7}$/', $phone)) {
+        // Mozambique with country code without +
+        if (preg_match('/^258(8[2-7]\d{7})$/', $phone)) {
             return '+' . $phone;
         }
 
-        if (!str_starts_with($phone, '+')) {
+        // Generic numeric with enough digits — add + prefix
+        if (preg_match('/^\d{8,15}$/', $phone)) {
             return '+' . $phone;
         }
 
-        return $phone;
-    }
-
-    private static function extractErrorDetail($response)
-    {
-        $decoded = json_decode($response, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return (string) $response;
-        }
-
-        $detail = $decoded['message']
-            ?? $decoded['error']
-            ?? $decoded['detail']
-            ?? $decoded;
-
-        if (is_array($detail) || is_object($detail)) {
-            return json_encode($detail, JSON_UNESCAPED_UNICODE);
-        }
-
-        return (string) $detail;
+        return null;
     }
 }

@@ -110,7 +110,12 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="password">Senha de Acesso</label>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono" for="password">Senha de Acesso</label>
+                        <a href="{{ route('password.request') }}" class="text-[10px] text-sky-400 hover:text-sky-300 font-semibold transition-colors focus:outline-none focus-visible:underline">
+                            Esqueceste a senha?
+                        </a>
+                    </div>
                     <div class="relative">
                         <input type="password" name="password" id="password" placeholder="••••••••••••" autocomplete="current-password"
                             class="peer w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-sm transition-all duration-300 text-slate-200 placeholder-slate-500 focus:placeholder-slate-400">

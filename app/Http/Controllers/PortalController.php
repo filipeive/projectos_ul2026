@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidatura;
+use App\Models\User;
 use App\Services\AfricaTalkingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class PortalController extends Controller
 {
+    private const WORKSPACE_LOGIN_URL = 'http://146.235.224.99/projectos_ul/workspace/login';
+
     /**
      * Display the student portal homepage.
      */
@@ -237,10 +243,13 @@ class PortalController extends Controller
             return 'Nenhum telemóvel foi registado para envio do PIN por SMS.';
         }
 
+        $workspaceUrl = $this->workspaceLoginUrl($candidatura);
+        $email = $candidatura->contact_email ?: 'email registado';
+
         try {
             [$sent, $message] = AfricaTalkingService::sendSms(
                 $candidatura->contact_phone,
-                "UniLicungo TechHub: o PIN do projeto '{$candidatura->project_name}' e {$pin}. Guarde este codigo para aceder ao Workspace."
+                "UniLicungo TechHub: projeto '{$candidatura->project_name}'. Email: {$email}. PIN: {$pin}. Workspace: {$workspaceUrl}"
             );
 
             return $sent
@@ -252,12 +261,17 @@ class PortalController extends Controller
         }
     }
 
+    private function workspaceLoginUrl(Candidatura $candidatura): string
+    {
+        return self::WORKSPACE_LOGIN_URL . '?project_number=' . urlencode((string) $candidatura->project_number);
+    }
+
     /**
      * Download the PDF credentials.
      */
     public function downloadPdf($id)
     {
-        $candidatura = Candidatura::findOrFail($id);
+        $candidatura = Candidatura::with('docente')->findOrFail($id);
         $pin = session('generated_pin_' . $candidatura->id, '****** (Já guardado)');
         
         // Find project details from JSON
@@ -270,8 +284,10 @@ class PortalController extends Controller
                 break;
             }
         }
-        
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.comprovativo', compact('candidatura', 'pin', 'projectDetails'));
+
+        $workspaceUrl = $this->workspaceLoginUrl($candidatura);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.comprovativo', compact('candidatura', 'pin', 'projectDetails', 'workspaceUrl'));
         return $pdf->download("Comprovativo_Workspace_Grupo{$candidatura->id}.pdf");
     }
 
@@ -283,7 +299,56 @@ class PortalController extends Controller
         if (auth()->check()) {
             return redirect()->route('admin.dashboard');
         }
-        return view('admin-login');
+        return view('auth.login')->with('tab', 'docente');
+    }
+
+    public function forgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('success', 'Enviámos o link de recuperação para o e-mail indicado.')
+            : back()->withErrors(['email' => 'Não foi possível enviar o link de recuperação para este e-mail.']);
+    }
+
+    public function resetPasswordForm(Request $request, string $token)
+    {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->query('email'),
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('admin.login')->with('success', 'Senha atualizada com sucesso. Faça login para continuar.')->with('tab', 'docente')
+            : back()->withErrors(['email' => 'O link de recuperação é inválido ou expirou.'])->withInput($request->only('email'));
     }
 
     /**

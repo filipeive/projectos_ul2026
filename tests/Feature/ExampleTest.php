@@ -4,9 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\Candidatura;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -143,5 +145,87 @@ class ExampleTest extends TestCase
             'sender_type' => 'ai',
             'message' => 'Resposta orientadora da IA.',
         ]);
+    }
+
+    public function test_admin_login_shows_password_recovery_link(): void
+    {
+        $this->get(route('admin.login'))
+            ->assertOk()
+            ->assertSee(route('password.request'));
+    }
+
+    public function test_admin_password_reset_link_can_be_requested(): void
+    {
+        Notification::fake();
+
+        $user = User::create([
+            'name' => 'Docente Teste',
+            'email' => 'docente@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'docente',
+        ]);
+
+        $this->post(route('password.email'), ['email' => $user->email])
+            ->assertSessionHas('success');
+
+        Notification::assertSentTo($user, ResetPassword::class);
+        $this->assertDatabaseHas('password_reset_tokens', [
+            'email' => $user->email,
+        ]);
+    }
+
+    public function test_admin_password_can_be_reset_with_valid_token(): void
+    {
+        $user = User::create([
+            'name' => 'Admin Reset',
+            'email' => 'reset@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        $token = app('auth.password.broker')->createToken($user);
+
+        $this->post(route('password.update'), [
+            'token' => $token,
+            'email' => $user->email,
+            'password' => 'nova-senha',
+            'password_confirmation' => 'nova-senha',
+        ])->assertRedirect(route('admin.login'));
+
+        $this->assertTrue(Hash::check('nova-senha', $user->fresh()->password));
+    }
+
+    public function test_pdf_receipt_contains_workspace_link_and_contact_details(): void
+    {
+        $candidatura = Candidatura::create([
+            'project_number' => 5,
+            'project_name' => 'Comprovativo Rico',
+            'technology' => 'Laravel + PDF',
+            'member1_name' => 'Estudante PDF',
+            'member1_code' => 'UL005',
+            'contact_email' => 'pdf@example.com',
+            'contact_phone' => '841234571',
+            'rationale' => 'Projeto para testar os detalhes do comprovativo.',
+            'status' => 'Pendente',
+            'group_password' => Hash::make('123456'),
+        ]);
+
+        $html = view('pdf.comprovativo', [
+            'candidatura' => $candidatura,
+            'pin' => '123456',
+            'workspaceUrl' => 'http://146.235.224.99/projectos_ul/workspace/login?project_number=5',
+            'projectDetails' => [
+                'sector' => 'Educação',
+                'dificuldade' => 'Médio',
+                'descricao' => 'Resumo detalhado do projeto.',
+                'problema' => 'Problema académico a resolver.',
+                'funcionalidades' => 'Login, Kanban, Relatórios',
+            ],
+        ])->render();
+
+        $this->assertStringContainsString('pdf@example.com', $html);
+        $this->assertStringContainsString('841234571', $html);
+        $this->assertStringContainsString('http://146.235.224.99/projectos_ul/workspace/login?project_number=5', $html);
+        $this->assertStringContainsString('Resumo detalhado do projeto.', $html);
     }
 }

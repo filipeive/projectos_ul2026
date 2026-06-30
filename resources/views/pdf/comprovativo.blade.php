@@ -63,6 +63,16 @@
             text-align: center;
             font-weight: bold;
         }
+        .muted {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: normal;
+        }
+        .url {
+            color: #0369a1;
+            font-size: 12px;
+            word-break: break-all;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -102,8 +112,18 @@
 
     <div class="box credentials">
         <h3>Credenciais de Acesso ao Workspace (IMPORTANTE)</h3>
-        <p>Use este PIN juntamente com o número do projeto para aceder à sala de mentoria no portal.</p>
+        <p>Use o e-mail registado e este PIN para aceder à sala de mentoria no portal.</p>
         <div class="pin">{{ $pin }}</div>
+        <table>
+            <tr>
+                <th>E-mail de acesso:</th>
+                <td>{{ $candidatura->contact_email }}</td>
+            </tr>
+            <tr>
+                <th>Link do Workspace:</th>
+                <td class="url">{{ $workspaceUrl }}</td>
+            </tr>
+        </table>
         <p class="warning">Guarde este PDF. O PIN não voltará a ser mostrado no sistema por questões de segurança.</p>
     </div>
 
@@ -123,12 +143,30 @@
                 <td>{{ $candidatura->project_name }}</td>
             </tr>
             <tr>
+                <th>Estado:</th>
+                <td>{{ $candidatura->status }}</td>
+            </tr>
+            <tr>
                 <th>Tecnologia:</th>
                 <td>{{ $candidatura->technology }}</td>
             </tr>
+            @if($projectDetails)
+            <tr>
+                <th>Sector:</th>
+                <td>{{ $projectDetails['sector'] ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Dificuldade:</th>
+                <td>{{ $projectDetails['dificuldade'] ?? 'N/A' }}</td>
+            </tr>
+            @endif
             <tr>
                 <th>Mentor:</th>
                 <td>{{ $candidatura->mentor ?: 'A ser alocado' }}</td>
+            </tr>
+            <tr>
+                <th>Docente no sistema:</th>
+                <td>{{ $candidatura->docente?->name ?? 'Ainda não atribuído' }}</td>
             </tr>
             <tr>
                 <th>Data de Registo:</th>
@@ -140,6 +178,10 @@
     @if($projectDetails)
     <div class="box" style="border-color: #0ea5e9; background-color: #f0f9ff;">
         <h3 style="color: #0284c7; border-bottom-color: #bae6fd;">Orientações e Caderno de Encargos</h3>
+        @if(!empty($projectDetails['descricao']))
+        <p><strong>Resumo do Projecto:</strong></p>
+        <p style="font-size: 14px; text-align: justify; margin-bottom: 15px;">{{ $projectDetails['descricao'] }}</p>
+        @endif
         <p><strong>Descrição do Problema:</strong></p>
         <p style="font-size: 14px; text-align: justify; margin-bottom: 15px;">{{ $projectDetails['problema'] ?? 'N/A' }}</p>
         
@@ -183,12 +225,32 @@
                 <td>{{ $candidatura->member4_name }} ({{ $candidatura->member4_code }})</td>
             </tr>
             @endif
+            <tr>
+                <th>Email de contacto:</th>
+                <td>{{ $candidatura->contact_email }}</td>
+            </tr>
+            @if($candidatura->contact_phone)
+            <tr>
+                <th>Telefone:</th>
+                <td>{{ $candidatura->contact_phone }}</td>
+            </tr>
+            @endif
         </table>
     </div>
 
     <div class="box">
         <h3>Justificativa</h3>
         <p style="font-size: 14px; font-weight: normal; text-align: justify;">{{ $candidatura->rationale }}</p>
+    </div>
+
+    <div class="box">
+        <h3>Próximos Passos</h3>
+        <ol class="muted">
+            <li>Aceder ao Workspace usando o e-mail do grupo e o PIN deste comprovativo.</li>
+            <li>Aguardar aprovação/homologação da candidatura pelo docente responsável.</li>
+            <li>Usar o chat e o Kanban para acompanhar tarefas, feedback e entregáveis.</li>
+            <li>Guardar este documento para recuperação de credenciais e confirmação do registo.</li>
+        </ol>
     </div>
 
     <div class="footer">

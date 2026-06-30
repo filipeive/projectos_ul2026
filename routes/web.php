@@ -13,6 +13,10 @@ Route::get('/candidatura/{id}/pdf', [PortalController::class, 'downloadPdf'])->n
 Route::get('/admin/login', [PortalController::class, 'loginForm'])->name('admin.login');
 Route::post('/admin/login', [PortalController::class, 'login']);
 Route::post('/admin/logout', [PortalController::class, 'logout'])->name('admin.logout');
+Route::get('/admin/forgot-password', [PortalController::class, 'forgotPasswordForm'])->name('password.request');
+Route::post('/admin/forgot-password', [PortalController::class, 'sendResetLinkEmail'])->name('password.email')->middleware('throttle:3,1');
+Route::get('/admin/reset-password/{token}', [PortalController::class, 'resetPasswordForm'])->name('password.reset');
+Route::post('/admin/reset-password', [PortalController::class, 'resetPassword'])->name('password.update');
 
 // Protected Admin Dashboard
 Route::get('/admin/dashboard', [PortalController::class, 'adminDashboard'])->name('admin.dashboard');

@@ -19,6 +19,8 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Logout explícito do Workspace para estudantes (limpa sessão e redireciona ao portal).
 - SMS de PIN na submissão e recuperação de acesso usa exclusivamente httpSMS.
 - Botão de reenvio de PIN por SMS no ecrã de sucesso da candidatura.
+- Comprovativo PDF enriquecido com e-mail de acesso, telefone, link real do Workspace, estado, sector, dificuldade e próximos passos.
+- Recuperação de senha para docentes, diretores de curso e administradores no login institucional.
 
 ### fix
 - Corrigido erro 500 em produção: instalação do `barryvdh/laravel-dompdf` via `composer install` no servidor remoto.
@@ -27,6 +29,7 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 - Ajustado layout mobile da ficha de candidatura e do cartão de sucesso.
 - Ajustado Workspace para ecrãs muito pequenos: header compacto, chat sem overflow, Kanban mais curto no mobile, modais bottom sheet e SweetAlert responsivo.
 - Corrigido erro "Oops..." no assistente IA do chat ao permitir mensagens com `sender_type = ai`.
+- SMS de acesso ao Workspace passou a incluir e-mail registado e link real de login.
 
 ### refactor
 - Validação condicional no `PortalController@submit` para suportar inscrição individual sem exigir membro 2.

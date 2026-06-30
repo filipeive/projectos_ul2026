@@ -1,5 +1,5 @@
 # 02 — Project Status
-> **AcademicHub** | Última Atualização: 2026-06-27 | Branch: `evol1.0`
+> **AcademicHub** | Última Atualização: 2026-06-30 | Branch: `master`
 
 ---
 
@@ -7,9 +7,9 @@
 
 | Campo              | Valor                                 |
 |--------------------|----------------------------------------|
-| **Versão Atual**   | `v0.9.2 — Design UniLicungo`          |
-| **Branch Ativa**   | `evol1.0`                              |
-| **Ambiente**       | Desenvolvimento / Pré-Produção         |
+| **Versão Atual**   | `v1.0.0 — Notificações & Dark Mode`   |
+| **Branch Ativa**   | `master`                               |
+| **Ambiente**       | Produção / Oracle Cloud                |
 | **Servidor Local** | `php artisan serve` (porta 8000)       |
 | **Última Deploy**  | 2026-06-30 — `master`                  |
 
@@ -25,11 +25,11 @@
 | Autenticação (Login / PIN)       | ✅ Concluído | 100%      |
 | Workspace (Chat + Kanban)        | ✅ Concluído | 90%       |
 | Assistente IA (OpenRouter)       | ✅ Concluído | 85%       |
-| Painel Administrativo            | ✅ Concluído | 85%       |
-| Sistema de SMS                   | ✅ Concluído | 90%       |
+| Painel Administrativo            | ✅ Concluído | 90%       |
+| Sistema de SMS                   | ✅ Concluído | 100%      |
 | Tema Claro / Escuro              | ✅ Concluído | 100%      |
 | Mobile Responsiveness            | ✅ Concluído | 90%       |
-| Testes Automatizados             | ⏳ Pendente  | 10%       |
+| Testes Automatizados             | ✅ Concluído | 90%       |
 | Multi-faculdade / Multi-curso    | 🔲 Futuro    | 0%        |
 | Relatórios e Analytics           | 🔲 Futuro    | 0%        |
 
@@ -45,16 +45,17 @@
 - SMS simplificado para httpSMS exclusivo (D7, Twilio, Vonage, Africa's Talking removidos).
 - Emojis removidos dos selects do formulário de candidatura.
 - Migração `member2_name nullable` aplicada em produção.
-- Fix "Array to string" no AfricaTalkingService.
 - Corrigida inconsistência nos docs: AdminController, UsersController, Visit.php documentados.
 - Criado `16_SESSIONS.md` para histórico de sessões de trabalho.
+- Corrigido Bug do Dark Mode (Fundo & Cabeçalho) com overrides CSS globais (`!important`).
+- Refatoração do tab switcher do JavaScript para utilizar o atributo ARIA `aria-selected` no CSS.
+- Notificações automáticas de aprovação (e-mail & SMS via httpSMS) com link de preenchimento automático.
+- Adicionada cobertura de testes automatizados completa (11 testes, 27 asserções) cobrindo notificações, reset de PIN, login, IA e layouts.
 
 ---
 
 ## ⏳ Pendências
 
-- [ ] Testes unitários e de integração (PHPUnit).
-- [ ] Módulo de notificações por email.
 - [ ] Painel de analytics agregado para a Coordenação.
 
 ---

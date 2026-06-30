@@ -7,6 +7,22 @@ Tipos: `feat` (nova funcionalidade) | `fix` (correção) | `refactor` | `docs` |
 
 ---
 
+## [v1.0.0] — 2026-06-30 — Lançamento Oficial, Notificações & Estabilidade de Layout
+
+### feat
+- Notificações de Aprovação: Envio automático de E-mail (via `Mail::raw`) e SMS (via `SmsService` / httpSMS) para estudantes quando o administrador/docente aprova o seu projeto.
+- Link Directo Auto-preenchido: O link enviado nas notificações contém o parâmetro `?email=...`, pré-preenchendo automaticamente o e-mail de acesso na vista de login.
+- Testes Automatizados (PHPUnit): Cobertura alargada (11 testes, 27 asserções) abrangendo notificações de e-mail e fluxos críticos de autenticação, admin e IA.
+
+### fix
+- Corrigida a consistência do Dark Mode: Forçado o fundo e cabeçalhos em modo escuro utilizando especificidade CSS com `!important` para contornar classes estáticas do Tailwind.
+- Tab Switcher reativo: Substituída manipulação de classes CSS em JavaScript por atributo `aria-selected` selecionado diretamente por regras CSS.
+
+### docs
+- Atualização em tempo real de `02_PROJECT_STATUS.md` e `16_SESSIONS.md`.
+
+---
+
 ## [v0.9.1] — 2026-06-27 — Candidaturas Flexíveis e Correções de Produção
 
 ### feat

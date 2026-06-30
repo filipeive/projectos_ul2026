@@ -43,6 +43,14 @@
         document.documentElement.dataset.themeMode = mode;
         document.documentElement.dataset.theme = resolved;
         document.documentElement.style.colorScheme = resolved;
+        
+        // Support Tailwind dark mode class-based strategy
+        if (resolved === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        
         updateToggle(mode);
     }
 

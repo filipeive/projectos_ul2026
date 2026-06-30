@@ -6,15 +6,17 @@
     --font-inter: 'Inter', sans-serif;
     
     /* Brand Colors (University Licungo) */
-    --color-ul-blue: #008ad2;
-    --color-ul-blue-rgb: 0, 138, 210;
-    --color-ul-gold: #c27a1e;
-    --color-ul-gold-rgb: 194, 122, 30;
-    --surface-light: rgba(255, 255, 255, 0.82);
-    --surface-light-strong: rgba(255, 255, 255, 0.94);
-    --border-light: rgba(15, 23, 42, 0.12);
-    --text-light: #0f172a;
-    --muted-light: #64748b;
+    --color-ul-blue: #00306e;
+    --color-ul-blue-rgb: 0, 48, 110;
+    --color-ul-green: #1b5e20;
+    --color-ul-green-rgb: 27, 94, 32;
+    --color-ul-gold: #1b5e20; /* Keep alias for backward compatibility */
+    --color-ul-gold-rgb: 27, 94, 32;
+    --surface-light: rgba(255, 255, 255, 0.85);
+    --surface-light-strong: rgba(255, 255, 255, 0.95);
+    --border-light: rgba(0, 48, 110, 0.12);
+    --text-light: #0a1628;
+    --muted-light: #475569;
 }
 
 body {
@@ -434,4 +436,109 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
 
 html[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
+}
+
+/* Dark theme overrides for UniLicungo institutional design */
+html[data-theme="dark"] body,
+html.dark body,
+html[data-theme="dark"] #portal-body,
+html.dark #portal-body {
+    background-color: #070a13 !important;
+    background: #070a13 !important;
+    color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] .bg-ul-cream,
+html.dark .bg-ul-cream {
+    background-color: #070a13 !important;
+}
+
+html[data-theme="dark"] .bg-white,
+html.dark .bg-white,
+html[data-theme="dark"] header,
+html.dark header {
+    background-color: #0b0f19 !important;
+    border-color: #1e293b !important;
+}
+
+html[data-theme="dark"] .text-ul-text,
+html.dark .text-ul-text {
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .text-ul-muted,
+html.dark .text-ul-muted {
+    color: #94a3b8 !important;
+}
+
+html[data-theme="dark"] .border-ul-border,
+html.dark .border-ul-border {
+    border-color: #1e293b !important;
+}
+
+html[data-theme="dark"] .bg-ul-blue-lt,
+html.dark .bg-ul-blue-lt {
+    background-color: #121929 !important;
+    border-color: #1e293b !important;
+}
+
+html[data-theme="dark"] .text-ul-blue,
+html.dark .text-ul-blue {
+    color: #38bdf8 !important;
+}
+
+html[data-theme="dark"] .text-ul-green,
+html.dark .text-ul-green {
+    color: #34d399 !important;
+}
+
+html[data-theme="dark"] .dark-only,
+html.dark .dark-only {
+    display: block !important;
+}
+
+/* Tabs styles for both light and dark themes based on aria-selected */
+.nav-tab-btn[aria-selected="true"] {
+    font-weight: 600 !important;
+}
+
+.nav-tab-btn[aria-selected="false"] {
+    font-weight: 500 !important;
+}
+
+html[data-theme="light"] .nav-tab-btn[aria-selected="true"] {
+    border-color: var(--color-ul-blue) !important;
+    color: var(--color-ul-blue) !important;
+    background-color: rgba(0, 48, 110, 0.05) !important;
+}
+
+html[data-theme="light"] .nav-tab-btn[aria-selected="false"] {
+    border-color: transparent !important;
+    color: var(--muted-light) !important;
+    background-color: transparent !important;
+}
+
+html[data-theme="light"] .nav-tab-btn[aria-selected="false"]:hover {
+    color: var(--color-ul-blue) !important;
+    background-color: #e8f0fb !important;
+}
+
+html[data-theme="dark"] .nav-tab-btn[aria-selected="true"],
+html.dark .nav-tab-btn[aria-selected="true"] {
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+    background-color: rgba(56, 189, 248, 0.05) !important;
+}
+
+html[data-theme="dark"] .nav-tab-btn[aria-selected="false"],
+html.dark .nav-tab-btn[aria-selected="false"] {
+    border-color: transparent !important;
+    color: #94a3b8 !important;
+    background-color: transparent !important;
+}
+
+html[data-theme="dark"] .nav-tab-btn[aria-selected="false"]:hover,
+html.dark .nav-tab-btn[aria-selected="false"]:hover {
+    color: #f1f5f9 !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
 }

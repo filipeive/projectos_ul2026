@@ -57,8 +57,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom CSS Styles -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
-    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260630">
+    <script src="{{ asset('theme.js') }}?v=theme-20260630"></script>
 </head>
 <body class="min-h-screen bg-ul-cream text-ul-text flex flex-col relative antialiased selection:bg-ul-blue selection:text-white pb-12" id="portal-body">
 
@@ -271,9 +271,12 @@
                     </div>
                     
                     <!-- Difficulty select -->
-                    <div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i data-lucide="award" class="w-4 h-4 text-sky-400"></i>
+                        </span>
                         <label for="filter-difficulty" class="sr-only">Filtrar por Dificuldade</label>
-                        <select id="filter-difficulty" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                        <select id="filter-difficulty" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
                             <option value="Todos">Dificuldade (Todas)</option>
                             <option value="Fácil">Fácil</option>
                             <option value="Médio">Médio</option>
@@ -282,9 +285,12 @@
                     </div>
 
                     <!-- Tech select -->
-                    <div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i data-lucide="cpu" class="w-4 h-4 text-sky-400"></i>
+                        </span>
                         <label for="filter-tech" class="sr-only">Filtrar por Tecnologia</label>
-                        <select id="filter-tech" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                        <select id="filter-tech" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
                             <option value="Todos">Tecnologia (Todas)</option>
                             <option value="Laravel">Laravel</option>
                             <option value="PHP">PHP (Puro)</option>
@@ -739,17 +745,22 @@
                             <!-- Project Select -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-project-select">1. Escolher Ideia de Projeto</label>
-                                <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
-                                    <option value="0" data-name="">[+] Propor minha própria ideia (Novo Tema)</option>
-                                    @foreach($projects as $p)
-                                        @php
-                                            $isReserved = in_array($p['number'], $approvedProjects);
-                                        @endphp
-                                        <option value="{{ $p['number'] }}" data-name="{{ $p['name'] }}" {{ $isReserved ? 'disabled' : '' }}>
-                                            #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' [Reservado]' : '' !!}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                        <i data-lucide="lightbulb" class="w-4 h-4 text-sky-400"></i>
+                                    </span>
+                                    <select name="project_number" id="app-project-select" onchange="updateProjectFields()" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                        <option value="0" data-name="">[+] Propor minha própria ideia (Novo Tema)</option>
+                                        @foreach($projects as $p)
+                                            @php
+                                                $isReserved = in_array($p['number'], $approvedProjects);
+                                            @endphp
+                                            <option value="{{ $p['number'] }}" data-name="{{ $p['name'] }}" {{ $isReserved ? 'disabled' : '' }}>
+                                                #{{ sprintf("%02d", $p['number']) }} - {{ $p['name'] }} {!! $isReserved ? ' [Reservado]' : '' !!}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <input type="hidden" name="project_name" id="app-project-name-hidden">
                                 
                                 <!-- Custom Project Name Input Container -->
@@ -762,13 +773,18 @@
                             <!-- Tech Select -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono mb-2" for="app-tech-select">2. Tecnologia Principal Selecionada</label>
-                                <select name="technology" id="app-tech-select" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
-                                    <option value="PHP Puro + MySQL (Web App)">PHP Puro + MySQL (Web App)</option>
-                                    <option value="Laravel + MySQL (Web Framework)">Laravel + MySQL (Web Framework)</option>
-                                    <option value="Flutter + SQLite / API Laravel (Mobile)">Flutter + SQLite / API Laravel (Mobile)</option>
-                                    <option value="React.js + Node.js (Full Stack SPA)">React.js + Node.js (Full Stack SPA)</option>
-                                    <option value="Python + Flask API + SQLite">Python + Flask API + SQLite</option>
-                                </select>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                        <i data-lucide="code-2" class="w-4 h-4 text-sky-400"></i>
+                                    </span>
+                                    <select name="technology" id="app-tech-select" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 focus:border-sky-500 focus:outline-none rounded-xl text-sm text-slate-300 transition-all cursor-pointer">
+                                        <option value="PHP Puro + MySQL (Web App)">PHP Puro + MySQL (Web App)</option>
+                                        <option value="Laravel + MySQL (Web Framework)">Laravel + MySQL (Web Framework)</option>
+                                        <option value="Flutter + SQLite / API Laravel (Mobile)">Flutter + SQLite / API Laravel (Mobile)</option>
+                                        <option value="React.js + Node.js (Full Stack SPA)">React.js + Node.js (Full Stack SPA)</option>
+                                        <option value="Python + Flask API + SQLite">Python + Flask API + SQLite</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Mentor Suggested -->
@@ -1257,16 +1273,9 @@
         // Tab switching logic
         document.querySelectorAll('.nav-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active classes
                 document.querySelectorAll('.nav-tab-btn').forEach(b => {
-                    b.classList.remove('border-sky-500', 'text-sky-400');
-                    b.classList.add('border-transparent', 'text-slate-400', 'hover:text-slate-200');
                     b.setAttribute('aria-selected', 'false');
                 });
-                
-                // Add active to current
-                btn.classList.add('border-sky-500', 'text-sky-400');
-                btn.classList.remove('border-transparent', 'text-slate-400', 'hover:text-slate-200');
                 btn.setAttribute('aria-selected', 'true');
                 
                 const tab = btn.getAttribute('data-tab');

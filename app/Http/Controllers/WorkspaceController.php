@@ -88,7 +88,7 @@ class WorkspaceController extends Controller
             if (!empty($candidatura->contact_phone)) {
                 try {
                     $smsMessage = "Ola {$candidatura->member1_name}, o novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' e: {$newPin}. UniLicungo TechHub";
-                    \App\Services\AfricaTalkingService::sendSms($candidatura->contact_phone, $smsMessage);
+                    \App\Services\SmsService::sendSms($candidatura->contact_phone, $smsMessage);
                 } catch (\Exception $e) {
                     \Log::error("Failed to send recover SMS: " . $e->getMessage());
                 }
@@ -158,7 +158,7 @@ class WorkspaceController extends Controller
         if (!empty($candidatura->contact_phone)) {
             try {
                 $smsMessage = "Ola {$candidatura->member1_name}, o novo PIN de acesso para o vosso projeto '{$candidatura->project_name}' e: {$newPin}. UniLicungo TechHub";
-                \App\Services\AfricaTalkingService::sendSms($candidatura->contact_phone, $smsMessage);
+                \App\Services\SmsService::sendSms($candidatura->contact_phone, $smsMessage);
             } catch (\Exception $e) {
                 \Log::error("Failed to send recover SMS: " . $e->getMessage());
             }

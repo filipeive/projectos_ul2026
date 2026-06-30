@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workspace | {{ $candidatura->project_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
-    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260630">
+    <script src="{{ asset('theme.js') }}?v=theme-20260630"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -390,18 +390,28 @@
                     <div class="mt-6 pt-4 border-t border-slate-800">
                         <form action="{{ route('workspace.fase', $candidatura->id) }}" method="POST" class="space-y-2">
                             @csrf
-                            <select name="fase"
-                                class="w-full bg-slate-900 border border-slate-700 rounded-lg text-xs p-2 text-slate-200 outline-none focus:border-sky-500 transition-colors">
-                                @foreach($fases as $key => $label)
-                                    <option value="{{ $key }}">{{ $label }}</option>
-                                @endforeach
-                            </select>
-                            <select name="estado"
-                                class="w-full bg-slate-900 border border-slate-700 rounded-lg text-xs p-2 text-slate-200 outline-none focus:border-sky-500 transition-colors">
-                                <option value="pendente">Pendente</option>
-                                <option value="em_progresso">Em Progresso</option>
-                                <option value="concluida">Concluída</option>
-                            </select>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                                    <i data-lucide="git-commit" class="w-3.5 h-3.5 text-sky-400"></i>
+                                </span>
+                                <select name="fase"
+                                    class="w-full bg-slate-900 border border-slate-700 rounded-lg text-xs pl-9 pr-2 py-2 text-slate-200 outline-none focus:border-sky-500 transition-colors cursor-pointer">
+                                    @foreach($fases as $key => $label)
+                                        <option value="{{ $key }}">{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                                    <i data-lucide="activity" class="w-3.5 h-3.5 text-sky-400"></i>
+                                </span>
+                                <select name="estado"
+                                    class="w-full bg-slate-900 border border-slate-700 rounded-lg text-xs pl-9 pr-2 py-2 text-slate-200 outline-none focus:border-sky-500 transition-colors cursor-pointer">
+                                    <option value="pendente">Pendente</option>
+                                    <option value="em_progresso">Em Progresso</option>
+                                    <option value="concluida">Concluída</option>
+                                </select>
+                            </div>
                             <textarea name="mensagem" rows="2" placeholder="Observação / Feedback (Opcional)..."
                                 class="w-full bg-slate-900 border border-slate-700 rounded-lg text-xs p-2 text-slate-200 outline-none focus:border-sky-500 transition-colors resize-none"></textarea>
                             <button type="submit"
@@ -848,13 +858,18 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Coluna Inicial</label>
-                    <select id="kanban-status"
-                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-sky-500 focus:outline-none transition-colors">
-                        <option value="todo">A Fazer</option>
-                        <option value="in_progress">Em Progresso</option>
-                        <option value="review">Em Revisão</option>
-                        <option value="done">Concluído</option>
-                    </select>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i data-lucide="columns" class="w-4 h-4 text-sky-400"></i>
+                        </span>
+                        <select id="kanban-status"
+                            class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-10 pr-3 py-2 text-sm text-white focus:border-sky-500 focus:outline-none transition-colors cursor-pointer">
+                            <option value="todo">A Fazer</option>
+                            <option value="in_progress">Em Progresso</option>
+                            <option value="review">Em Revisão</option>
+                            <option value="done">Concluído</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-end gap-2 mt-6">

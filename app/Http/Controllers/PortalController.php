@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidatura;
 use App\Models\User;
-use App\Services\AfricaTalkingService;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -247,7 +247,7 @@ class PortalController extends Controller
         $email = $candidatura->contact_email ?: 'email registado';
 
         try {
-            [$sent, $message] = AfricaTalkingService::sendSms(
+            [$sent, $message] = SmsService::sendSms(
                 $candidatura->contact_phone,
                 "UniLicungo TechHub: projeto '{$candidatura->project_name}'. Email: {$email}. PIN: {$pin}. Workspace: {$workspaceUrl}"
             );

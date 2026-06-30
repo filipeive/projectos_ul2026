@@ -90,15 +90,14 @@ O sistema está organizado em módulos funcionais independentes. Cada módulo te
 ## 06 — SMS Gateway
 
 **Responsabilidade:** Envio de notificações por SMS.
-**Service:** `AfricaTalkingService` (nome legado; implementação atual via httpSMS)
+**Service:** `SmsService` (implementado via httpSMS)
 
 **Fornecedor ativo:**
 - httpSMS, configurado por `HTTPSMS_KEY` e `HTTPSMS_FROM`
 
 **Notas operacionais:**
-- `SMS_DRIVER` no `.env` está definido como `httpsms` mas é inerte — o serviço usa sempre httpSMS diretamente.
 - Integrações antigas com D7, Twilio, Vonage e Africa's Talking foram removidas.
-- O nome da classe `AfricaTalkingService` é legado — a classe foi simplificada para httpSMS exclusivo.
+- A classe foi simplificada e padronizada para httpSMS exclusivo.
 
 ---
 
@@ -131,7 +130,7 @@ app/
 │   ├── WorkspaceMessage.php
 │   └── Visit.php                    # Registo de visitas (analytics futuro)
 └── Services/
-    └── AfricaTalkingService.php     # SMS via httpSMS (nome legado)
+    └── SmsService.php               # SMS via httpSMS
 
 resources/views/
 ├── auth/

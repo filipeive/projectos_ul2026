@@ -228,4 +228,39 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('http://146.235.224.99/projectos_ul/workspace/login?project_number=5', $html);
         $this->assertStringContainsString('Resumo detalhado do projeto.', $html);
     }
+
+    public function test_admin_approving_candidatura_triggers_notifications(): void
+    {
+        \Illuminate\Support\Facades\Event::fake([\Illuminate\Mail\Events\MessageSending::class]);
+
+        $admin = User::create([
+            'name' => 'Admin Aprovador',
+            'email' => 'aprovador@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        $candidatura = Candidatura::create([
+            'project_number' => 6,
+            'project_name' => 'Projeto Notificado',
+            'technology' => 'Laravel + Mail',
+            'member1_name' => 'Estudante Notificado',
+            'member1_code' => 'UL006',
+            'contact_email' => 'notificado@example.com',
+            'contact_phone' => '841234572',
+            'rationale' => 'Projeto para testar as notificações de aprovação.',
+            'status' => 'Pendente',
+            'group_password' => Hash::make('123456'),
+        ]);
+
+        $this->actingAs($admin)
+            ->withHeader('X-Requested-With', 'XMLHttpRequest')
+            ->postJson(route('admin.update-status', $candidatura), ['status' => 'Aprovado'])
+            ->assertOk()
+            ->assertJsonPath('status', 'Aprovado');
+
+        \Illuminate\Support\Facades\Event::assertDispatched(\Illuminate\Mail\Events\MessageSending::class, function ($event) use ($candidatura) {
+            return $event->message->getTo()[0]->getAddress() === $candidatura->contact_email;
+        });
+    }
 }

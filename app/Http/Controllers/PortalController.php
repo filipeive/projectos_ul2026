@@ -424,9 +424,45 @@ class PortalController extends Controller
             'status' => 'required|in:Pendente,Aprovado,Rejeitado',
         ]);
 
+        $oldStatus = $candidatura->status;
+
         $candidatura->update([
             'status' => $request->status,
         ]);
+
+        // Send notifications if status changed to 'Aprovado'
+        if ($request->status === 'Aprovado' && $oldStatus !== 'Aprovado') {
+            $loginUrl = url('/workspace/login') . '?email=' . urlencode($candidatura->contact_email);
+
+            // 1. Send Email Notification
+            try {
+                $emailBody = "Olá {$candidatura->member1_name},\n\n"
+                    . "Temos o prazer de informar que a vossa candidatura para o projeto '{$candidatura->project_name}' foi APROVADA!\n\n"
+                    . "Agora já podem aceder ao vosso Workspace de Desenvolvimento para colaborar com os membros do vosso grupo, gerir o quadro Kanban de tarefas, enviar relatórios/ficheiros e interagir com o docente/mentor.\n\n"
+                    . "Para aceder, utilize o email de contacto do grupo e o PIN/senha gerado na vossa candidatura através do link abaixo:\n\n"
+                    . "Link de Acesso: {$loginUrl}\n\n"
+                    . "Desejamos-vos muito sucesso no vosso projeto!\n\n"
+                    . "Com os melhores cumprimentos,\n"
+                    . "UniLicungo TechHub";
+
+                \Illuminate\Support\Facades\Mail::raw($emailBody, function ($message) use ($candidatura) {
+                    $message->to($candidatura->contact_email)
+                            ->subject("Candidatura Aprovada! - Projeto '{$candidatura->project_name}'");
+                });
+            } catch (\Exception $e) {
+                \Log::error("Failed to send approval email: " . $e->getMessage());
+            }
+
+            // 2. Send SMS Notification
+            if (!empty($candidatura->contact_phone)) {
+                try {
+                    $smsMessage = "Ola {$candidatura->member1_name}, o vosso projeto '{$candidatura->project_name}' foi APROVADO! Acedam ao Workspace em: {$loginUrl} . UniLicungo TechHub";
+                    \App\Services\SmsService::sendSms($candidatura->contact_phone, $smsMessage);
+                } catch (\Exception $e) {
+                    \Log::error("Failed to send approval SMS: " . $e->getMessage());
+                }
+            }
+        }
 
         if ($request->ajax()) {
             return response()->json([

@@ -73,7 +73,7 @@
                 <div>
                     <label for="student_email" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-mono">Email do Grupo</label>
                     <div class="relative">
-                        <input type="email" id="student_email" name="contact_email" placeholder="estudante@unilicungo.ac.mz" required autocomplete="email"
+                        <input type="email" id="student_email" name="contact_email" value="{{ request('email') ?? request('contact_email') }}" placeholder="estudante@unilicungo.ac.mz" required autocomplete="email"
                             class="peer w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 focus:outline-none rounded-xl text-white transition-all duration-300 pl-10 text-sm placeholder-slate-500 focus:placeholder-slate-400 hover:border-slate-700">
                         <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5 transition-colors duration-300 peer-focus:text-sky-400"></i>
                     </div>

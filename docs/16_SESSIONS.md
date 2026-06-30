@@ -30,8 +30,33 @@ O que motivou esta sessão.
 
 ---
 
+## [2026-06-30] Notificações Automáticas de Aprovação de Projetos (E-mail & SMS)
+**Branch:** `master`
+**Participantes:** Chief Architect + Filipe dos Santos
+
+### Contexto
+Implementação de notificações automáticas via e-mail e SMS para informar o grupo de estudantes quando o seu projeto for aprovado por um docente/administrador. A notificação inclui um link de acesso direto que preenche automaticamente o e-mail do grupo no formulário de login para otimizar a experiência de utilizador.
+
+### Decisões Tomadas
+- Adicionar lógica de envio de notificações na função `updateStatus` do `PortalController` quando o estado da candidatura é atualizado de um estado diferente para "Aprovado".
+- Utilizar o `SmsService` recém-refatorado para enviar mensagens SMS via httpSMS.
+- Utilizar `Mail::raw` do Laravel de forma assíncrona/segura (envolta em blocos try-catch) para evitar que falhas no servidor de correio ou SMS interrompam o fluxo da aplicação.
+- Modificar a vista de login (`auth/login.blade.php`) para detetar parâmetros de URL (`email` ou `contact_email`) e pré-preencher o campo de e-mail do grupo de estudantes.
+
+### Trabalho Realizado
+- [x] Implementado o envio de e-mails de aprovação no `PortalController@updateStatus`.
+- [x] Implementado o envio de SMS de aprovação no `PortalController@updateStatus` usando `SmsService`.
+- [x] Adicionado suporte a preenchimento automático de e-mail na vista `auth/login.blade.php`.
+- [x] Criado o teste unitário/integração `test_admin_approving_candidatura_triggers_notifications` em `tests/Feature/ExampleTest.php` utilizando `Event::fake` para validar o envio correto do e-mail ao destinatário sem disparar envios reais.
+- [x] Todos os 11 testes e 27 asserções passados com sucesso.
+
+### Pendências / Próximos Passos
+- [ ] Efetuar novo deploy em produção para disponibilizar a funcionalidade de notificações em tempo real.
+
+---
+
 ## [2026-06-30] Correção do Dark Mode & Ajuste de Especificidade de CSS
-**Branch:** `evol1.0`
+**Branch:** `master`
 **Participantes:** Chief Architect + Filipe dos Santos
 
 ### Contexto

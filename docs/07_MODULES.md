@@ -58,8 +58,10 @@ O sistema está organizado em módulos funcionais independentes. Cada módulo te
 ## 04 — Administração
 
 **Responsabilidade:** Controlo e gestão de toda a plataforma.
-**Controller:** `AdminController`
+**Controller:** `PortalController` (métodos com prefixo `admin*`)
 **Views:** `resources/views/admin-dashboard.blade.php`
+
+> ⚠️ Nota arquitetural: Não existe `AdminController.php` separado. Toda a lógica administrativa está centralizada no `PortalController`. A refatoração para um `AdminController` dedicado está planeada para v1.1.
 
 **Funcionalidades:**
 - Dashboard com Bento Grid de métricas
@@ -94,8 +96,18 @@ O sistema está organizado em módulos funcionais independentes. Cada módulo te
 - httpSMS, configurado por `HTTPSMS_KEY` e `HTTPSMS_FROM`
 
 **Notas operacionais:**
-- `SMS_DRIVER` deixou de controlar o fornecedor.
-- Integrações antigas com D7, Twilio, Vonage e Africa's Talking foram removidas para evitar fallbacks incorretos em produção.
+- `SMS_DRIVER` no `.env` está definido como `httpsms` mas é inerte — o serviço usa sempre httpSMS diretamente.
+- Integrações antigas com D7, Twilio, Vonage e Africa's Talking foram removidas.
+- O nome da classe `AfricaTalkingService` é legado — a classe foi simplificada para httpSMS exclusivo.
+
+---
+
+## 07 — Visitas (Modelo Visit)
+
+**Responsabilidade:** Registo de visitas ao portal público.
+**Model:** `Visit.php`
+
+> Estado: Modelo existe mas sem controller ou views associadas. Funcionalidade de analytics de visitas planeada para v1.1.
 
 ---
 
@@ -105,27 +117,33 @@ O sistema está organizado em módulos funcionais independentes. Cada módulo te
 app/
 ├── Http/
 │   ├── Controllers/
-│   │   ├── AdminController.php
-│   │   ├── AiController.php
-│   │   ├── AuthController.php
-│   │   ├── PortalController.php
-│   │   ├── WorkspaceController.php
-│   │   └── UsersController.php
+│   │   ├── AiController.php         # Toda a lógica de IA
+│   │   ├── AuthController.php       # Login, logout, PIN
+│   │   ├── PortalController.php     # Portal público + Admin
+│   │   └── WorkspaceController.php  # Workspace, chat, kanban
 │   └── Middleware/
 ├── Models/
 │   ├── User.php
 │   ├── Candidatura.php
-│   └── (Workspace, Task, Message...)
+│   ├── CandidaturaFicheiro.php
+│   ├── CandidaturaProgresso.php
+│   ├── KanbanTask.php
+│   ├── WorkspaceMessage.php
+│   └── Visit.php                    # Registo de visitas (analytics futuro)
 └── Services/
-    └── AfricaTalkingService.php
+    └── AfricaTalkingService.php     # SMS via httpSMS (nome legado)
 
 resources/views/
 ├── auth/
-│   └── login.blade.php
+│   ├── login.blade.php
+│   ├── forgot-password.blade.php
+│   └── reset-password.blade.php
 ├── workspace/
 │   ├── index.blade.php
 │   ├── recover-pin.blade.php
 │   └── recover-pin-geral.blade.php
+├── pdf/
+│   └── comprovativo.blade.php
 ├── admin-dashboard.blade.php
 └── portal.blade.php
 ```

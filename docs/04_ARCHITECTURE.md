@@ -17,8 +17,8 @@ O AcademicHub segue uma arquitetura **Monolítica Modular** assente no padrão *
 │                    CAMADA DE CONTROLO (HTTP)             │
 │  Controllers:                                           │
 │  - PortalController    - WorkspaceController            │
-│  - AiController        - AdminController                │
-│  - AuthController      - UsersController                │
+│  - AiController        - AuthController                 │
+│  (AdminController: lógica integrada no PortalController)│
 └────────────────────────┬────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────┐
@@ -45,7 +45,7 @@ O AcademicHub segue uma arquitetura **Monolítica Modular** assente no padrão *
 
 | Camada            | Tecnologia              |
 |-------------------|-------------------------|
-| Backend           | Laravel 11 (PHP 8.3)    |
+| Backend           | Laravel 13 (PHP 8.3)    |
 | Frontend          | Blade + Tailwind CSS v3 |
 | JavaScript        | Vanilla JS (Fetch API)  |
 | Base de Dados     | MySQL / MariaDB         |
@@ -83,7 +83,7 @@ Browser → Route → Middleware → Controller → Service → Model → DB
 | Portal          | Landing page, catálogo, candidaturas       |
 | Auth            | Login, PIN recovery, sessões              |
 | Workspace       | Chat, Kanban, ficheiros, IA               |
-| Admin           | Dashboard, aprovações, métricas           |
+| Admin           | Dashboard, aprovações, métricas (via PortalController) |
 | AI              | OpenRouter API, prompts, segurança        |
 | SMS             | Envio de mensagens via httpSMS            |
 

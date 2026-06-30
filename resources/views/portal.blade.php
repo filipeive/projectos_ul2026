@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -28,7 +29,24 @@
                             400: '#38bdf8',
                             500: '#008ad2',
                             600: '#0284c7'
+                        },
+                        /* UniLicungo Institutional Palette */
+                        ul: {
+                            blue:      '#00306e', /* Primary — header, CTAs */
+                            'blue-md': '#1565c0', /* Hover, links */
+                            'blue-lt': '#e8f0fb', /* Light tint backgrounds */
+                            green:     '#1b5e20', /* Success, badges */
+                            'green-md':'#2e7d32', /* Secondary buttons */
+                            'green-lt':'#e8f5e9', /* Light green tint */
+                            cream:     '#f4f7fb', /* Page background */
+                            border:    '#d4dce8', /* Borders, dividers */
+                            text:      '#0a1628', /* Primary text */
+                            muted:     '#475569', /* Secondary text */
                         }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
                     }
                 }
             }
@@ -42,22 +60,27 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
     <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative antialiased selection:bg-sky-500 selection:text-white pb-12">
-    
-    <!-- Background glowing ambient blobs -->
-    <div class="glow-blob-blue"></div>
-    <div class="glow-blob-gold"></div>
-    <div class="glow-blob-center"></div>
+<body class="min-h-screen bg-ul-cream text-ul-text flex flex-col relative antialiased selection:bg-ul-blue selection:text-white pb-12" id="portal-body">
+
+    <!-- Light-mode ambient subtle texture -->
+    <div class="pointer-events-none fixed inset-0 z-0 opacity-[0.03]" style="background-image:radial-gradient(circle at 20% 20%, #00306e 0%, transparent 50%), radial-gradient(circle at 80% 80%, #1b5e20 0%, transparent 50%);"></div>
+
+    <!-- Dark mode blobs (only visible in dark mode via theme.js) -->
+    <div class="glow-blob-blue dark-only" style="display:none"></div>
+    <div class="glow-blob-gold dark-only" style="display:none"></div>
 
     <!-- Top utility bar -->
-    <div class="bg-slate-900 border-b border-slate-800">
+    <div class="bg-ul-blue border-b border-ul-blue/80 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center text-xs font-mono">
-            <span class="text-slate-500 hidden md:block">Faculdade de Ciências e Tecnologias</span>
+            <span class="text-blue-200 hidden md:flex items-center gap-2">
+                <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
+                Faculdade de Ciências e Tecnologias — UniLicungo
+            </span>
             <div class="flex gap-4 items-center">
-                <a href="#section-form" class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors" onclick="document.querySelector('.nav-tab-btn[data-tab=\'estudante\']').click(); return false;">
-                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Cadastrar Projeto
+                <a href="#section-form" class="text-blue-200 hover:text-white flex items-center gap-1.5 transition-colors" onclick="document.querySelector('.nav-tab-btn[data-tab=\'estudante\']').click(); return false;">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Registar Projecto
                 </a>
-                <span class="text-slate-800">|</span>
+                <span class="text-blue-800/60">|</span>
                 @php
                     $studentCandidaturaId = session('student_candidatura_id');
                     if (!$studentCandidaturaId) {
@@ -73,20 +96,20 @@
 
                 @if(auth()->check())
                     @if(auth()->user()->role === 'admin' || auth()->user()->role === 'docente')
-                        <a href="{{ route('admin.dashboard') }}" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors font-bold">
+                        <a href="{{ route('admin.dashboard') }}" class="text-emerald-300 hover:text-white flex items-center gap-1.5 transition-colors font-bold">
                             <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Painel Dashboard
                         </a>
                     @else
-                        <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                        <a href="{{ route('workspace.login') }}" class="text-blue-200 hover:text-white flex items-center gap-1.5 transition-colors">
                             <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
                         </a>
                     @endif
                 @elseif($studentCandidaturaId)
-                    <a href="{{ route('workspace.index', $studentCandidaturaId) }}" class="text-sky-400 hover:text-sky-300 flex items-center gap-1.5 transition-colors font-bold">
+                    <a href="{{ route('workspace.index', $studentCandidaturaId) }}" class="text-emerald-300 hover:text-white flex items-center gap-1.5 transition-colors font-bold">
                         <i data-lucide="monitor" class="w-3.5 h-3.5"></i> Aceder ao Workspace
                     </a>
                 @else
-                    <a href="{{ route('workspace.login') }}" class="text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                    <a href="{{ route('workspace.login') }}" class="text-blue-200 hover:text-white flex items-center gap-1.5 transition-colors">
                         <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Central de Acesso
                     </a>
                 @endif
@@ -95,75 +118,77 @@
     </div>
 
     <!-- HEADER / HERO -->
-    <header class="relative z-10 w-full max-w-7xl mx-auto px-4 pt-6 pb-4">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-900 pb-6">
-            <div class="flex items-center gap-4">
-                <!-- University Logo -->
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-slate-900/60 p-2 rounded-2xl border border-slate-800 flex items-center justify-center backdrop-blur-md">
-                    <img src="{{ asset('ul.png') }}" alt="Logo UniLicungo" class="w-full h-full object-contain">
-                </div>
-                
-                <div>
-                    <!-- Badge -->
-                    <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold mb-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
-                        Universidade Licungo · Quelimane
+    <header class="relative z-10 w-full bg-white border-b border-ul-border shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 pt-5 pb-0">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-5">
+                <div class="flex items-center gap-4">
+                    <!-- University Logo -->
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-ul-blue-lt p-2 rounded-2xl border border-ul-border flex items-center justify-center">
+                        <img src="{{ asset('ul.png') }}" alt="Logo UniLicungo" class="w-full h-full object-contain">
                     </div>
-                    <!-- Title -->
-                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight break-words">
-                        UniLicungo <span class="text-gradient-primary">TechHub</span>
-                    </h1>
-                    <p class="text-sm text-slate-400 max-w-2xl font-light">
-                        Guia Oficial de Projetos Tecnológicos e Investigação Científica para Estudantes do 1.º Ano.
-                    </p>
+                    
+                    <div>
+                        <!-- Badge -->
+                        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-ul-blue/10 border border-ul-blue/20 text-ul-blue text-xs font-semibold mb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-ul-blue animate-pulse"></span>
+                            Universidade Licungo · Quelimane
+                        </div>
+                        <!-- Title -->
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-ul-text leading-tight break-words">
+                            UniLicungo <span style="background:linear-gradient(135deg,#00306e,#1b5e20);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">TechHub</span>
+                        </h1>
+                        <p class="text-sm text-ul-muted max-w-2xl font-light">
+                            Guia Oficial de Projectos Tecnológicos e Investigação Científica para Estudantes do 1.º Ano.
+                        </p>
+                    </div>
                 </div>
-            </div>
             
-            <!-- Quick info stats banner -->
-            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 max-w-md border border-slate-800">
-                <div class="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-lg">
-                    <i data-lucide="award" class="w-5 h-5"></i>
-                </div>
-                <div class="text-left">
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Próximos Eventos</h4>
-                    <p class="text-xs text-sky-400 font-medium mt-0.5">15 Ago: Dia da Informática (MVP)</p>
-                    <p class="text-xs text-amber-500 font-medium">Setembro: Jornadas Científicas (Artigo)</p>
+                <!-- Quick info stats banner -->
+                <div class="bg-ul-blue-lt border border-ul-border p-4 rounded-xl flex items-center gap-4 max-w-md">
+                    <div class="w-10 h-10 rounded-lg bg-ul-blue/10 border border-ul-blue/20 flex items-center justify-center text-ul-blue shadow-sm">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="text-xs font-bold text-ul-text uppercase tracking-wider font-mono">Próximos Eventos</h4>
+                        <p class="text-xs text-ul-blue font-medium mt-0.5">15 Ago: Dia da Informática (MVP)</p>
+                        <p class="text-xs text-ul-green font-medium">Setembro: Jornadas Científicas (Artigo)</p>
+                    </div>
                 </div>
             </div>
-        </div>
         
         <!-- Navigation Tab bar -->
-        <nav class="flex border-b border-slate-800/80 mt-6 relative z-20 overflow-x-auto" role="tablist" aria-label="Abas de Navegação">
-            <button id="tab-btn-catalogo" role="tab" aria-selected="true" aria-controls="section-catalogo" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-sky-500 text-sky-400 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="catalogo">
+        <nav class="flex border-b border-ul-border mt-0 relative z-20 overflow-x-auto" role="tablist" aria-label="Abas de Navegação">
+            <button id="tab-btn-catalogo" role="tab" aria-selected="true" aria-controls="section-catalogo" class="nav-tab-btn whitespace-nowrap px-5 py-3.5 border-b-2 border-ul-blue text-ul-blue bg-ul-blue/5 font-semibold text-sm transition-all focus:outline-none" data-tab="catalogo">
                 <span class="flex items-center gap-2">
                     <i data-lucide="grid" class="w-4 h-4"></i> Catálogo de Ideias ({{ count($projects) }})
                 </span>
             </button>
-            <button id="tab-btn-mobilizacao" role="tab" aria-selected="false" aria-controls="section-mobilizacao" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="mobilizacao">
+            <button id="tab-btn-mobilizacao" role="tab" aria-selected="false" aria-controls="section-mobilizacao" class="nav-tab-btn whitespace-nowrap px-5 py-3.5 border-b-2 border-transparent text-ul-muted hover:text-ul-blue hover:bg-ul-blue-lt font-medium text-sm transition-all focus:outline-none" data-tab="mobilizacao">
                 <span class="flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Linha de Ação & Mentoria
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Linha de Ação &amp; Mentoria
                 </span>
             </button>
-            <button id="tab-btn-boilerplates" role="tab" aria-selected="false" aria-controls="section-boilerplates" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="boilerplates">
+            <button id="tab-btn-boilerplates" role="tab" aria-selected="false" aria-controls="section-boilerplates" class="nav-tab-btn whitespace-nowrap px-5 py-3.5 border-b-2 border-transparent text-ul-muted hover:text-ul-blue hover:bg-ul-blue-lt font-medium text-sm transition-all focus:outline-none" data-tab="boilerplates">
                 <span class="flex items-center gap-2">
                     <i data-lucide="code-2" class="w-4 h-4"></i> Kit do Estudante (Starter)
                 </span>
             </button>
-            <button id="tab-btn-guia" role="tab" aria-selected="false" aria-controls="section-guia" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="guia">
+            <button id="tab-btn-guia" role="tab" aria-selected="false" aria-controls="section-guia" class="nav-tab-btn whitespace-nowrap px-5 py-3.5 border-b-2 border-transparent text-ul-muted hover:text-ul-blue hover:bg-ul-blue-lt font-medium text-sm transition-all focus:outline-none" data-tab="guia">
                 <span class="flex items-center gap-2">
                     <i data-lucide="graduation-cap" class="w-4 h-4"></i> Guia do Investigador
                 </span>
             </button>
-            <button id="tab-btn-estudante" role="tab" aria-selected="false" aria-controls="section-estudante" class="nav-tab-btn whitespace-nowrap px-6 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/20" data-tab="estudante">
+            <button id="tab-btn-estudante" role="tab" aria-selected="false" aria-controls="section-estudante" class="nav-tab-btn whitespace-nowrap px-5 py-3.5 border-b-2 border-transparent text-ul-muted hover:text-ul-blue hover:bg-ul-blue-lt font-medium text-sm transition-all focus:outline-none" data-tab="estudante">
                 <span class="flex items-center gap-2">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Inscrição de Grupo
                 </span>
             </button>
         </nav>
+        </div>
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 py-4 flex-grow">
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 py-6 flex-grow">
         
         <!-- ALERT MESSAGES -->
         @if(session('success'))

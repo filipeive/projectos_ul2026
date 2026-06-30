@@ -36,8 +36,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom CSS Styles -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260627">
-    <script src="{{ asset('theme.js') }}?v=theme-20260627"></script>
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v=theme-20260630">
+    <script src="{{ asset('theme.js') }}?v=theme-20260630"></script>
 </head>
 <body class="h-screen bg-slate-950 text-slate-100 flex overflow-hidden antialiased">
     
@@ -235,12 +235,17 @@
                                             <!-- Mentor -->
                                             <td class="px-6 py-4">
                                                 @if($user->role === 'admin')
-                                                    <select onchange="setDocente({{ $c->id }}, this.value)" class="text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full max-w-[180px] shadow-sm transition-all">
-                                                        <option value="">Sem mentor alocado</option>
-                                                        @foreach($docentes as $d)
-                                                            <option value="{{ $d->id }}" {{ $c->docente_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <div class="relative w-full max-w-[180px]">
+                                                        <span class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none text-slate-500">
+                                                            <i data-lucide="user-check" class="w-3.5 h-3.5 text-sky-400"></i>
+                                                        </span>
+                                                        <select onchange="setDocente({{ $c->id }}, this.value)" class="text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full shadow-sm transition-all cursor-pointer">
+                                                            <option value="">Sem mentor alocado</option>
+                                                            @foreach($docentes as $d)
+                                                                <option value="{{ $d->id }}" {{ $c->docente_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 @else
                                                     <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800">
                                                         <i data-lucide="user" class="w-3 h-3 text-slate-500"></i>
@@ -361,12 +366,17 @@
                                         <div class="flex justify-between items-center gap-2">
                                             <span class="text-slate-400">Mentor:</span>
                                             @if($user->role === 'admin')
-                                                <select onchange="setDocente({{ $c->id }}, this.value)" class="text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-2 py-1 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full max-w-[150px] shadow-sm transition-all">
-                                                    <option value="">Sem mentor</option>
-                                                    @foreach($docentes as $d)
-                                                        <option value="{{ $d->id }}" {{ $c->docente_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="relative w-full max-w-[150px]">
+                                                    <span class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none text-slate-500">
+                                                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-sky-400"></i>
+                                                    </span>
+                                                    <select onchange="setDocente({{ $c->id }}, this.value)" class="text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded-lg pl-7 pr-2 py-1 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full shadow-sm transition-all cursor-pointer">
+                                                        <option value="">Sem mentor</option>
+                                                        @foreach($docentes as $d)
+                                                            <option value="{{ $d->id }}" {{ $c->docente_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             @else
                                                 <span class="text-slate-300 font-medium">{{ $c->docente ? $c->docente->name : 'Nenhum' }}</span>
                                             @endif
@@ -470,11 +480,16 @@
                         </div>
                         <div class="md:col-span-1">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Cargo / Papel</label>
-                            <select name="role" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all shadow-inner">
-                                <option value="docente">Docente / Mentor</option>
-                                <option value="director_curso">Diretor de Curso</option>
-                                <option value="admin">Administrador Geral</option>
-                            </select>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                    <i data-lucide="shield" class="w-4 h-4 text-sky-400"></i>
+                                </span>
+                                <select name="role" required class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all shadow-inner cursor-pointer">
+                                    <option value="docente">Docente / Mentor</option>
+                                    <option value="director_curso">Diretor de Curso</option>
+                                    <option value="admin">Administrador Geral</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="md:col-span-1 flex items-end">
                             <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
  *   HTTPSMS_KEY=<api_key>
  *   HTTPSMS_FROM=<your_registered_phone_number>  e.g. +258847xxxxxx
  */
-class AfricaTalkingService
+class SmsService
 {
     /**
      * Send an SMS via httpSMS.

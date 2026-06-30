@@ -23,7 +23,7 @@ O AcademicHub segue uma arquitetura **Monolítica Modular** assente no padrão *
                          │
 ┌────────────────────────▼────────────────────────────────┐
 │                    CAMADA DE SERVIÇOS                   │
-│  - AfricaTalkingService (SMS via httpSMS)                │
+│  - SmsService (SMS via httpSMS)                          │
 │  - AiService (OpenRouter)                              │
 │  (futuros: NotificationService, WorkspaceService...)   │
 └────────────────────────┬────────────────────────────────┘

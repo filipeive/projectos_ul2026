@@ -30,6 +30,58 @@ O que motivou esta sessão.
 
 ---
 
+## [2026-06-30] Correção do Dark Mode & Ajuste de Especificidade de CSS
+**Branch:** `evol1.0`
+**Participantes:** Chief Architect + Filipe dos Santos
+
+### Contexto
+Resolução de um bug visual em que o fundo da página (body) e os cabeçalhos (header) do portal não alteravam corretamente para o modo escuro (Dark Mode). Isso acontecia devido à especificidade das classes estáticas claras (como `.bg-ul-cream` e `.bg-white`) aplicadas nos elementos HTML do portal, que se sobrepunham às definições globais do tema escuro do Tailwind.
+
+### Decisões Tomadas
+- Adicionar regras globais de sobreposição para o tema escuro (`html[data-theme="dark"]` e `html.dark`) em `public/style.css` usando `!important` para garantir a precedência dos estilos escuros sobre os estilos claros estáticos do Tailwind.
+- Otimizar a lógica visual do componente de Abas de Navegação (Navigation Tab Bar) desacoplando a manipulação direta de classes Tailwind no JavaScript, passando a usar o estado de acessibilidade `aria-selected` como seletor primário no CSS para estilização de estados ativo e inativo (em ambos os temas).
+- Incrementar a versão da query string de carregamento do CSS e JS (`?v=theme-20260630`) em todos os templates Blade para forçar a quebra de cache (cache-busting) nos navegadores.
+
+### Trabalho Realizado
+- [x] Adicionadas regras específicas em `public/style.css` para forçar o fundo do body para `#070a13` e o header para `#0b0f19` sob o tema escuro.
+- [x] Mapeamento de cores institucionais UniLicungo em modo escuro (azul escuro `.text-ul-blue` mapeado para sky-400, verde escuro `.text-ul-green` para emerald-400).
+- [x] Otimização visual do seletor `.dark-only` para exibir corretamente as esferas de brilho neon (glow blobs) apenas no modo escuro.
+- [x] Refatoração do script de troca de abas em `resources/views/portal.blade.php` para simplificar e gerir puramente o atributo `aria-selected`.
+- [x] Criação de regras CSS baseadas em `[aria-selected]` para estilização limpa e reativa das abas em ambos os temas.
+- [x] Atualização de todos os links de ativos (`style.css` e `theme.js`) com cache buster `?v=theme-20260630` em `portal.blade.php`, `admin-dashboard.blade.php`, `workspace/index.blade.php`, etc.
+
+### Pendências / Próximos Passos
+- [ ] Validar a experiência de utilizador em múltiplos tamanhos de ecrã sob os dois modos de cor.
+
+---
+
+## [2026-06-30] Consolidação UI/UX com Ícones Lucide & Padronização SMS (httpSMS)
+**Branch:** `evol1.0`
+**Participantes:** Chief Architect + Filipe dos Santos
+
+### Contexto
+Substituição definitiva de quaisquer resíduos de emojis por ícones Lucide estruturados em todos os menus dropdown (select) do portal, workspace e painel de administração, garantindo que o design system da UniLicungo apresente um visual premium. Adicionalmente, refatorou-se o serviço legado de SMS para uma classe padronizada e limpa (`SmsService`).
+
+### Decisões Tomadas
+- Renomear a classe `AfricaTalkingService` para `SmsService` e remover o ficheiro antigo para eliminar a dívida técnica do nome legado.
+- Envolver todos os elementos `<select>` em containers relativos com ícones absolutos à esquerda, padronizando o preenchimento interno com `pl-10` ou `pl-9` para manter consistência visual com os inputs de texto.
+
+### Trabalho Realizado
+- [x] Renomeado `AfricaTalkingService` para `SmsService` em `app/Services/SmsService.php`.
+- [x] Atualizadas todas as referências ao serviço de SMS em `PortalController`, `WorkspaceController` e documentação de arquitetura/módulos.
+- [x] Removido o arquivo legado `app/Services/AfricaTalkingService.php`.
+- [x] Adicionados ícones Lucide e wrappers relativos aos select de Dificuldade (`award`) e Tecnologia (`cpu`) nos filtros do Catálogo.
+- [x] Adicionados ícones Lucide aos select do formulário de candidatura: Projeto (`lightbulb`) e Tecnologia Principal (`code-2`).
+- [x] Adicionados ícones Lucide aos select de alteração de Fase (`git-commit`) e Estado (`activity`) no Workspace do Estudante.
+- [x] Adicionado ícone Lucide ao select de Coluna Inicial (`columns`) no modal do Kanban.
+- [x] Adicionados ícones Lucide aos selects de Alocação de Mentor (`user-check`) e de Cargo (`shield`) no Painel de Administração.
+- [x] Validação com sucesso da suite de testes PHPUnit (6 testes, 12 asserções passadas).
+
+### Pendências / Próximos Passos
+- [ ] Monitorar a entrega de mensagens SMS em ambiente real após a configuração de chaves HTTPSMS de produção.
+
+---
+
 ## [2026-06-30] Ritual de Início + Design UniLicungo + Limpeza de Dívida Técnica
 **Branch:** `evol1.0`
 **Participantes:** Chief Architect + Filipe dos Santos

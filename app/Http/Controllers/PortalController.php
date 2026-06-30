@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidatura;
-use App\Services\AfricaTalkingService;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -238,7 +238,7 @@ class PortalController extends Controller
         }
 
         try {
-            [$sent, $message] = AfricaTalkingService::sendSms(
+            [$sent, $message] = SmsService::sendSms(
                 $candidatura->contact_phone,
                 "UniLicungo TechHub: o PIN do projeto '{$candidatura->project_name}' e {$pin}. Guarde este codigo para aceder ao Workspace."
             );

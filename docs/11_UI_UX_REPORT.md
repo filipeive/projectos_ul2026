@@ -20,12 +20,18 @@
 | Atenção              | `amber-500`       | Avisos                       |
 | Erro                 | `red-500`         | Erros                        |
 
-### Paleta de Cores (Light Mode — Institucional)
-| Token                | Valor             | Uso                          |
-|----------------------|-------------------|------------------------------|
-| Background Base      | `#f4f7fb`         | Fundo institucional claro    |
-| Superfície           | `white/80`        | Cards com glassmorphism      |
-| Accent               | `indigo-600`      | CTAs institucionais          |
+### Paleta de Cores (Light Mode — Institucional UniLicungo)
+| Token                | Valor       | Uso                          |
+|----------------------|-------------|------------------------------|
+| Azul Primário        | `#00306e`   | Header, CTAs, destaques      |
+| Azul Secundário      | `#1565c0`   | Links, hover states          |
+| Verde Institucional  | `#1b5e20`   | Sucesso, badges              |
+| Verde Claro          | `#2e7d32`   | Botões secundários           |
+| Branco               | `#ffffff`   | Fundos, cards                |
+| Cinza claro          | `#f4f7fb`   | Background de página         |
+| Cinza médio          | `#e8edf4`   | Bordas, separadores          |
+| Texto Primário       | `#0a1628`   | Títulos, corpo principal     |
+| Texto Secundário     | `#475569`   | Labels, captions             |
 
 ### Tipografia
 | Variante             | Fonte             |
@@ -49,6 +55,8 @@
 | Portal (Catálogo)            | 8.2   | 8.0   | 8.2    | 7.5            |
 | Workspace (Chat + Kanban)    | 8.5   | 8.3   | 8.0    | 7.5            |
 | Painel Administrativo        | 8.0   | 8.0   | 7.8    | 7.5            |
+
+> 🎯 **Objectivo desta sessão:** Aplicar paleta UniLicungo para elevar o Portal e Admin Dashboard para 9.0+ em UI e alinhar identidade visual com a instituição.
 
 ---
 
@@ -81,6 +89,9 @@ Para cada novo componente criado, validar:
 
 | Data       | Melhoria                                              |
 |------------|-------------------------------------------------------|
+| 2026-06-30 | Paleta UniLicungo aplicada ao portal e admin          |
+| 2026-06-30 | Emojis removidos dos selects de candidatura           |
+| 2026-06-27 | Candidatura Individual sem member2 obrigatório        |
 | 2026-06    | Bento Grid no Painel Administrativo                   |
 | 2026-06    | Filtros inteligentes em tempo real (Admin)            |
 | 2026-06    | AI Advisor modal responsivo no Portal                 |

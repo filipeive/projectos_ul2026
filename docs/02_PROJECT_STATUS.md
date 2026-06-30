@@ -5,13 +5,13 @@
 
 ## 🏷️ Estado Geral
 
-| Campo              | Valor                           |
-|--------------------|----------------------------------|
-| **Versão Atual**   | `v0.9.1 — Candidaturas Flexíveis`|
-| **Branch Ativa**   | `evol1.0`                        |
-| **Ambiente**       | Desenvolvimento / Pré-Produção   |
-| **Servidor Local** | `php artisan serve` (porta 8000) |
-| **Última Deploy**  | 2026-06-27 — `master`            |
+| Campo              | Valor                                 |
+|--------------------|----------------------------------------|
+| **Versão Atual**   | `v0.9.2 — Design UniLicungo`          |
+| **Branch Ativa**   | `evol1.0`                              |
+| **Ambiente**       | Desenvolvimento / Pré-Produção         |
+| **Servidor Local** | `php artisan serve` (porta 8000)       |
+| **Última Deploy**  | 2026-06-30 — `master`                  |
 
 ---
 
@@ -42,13 +42,12 @@
 - Botão "Eliminar" condicional no dashboard admin (apenas para rejeitados).
 - Botão de acesso dinâmico no portal (Dashboard para docentes, Workspace para estudantes).
 - Logout explícito do Workspace com limpeza de sessão.
-- Corrigido erro 500 em produção (DomPDF não instalado).
-- Pipeline de deploy agora executa `composer install` automaticamente.
-- Bento Grid no Painel Administrativo com filtros inteligentes em tempo real.
-- PDF Export e partilha de ideias do AI Advisor no Portal.
-- Análise de sentimento e clima do chat (para docentes).
-- Sugestão de tarefas Kanban com IA contextualizada.
-- Tema claro institucional com persistência em `localStorage`.
+- SMS simplificado para httpSMS exclusivo (D7, Twilio, Vonage, Africa's Talking removidos).
+- Emojis removidos dos selects do formulário de candidatura.
+- Migração `member2_name nullable` aplicada em produção.
+- Fix "Array to string" no AfricaTalkingService.
+- Corrigida inconsistência nos docs: AdminController, UsersController, Visit.php documentados.
+- Criado `16_SESSIONS.md` para histórico de sessões de trabalho.
 
 ---
 
